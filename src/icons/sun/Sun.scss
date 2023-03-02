@@ -1,0 +1,64 @@
+$icon-size: 50px;//150
+$line-thick: 3px; // 4 5px;//calc($icon-size / 30)
+$line-long: 13px;//40
+$line-short: 20px;//60
+$circle-size: 20px;//60
+$icon-color: black;//rgb(246, 222, 3);
+.sun{
+    // border: 1px solid gray;
+    width: $icon-size;
+    height: $icon-size;
+    position: relative;
+    border-radius: 50%;
+    margin: 30px;
+    overflow: hidden;
+    // box-sizing: border-box;
+    .circle{
+        width: $circle-size;
+        height: $circle-size;
+        border-radius: 50%;
+        border: calc($line-thick + 0.5px) solid $icon-color;
+        margin-left: calc(($icon-size - $circle-size) / 2);
+        margin-top: calc(($icon-size - $circle-size) / 2);
+        position: absolute;
+        box-sizing: border-box; 
+    }
+    .ray{
+        height: $line-thick;
+        width: $line-short;
+        background: $icon-color;
+        // border-radius: 100%;
+        position: absolute;
+        box-sizing: border-box; 
+    }
+    .ray1{
+        width: $line-long;
+        height: calc($line-thick + 0.5px);
+        transform: translateX(0) translateY(calc($icon-size / 2 - $line-thick / 2));
+    }
+    .ray1_2{
+        width: $line-long;
+        height: calc($line-thick + 0.5px);
+        transform: translateX(calc($icon-size - $line-long  - 1px)) translateY(calc($icon-size / 2 - $line-thick / 2));
+    }
+    .ray2{
+        width: $line-long;
+        transform: translateX(calc($icon-size / 2 - $line-long / 2)) translateY(calc(($line-long  - $line-thick) / 2  + 1px)) rotateZ(90deg);
+    }
+    .ray2_2{
+        width: $line-long;
+        transform: translateX(calc($icon-size / 2 - $line-long / 2)) translateY(calc($icon-size - $line-thick - (($line-long  - $line-thick) / 2) )) rotateZ(90deg);
+    }
+    .ray3{
+        transform: rotateZ(45deg);
+    }
+    .ray3_2{
+        transform: translateX(calc($icon-size - $line-short)) translateY(calc($icon-size - $line-thick));
+    }
+    .ray4{
+        transform: translateX(calc($icon-size - $line-short)) translateY(0) rotate(-45deg);
+    }
+    .ray4_2{
+        transform: translateX(0) translateY(calc($icon-size - $line-thick)) rotate(-45deg);
+    }
+}
