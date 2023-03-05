@@ -1,0 +1,66 @@
+.pannel-resize{
+    width: 100%;
+    height: calc(100vh - 56px - 1rem);
+    margin-bottom: 2px;
+    display: flex;
+    justify-content: space-between;
+    .item{
+        border: 1px solid #212529;
+        height: calc(100% - 1rem);
+        width: calc(100vw / 12 * 2 );
+        overflow: scroll;
+        min-width: 70px;
+    }
+    .side-item{
+        height: calc(100% + 1rem);
+    }
+    .two-main-items{
+        width: 80%;
+        display: flex;
+        justify-content: space-between;
+        .item{
+            border: 1px solid #212529;
+            height: calc(100% - 1rem);
+            width: calc(100vw / 12 * 2 );
+            overflow: scroll;
+            min-width: 100px;
+        }
+        .left-item{
+            width: calc(100vw / 12 * 5 - 1rem);
+            margin-top: 1rem;
+        }
+        .right-item{
+            width: calc(100vw / 12 * 5 - 1rem);
+            margin-right: 1rem;
+            margin-top: 1rem;
+        }
+        .resize-controll{
+            height: calc(100% - 1rem);
+            width: calc(1rem );
+            margin-top: 1rem;
+            cursor: col-resize;
+            background-color: transparent;
+            border-right: 4px solid #4285F4;
+            border-left: 4px solid #4285F4;
+            box-sizing: border-box;
+            &:hover{
+                border-right: 4px solid #0D47A1;
+                border-left: 4px solid #0D47A1;
+            }  
+        }
+    }
+    .resize-controll{
+        height: calc(100% - 1rem);
+        width: calc(1rem + 8px);
+        margin-top: 1rem;
+        cursor: col-resize;
+        background-color: transparent;
+        border-right: 4px solid #4285F4;
+        border-left: 4px solid #4285F4;
+        box-sizing: border-box;
+        &:hover{
+            border-right: 4px solid #0D47A1;
+            border-left: 4px solid #0D47A1;
+        } 
+    }
+}

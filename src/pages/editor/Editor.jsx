@@ -5,11 +5,7 @@ import JsRunner from './JsRunner';
 import { sampleCodes, languageVersions, languages } from './EditorData.ts'
 
 import SideBar from '../../elements/Sidebar/SideBar';
-import ResizableDiv from '../../elements/Resizeable/ResizeableDiv';
 import { Button } from 'react-bootstrap';
-import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 
 
