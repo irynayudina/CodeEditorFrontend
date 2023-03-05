@@ -1,0 +1,29 @@
+.container-grid {  
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: 2fr 5fr 5fr;
+  }
+  .elem{
+    border: 1px solid #212529;
+    
+    &:nth-child(2){
+        margin-top: 1rem;
+        overflow: hidden;
+    }    
+    &:nth-child(3){
+        margin: 1rem 1rem 0 0 ;
+    } 
+  }
+  .result{
+    background-color: white;
+    width: 100%;
+    overflow: scroll;
+    height: 546px;
+    // margin-top:calc(30.6px + 0.5rem);
+    margin-top: 0.5rem;
+    padding-left: 0.5rem;
+    box-sizing: border-box;
+  }
+  .botInp{
+    margin-top: 0.5rem;
+  }

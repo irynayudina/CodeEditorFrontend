@@ -1,32 +1,53 @@
 import React, { useState, useRef, useEffect } from 'react'
 import axios from "axios";
-import { sampleCodes, languageVersions, languages } from './EditorData.ts'
+import './Editor.scss'
 import JsRunner from './JsRunner';
+import { sampleCodes, languageVersions, languages } from './EditorData.ts'
+
+import SideBar from '../../elements/Sidebar/SideBar';
+import ResizableDiv from '../../elements/Resizeable/ResizeableDiv';
+import { Button } from 'react-bootstrap';
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+import Form from 'react-bootstrap/Form';
+
+
 import CodeMirror from '@uiw/react-codemirror';
 import { okaidia } from '@uiw/codemirror-theme-okaidia';
 import { javascript } from '@codemirror/lang-javascript';
 
+
 const Editor = (props) => {
-    const [code, setCode] = useState(sampleCodes.cpp)
+    const defaultResult = `<p class="text-muted">&lt;--------Output of your program goes here --------&gt;</p>`;
+    const [code, setCode] = useState(sampleCodes.javascript)
     const [language, setLangauge] = useState("javascript")
     const [version, setVersion] = useState("0")
     const [versions, setVersions] = useState(languageVersions.javascript);
-    const [result, setResult] = useState("")
+    const [result, setResult] = useState(defaultResult)
     const [compiling, setCompiling] = useState(false)
-    const [jsRun, setRunJs] = useState(false)
+    const [jsRun, setRunJs] = useState(0)
+    const [cmdargs, setCmdargs] = useState("")
+    const [userinp, setUserinp] = useState("")
 
-    const onChangeCM = React.useCallback((value, viewUpdate) => {
-        console.log('value:', value);
-        setCode(value)
-      }, []);
-    const codeHandler = (e) => {
-        setCode(e.target.value);
+    const userinpHandler = (e) => {
+        setUserinp(e.target.value)
     }
+    const cmdHandler = (e) => {
+        setCmdargs(e.target.value);
+        console.log(cmdargs)
+    }
+    const onChangeCM = React.useCallback((value, viewUpdate) => {
+        setCode(value)
+    }, []);
     const languageHandler = (e) => {
         const lang = e.target.value
         setLangauge(lang)
         setVersions(languageVersions[lang])
         setCode(sampleCodes[lang])
+        setResult(defaultResult)
+        setCmdargs("")
+        setUserinp("")
     }
     const versionHandler = (e) => {
         setVersion(e.target.value);
@@ -35,79 +56,74 @@ const Editor = (props) => {
         e.preventDefault();
         setCompiling(true)
         if (language === "javascript") {
-            setRunJs(value => !value);
+            setRunJs(value => value +=1);
             setCompiling(false);
             return;
         }
-        const data = { code: code, language: language, version: version };
+        setRunJs(0);
+        const data = { code: code, language: language, version: version, userInput: userinp, cmdargs: cmdargs};
         axios.post('http://localhost:5000/editor/execute', data, {
             headers: {
                 'Content-Type': 'application/json'
             }
         }).then(response => {
-                if (response.status === 200) {
-                    setResult(response.data.output);
-                    console.log(response.data);
-                    setCompiling(false)
-                } else {
-                    setResult('error in response')
-                    setCompiling(false)
-                    throw new Error('Network response was not ok');
-                }
-            })
+            if (response.status === 200) {
+                setResult(response.data.output);
+                console.log(result)
+                setCompiling(false)
+            } else {
+                setResult('error in response')
+                setCompiling(false)
+                throw new Error('Network response was not ok: ', response);
+            }
+        }) 
             .catch(error => {
-                console.error('Problem with the fetch operation:', error);
+                console.error(error);
                 setResult('error in request')
                 setCompiling(false)
             });
     }
     return (
-        <div>
-            <div className="form-wrap">
-                <h1 style={{ float: "left", color: "#4a70ec" }}>Editor</h1>
+        <div className="container-grid">
+            <div className="elem"><SideBar /></div>
+            <div className="elem">
+                <Form.Select size="sm" style={{width:"auto", float:"left"}} onChange={languageHandler}>
+                    {Object.keys(languages).map((key) => (
+                        <option key={key} value={key}>
+                            {languages[key]}
+                        </option>
+                    ))}
+                </Form.Select>
+                <Form.Select size="sm" style={{width:"auto"}} onChange={versionHandler}>
+                    {versions?.map((v, i) => (
+                        <option key={i} value={i}>
+                            {v}
+                        </option>
+                    ))}
+                </Form.Select>
+                <CodeMirror
+                    value={code}
+                    theme={okaidia}
+                    height="546px"
+                    className="overflow-hidden"
+                    style={{overflowX:"scroll", margin:"0.5rem 0 0.5rem 0"}}
+                    extensions={[javascript({ jsx: true })]}
+                    onChange={onChangeCM}
+                />
+                <Button variant="primary" size="lg" onClick={execute}>Run</Button>
             </div>
-            <form className="editor-form">
-                <div className={`form-container ${props.theme}`}>
-                    <div className="form-container-header">
-                        <select onChange={languageHandler}>
-                            {Object.keys(languages).map((key) => (
-                                <option key={key} value={key}>
-                                    {languages[key]}
-                                </option>
-                            ))}
-                        </select>
-                        <select onChange={versionHandler}>
-                            {versions?.map((v, i) => (<option key={i} value={i}>{v}</option>))}                            
-                        </select>
-                    </div>
-                    <div className="form-container-message">
-                        <textarea style={{width:"400px", height:"200px"}} placeholder="Program code"
-                            name="code"
-                            onChange={codeHandler}
-                            value={code}
-                        />
-                    </div>
-                    <div>
-                    <CodeMirror
-                        value={code}
-                        height="200px"
-                        width="400px"
-                        theme={okaidia}
-                        extensions={[javascript({ jsx: true })]}
-                        onChange={onChangeCM}
-                    />
-                    </div>
-                    <div className="form-container-button">
-                        <button type="submit" onClick={execute}>
-                            <h2>Run</h2>
-                        </button>
-                    </div>
+            <div className="elem">
+                <Form.Label style={{float:"left", marginRight:"0.5rem", marginLeft:"0.5rem", marginTop:"0.2rem"}}>CMD arguments</Form.Label>
+                <Form.Control as="textarea" rows={1} placeholder="command line" size="sm" style={{maxWidth:"calc(100% - 124px - 0.5rem)"}} value={cmdargs} onChange={cmdHandler} />
+                <div className="result">
+                    {compiling ? 'compiling...' : <div dangerouslySetInnerHTML={{ __html: result.replace(/\n/g, '<br />') }}></div>}
                 </div>
-            </form>
-            <div className="result">
-                {compiling ? 'compiling...' : result}
-            </div>            
-            <JsRunner code={code} result={result} setResult = {setResult} jsRun={jsRun} />
+                <div className="botInp">
+                    <Form.Label style={{ float: "left", margin: "0.5rem", marginTop: "0.5rem" }}>Standard inputs</Form.Label>
+                    <Form.Control as="textarea" rows={2} placeholder="standard inputs separated by newline" size="md" style={{maxWidth:"calc(100% - 120px - 0.5rem)"}} value={userinp} onChange={userinpHandler} />
+                </div>
+                <JsRunner code={code} result={result} setResult={setResult} jsRun={jsRun} />
+            </div>
         </div>
     )
 }

@@ -7,8 +7,14 @@ export const sampleCodes = {
     }`,
     'cpp': `#include <iostream>
     using namespace std;
-    int main(){
-        cout<<"Hello World2"; 
+    int main(int argc, char *argv[]){
+        cout<<"Hello World2" << " ";  
+        int l = 0;
+        cin>>l;
+        cout<<l << " ";
+        cin>>l;
+        cout<<l << " ";
+        cout << argv[1];
         return 0;
     }`,
     'java':`public class Simple{
@@ -518,23 +524,23 @@ export const languageVersions = {
     ],
 }
 export const languages = {
-    'cpp': "C++",
     "javascript":"JavaScript",
+    'cpp': "C++",
+    'java': "Java",
+    'csharp': "C#",
+    'python3': "Python 3",
     'cpp14': "C++ 14",
     'cpp17': "C++ 17",
     'c': "C",
-    'java': "Java",
     'php': "PHP",
     'perl': "Perl",
     'python2': "Python 2",
-    'python3': "Python 3",
     'ruby': "Ruby",
     'go': "Go Lang",
     'scala': "Scala",
     'bash': "Bash Shell",
     'sql': "SQL",
     'pascal': "Pascal",
-    'csharp': "C#",
     'vbn': "VB.Net",
     'haskell': "Haskell",
     'objc': "Objective C",

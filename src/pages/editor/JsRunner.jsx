@@ -5,29 +5,25 @@ const JsRunner = ({code, setResult, result, jsRun}) => {
       const logs = [];
       const originalConsoleLog = console.log;
       console.log = function() {
-        logs.push(Array.from(arguments));
+        logs.push(Array.from(arguments).join(' ') + '<br />');
         originalConsoleLog.apply(console, arguments);
       };  
       try {
         const parsedCode = eval(jsString);
         setResult(parsedCode);
       } catch (error) {
-        console.error('There was an error in executing the JavaScript code:', error);
-        setResult('error in execution js');
+        console.log(error.name, ': ', error.message);
       }
       console.log = originalConsoleLog;
-      setResult(logs);
+      setResult(logs.join(''));
     }
     useEffect(() => {
+      if (jsRun) {
         runJs(code)
+      }
     }, [jsRun]);
   return (
-    <div>
-        <button onClick={() => runJs(code)}>
-          Run JavaScript
-        </button>
-        <pre>{JSON.stringify(result, null, 2)}</pre>
-      </div>
+    <div></div>
   )
 }
 
