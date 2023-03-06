@@ -169,13 +169,13 @@ const Editor = (props) => {
             </div>
             <div className="elem">
                 <Form.Label style={{float:"left", marginRight:"0.5rem", marginLeft:"0.5rem", marginTop:"0.2rem"}}>CMD arguments</Form.Label>
-                <Form.Control as="textarea" rows={1} placeholder="command line" size="sm" style={{maxWidth:"calc(100% - 124px - 0.5rem)", minWidth:"100px"}} value={cmdargs} onChange={cmdHandler} />
+                <Form.Control as="textarea" rows={1} placeholder="command line" size="sm" style={{maxWidth:"calc(100% - 124px - 0.5rem)", minWidth:"120px", marginLeft:"0.5rem"}} value={cmdargs} onChange={cmdHandler} />
                 <div className="result">
                     {compiling ? 'compiling...' : <div dangerouslySetInnerHTML={{ __html: result.replace(/\n/g, '<br />') }}></div>}
                 </div>
                 <div className="botInp">
                     <Form.Label style={{ float: "left", margin: "0.5rem", marginTop: "0.5rem" }}>Standard inputs</Form.Label>
-                    <Form.Control as="textarea" rows={2} placeholder="standard inputs separated by newline" size="md" style={{maxWidth:"calc(100% - 120px - 0.5rem)", minWidth:"100px"}} value={userinp} onChange={userinpHandler} />
+                    <Form.Control as="textarea" rows={2} placeholder="standard inputs separated by newline" size="md" style={{maxWidth:"calc(100% - 120px - 0.5rem)", minWidth:"120px", marginLeft:"0.5rem"}} value={userinp} onChange={userinpHandler} />
                 </div>
                 <JsRunner code={code} result={result} setResult={setResult} jsRun={jsRun} />
             </div>
