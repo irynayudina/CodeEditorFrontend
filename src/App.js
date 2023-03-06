@@ -10,7 +10,11 @@ function App() {
     <div className="App">
       <Navbar />
       <Editor />
-      <ResizePannel>12346678</ResizePannel>
+      {/* <ResizePannel>
+        <div>Side</div>
+        <div>Left</div>
+        <div>Right</div>
+      </ResizePannel> */}
     </div>
   );
 }

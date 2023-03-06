@@ -2,7 +2,16 @@ import React, { useState, useRef, useEffect } from 'react';
 import './ResizePannel.scss';
 
 const ResizePannel = ({ children }) => {
-  
+  const childrenArray = React.Children.toArray(children);
+  const sideElem = childrenArray[0];
+  const leftElem = childrenArray[1];
+  const rightElem = childrenArray[2];
+  const [xscroll1, setXscroll1] = useState("")
+  const [xscroll2, setXscroll2] = useState("")
+  const [xscroll3, setXscroll3] = useState("")
+  const [yscroll1, setYscroll1] = useState("")
+  const [yscroll2, setYscroll2] = useState("")
+  const [yscroll3, setYscroll3] = useState("")
   const [sideWidth, setSideWidth] = useState(17);
   const [leftWidth, setLeftWidth] = useState(50);
   const [isResizing, setIsResizing] = useState(false);
@@ -40,10 +49,6 @@ const ResizePannel = ({ children }) => {
   };
 
   useEffect(() => {
-    // const resizeableEle = ref.current;
-    // const styles = window.getComputedStyle(resizeableEle);
-    // let width = parseInt(styles.width, 10);
-    // // let height = parseInt(styles.height, 10);
     document.addEventListener('mousemove', handleResize);
     document.addEventListener('mouseup', stopResizing);
     document.addEventListener('mousemove', handleResizeSide);
@@ -58,9 +63,9 @@ const ResizePannel = ({ children }) => {
 
   return (
     <div className="pannel-resize">
-      <div className="item side-item"
+      <div className={`item side-item`}
         style={{ width: `${sideWidth}%` }}
-      ></div>
+      >{ sideElem}</div>
       <div
         className="resize-controll"
         onMouseDown={startResizingSide}
@@ -69,7 +74,7 @@ const ResizePannel = ({ children }) => {
       <div className="two-main-items" style={{ width: `${100 - sideWidth}%` }}>
         <div className="item left-item"
           style={{ width: `${leftWidth}%` }}
-        ></div>
+        >{ leftElem}</div>
         <div
           className="resize-controll"
           onMouseDown={startResizing}
@@ -78,7 +83,7 @@ const ResizePannel = ({ children }) => {
         <div
           className="item right-item"
           style={{ width: `${100 - leftWidth}%` }}
-        >{children}</div>
+        >{rightElem}</div>
       </div>
     </div>
   );

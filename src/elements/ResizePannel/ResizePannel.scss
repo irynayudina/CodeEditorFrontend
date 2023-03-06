@@ -1,15 +1,14 @@
 .pannel-resize{
     width: 100%;
-    height: calc(100vh - 56px - 1rem);
+    min-height: calc(100vh - 56px - 1rem);
+    height: auto;
     margin-bottom: 2px;
     display: flex;
-    justify-content: space-between;
     .item{
-        border: 1px solid #212529;
         height: calc(100% - 1rem);
         width: calc(100vw / 12 * 2 );
-        overflow: scroll;
-        min-width: 70px;
+        min-width: 250px;
+        max-width: calc(100vw - 348px - 2rem);
     }
     .side-item{
         height: calc(100% + 1rem);
@@ -18,13 +17,15 @@
         width: 80%;
         display: flex;
         justify-content: space-between;
+        border-bottom: 1px solid #212529;
+        height: auto;
         .item{
-            border: 1px solid #212529;
-            height: calc(100% - 1rem);
+            min-height: calc(100% - 1rem);
+            height: auto;
             width: calc(100vw / 12 * 2 );
-            overflow: scroll;
-            min-width: 100px;
-        }
+            overflow: unset;
+            min-width: 170px;
+        }        
         .left-item{
             width: calc(100vw / 12 * 5 - 1rem);
             margin-top: 1rem;
@@ -33,6 +34,7 @@
             width: calc(100vw / 12 * 5 - 1rem);
             margin-right: 1rem;
             margin-top: 1rem;
+            overflow: unset;
         }
         .resize-controll{
             height: calc(100% - 1rem);
@@ -50,7 +52,7 @@
         }
     }
     .resize-controll{
-        height: calc(100% - 1rem);
+        height: calc(100vh - 56px - 1rem - 1rem);
         width: calc(1rem + 8px);
         margin-top: 1rem;
         cursor: col-resize;

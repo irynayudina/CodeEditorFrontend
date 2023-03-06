@@ -1,10 +1,12 @@
 import React, { useState, useRef, useEffect } from 'react'
 import axios from "axios";
 import './Editor.scss'
+
 import JsRunner from './JsRunner';
 import { sampleCodes, languageVersions, languages } from './EditorData.ts'
-
 import SideBar from '../../elements/Sidebar/SideBar';
+import ResizePannel from '../../elements/ResizePannel/ResizePannel';
+
 import { Button } from 'react-bootstrap';
 import Form from 'react-bootstrap/Form';
 
@@ -15,6 +17,22 @@ import { javascript } from '@codemirror/lang-javascript';
 
 
 const Editor = (props) => {
+    const [shortScreen, setShortScreen] = useState(false);
+    useEffect(() => {
+      const handleWindowResize = () => {
+        if (window.innerHeight <= 740) {
+            setShortScreen(true);
+            console.log(window.innerHeight)
+        } else {
+            setShortScreen(false);
+        }
+      };
+      window.addEventListener('resize', handleWindowResize);
+      handleWindowResize();
+      return () => {
+        window.removeEventListener('resize', handleWindowResize);
+      };
+    }, []);
     const defaultResult = `<p class="text-muted">&lt;--------Output of your program goes here --------&gt;</p>`;
     const [code, setCode] = useState(sampleCodes.javascript)
     const [language, setLangauge] = useState("javascript")
@@ -80,9 +98,50 @@ const Editor = (props) => {
             });
     }
     return (
-        <div className="container-grid">
+        // <div className="container-grid">
+        //     <div className="elem"><SideBar /></div>
+        //     <div className="elem">
+        //         <Form.Select size="sm" style={{width:"auto", float:"left"}} onChange={languageHandler}>
+        //             {Object.keys(languages).map((key) => (
+        //                 <option key={key} value={key}>
+        //                     {languages[key]}
+        //                 </option>
+        //             ))}
+        //         </Form.Select>
+        //         <Form.Select size="sm" style={{width:"auto"}} onChange={versionHandler}>
+        //             {versions?.map((v, i) => (
+        //                 <option key={i} value={i}>
+        //                     {v}
+        //                 </option>
+        //             ))}
+        //         </Form.Select>
+        //         <CodeMirror
+        //             value={code}
+        //             theme={okaidia}
+        //             height="546px"
+        //             className="overflow-hidden"
+        //             style={{overflowX:"scroll", margin:"0.5rem 0 0.5rem 0"}}
+        //             extensions={[javascript({ jsx: true })]}
+        //             onChange={onChangeCM}
+        //         />
+        //         <Button variant="primary" size="lg" onClick={execute}>Run</Button>
+        //     </div>
+        //     <div className="elem">
+        //         <Form.Label style={{float:"left", marginRight:"0.5rem", marginLeft:"0.5rem", marginTop:"0.2rem"}}>CMD arguments</Form.Label>
+        //         <Form.Control as="textarea" rows={1} placeholder="command line" size="sm" style={{maxWidth:"calc(100% - 124px - 0.5rem)"}} value={cmdargs} onChange={cmdHandler} />
+        //         <div className="result">
+        //             {compiling ? 'compiling...' : <div dangerouslySetInnerHTML={{ __html: result.replace(/\n/g, '<br />') }}></div>}
+        //         </div>
+        //         <div className="botInp">
+        //             <Form.Label style={{ float: "left", margin: "0.5rem", marginTop: "0.5rem" }}>Standard inputs</Form.Label>
+        //             <Form.Control as="textarea" rows={2} placeholder="standard inputs separated by newline" size="md" style={{maxWidth:"calc(100% - 120px - 0.5rem)"}} value={userinp} onChange={userinpHandler} />
+        //         </div>
+        //         <JsRunner code={code} result={result} setResult={setResult} jsRun={jsRun} />
+        //     </div>
+        // </div>
+        <ResizePannel>
             <div className="elem"><SideBar /></div>
-            <div className="elem">
+            <div className="elem elem2">
                 <Form.Select size="sm" style={{width:"auto", float:"left"}} onChange={languageHandler}>
                     {Object.keys(languages).map((key) => (
                         <option key={key} value={key}>
@@ -106,21 +165,21 @@ const Editor = (props) => {
                     extensions={[javascript({ jsx: true })]}
                     onChange={onChangeCM}
                 />
-                <Button variant="primary" size="lg" onClick={execute}>Run</Button>
+                <Button variant="primary" size="lg" onClick={execute} style={{marginBottom:"calc(1rem - 1px)"}}>Run</Button>
             </div>
             <div className="elem">
                 <Form.Label style={{float:"left", marginRight:"0.5rem", marginLeft:"0.5rem", marginTop:"0.2rem"}}>CMD arguments</Form.Label>
-                <Form.Control as="textarea" rows={1} placeholder="command line" size="sm" style={{maxWidth:"calc(100% - 124px - 0.5rem)"}} value={cmdargs} onChange={cmdHandler} />
+                <Form.Control as="textarea" rows={1} placeholder="command line" size="sm" style={{maxWidth:"calc(100% - 124px - 0.5rem)", minWidth:"100px"}} value={cmdargs} onChange={cmdHandler} />
                 <div className="result">
                     {compiling ? 'compiling...' : <div dangerouslySetInnerHTML={{ __html: result.replace(/\n/g, '<br />') }}></div>}
                 </div>
                 <div className="botInp">
                     <Form.Label style={{ float: "left", margin: "0.5rem", marginTop: "0.5rem" }}>Standard inputs</Form.Label>
-                    <Form.Control as="textarea" rows={2} placeholder="standard inputs separated by newline" size="md" style={{maxWidth:"calc(100% - 120px - 0.5rem)"}} value={userinp} onChange={userinpHandler} />
+                    <Form.Control as="textarea" rows={2} placeholder="standard inputs separated by newline" size="md" style={{maxWidth:"calc(100% - 120px - 0.5rem)", minWidth:"100px"}} value={userinp} onChange={userinpHandler} />
                 </div>
                 <JsRunner code={code} result={result} setResult={setResult} jsRun={jsRun} />
             </div>
-        </div>
+            </ResizePannel>
     )
 }
 
