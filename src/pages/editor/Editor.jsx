@@ -140,7 +140,7 @@ const Editor = (props) => {
         //     </div>
         // </div>
         <ResizePannel>
-            <div className="elem"><SideBar /></div>
+            <div className="elem elem1"><SideBar /></div>
             <div className="elem elem2">
                 <Form.Select size="sm" style={{width:"auto", float:"left"}} onChange={languageHandler}>
                     {Object.keys(languages).map((key) => (
