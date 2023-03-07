@@ -6,10 +6,11 @@ import Editor from './pages/Editor/Editor';
 import ResizePannel from './elements/ResizePannel/ResizePannel';
 
 function App() {
+  const [theme, setTheme] = useState("darktheme")
   return (
-    <div className="App">
-      <Navbar />
-      <Editor />
+    <div className={`App ${theme}`}>
+      <Navbar theme={theme} setTheme={setTheme}/>
+      <Editor theme={theme}/>
     </div>
   );
 }

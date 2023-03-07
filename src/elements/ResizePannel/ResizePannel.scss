@@ -67,3 +67,11 @@
     }
     margin-bottom: 1rem;
 }
+.resize-controll.darktheme, .two-main-items .resize-controll.darktheme{
+    border-right: 4px solid #0D47A1;
+    border-left: 4px solid #0D47A1;
+    &:hover{
+        border-right: 4px solid #1c2a48 ;
+        border-left: 4px solid #1c2a48;
+    } 
+}

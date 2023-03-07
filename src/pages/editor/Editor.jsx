@@ -13,6 +13,7 @@ import Form from 'react-bootstrap/Form';
 
 import CodeMirror from '@uiw/react-codemirror';
 import { okaidia } from '@uiw/codemirror-theme-okaidia';
+import { githubLight, githubLightInit, githubDark, githubDarkInit } from '@uiw/codemirror-theme-github';
 import { javascript } from '@codemirror/lang-javascript';
 
 
@@ -43,7 +44,15 @@ const Editor = (props) => {
     const [jsRun, setRunJs] = useState(0)
     const [cmdargs, setCmdargs] = useState("")
     const [userinp, setUserinp] = useState("")
-
+    const [editorTheme, setEditorTheme] = useState(okaidia)
+    useEffect(() => {
+        if (props.theme === "lighttheme") {
+            setEditorTheme(githubLight)
+        } else {
+            setEditorTheme(okaidia)
+        }
+    }, [props.theme])
+    
     const userinpHandler = (e) => {
         setUserinp(e.target.value)
     }
@@ -98,58 +107,21 @@ const Editor = (props) => {
             });
     }
     return (
-        // <div className="container-grid">
-        //     <div className="elem"><SideBar /></div>
-        //     <div className="elem">
-        //         <Form.Select size="sm" style={{width:"auto", float:"left"}} onChange={languageHandler}>
-        //             {Object.keys(languages).map((key) => (
-        //                 <option key={key} value={key}>
-        //                     {languages[key]}
-        //                 </option>
-        //             ))}
-        //         </Form.Select>
-        //         <Form.Select size="sm" style={{width:"auto"}} onChange={versionHandler}>
-        //             {versions?.map((v, i) => (
-        //                 <option key={i} value={i}>
-        //                     {v}
-        //                 </option>
-        //             ))}
-        //         </Form.Select>
-        //         <CodeMirror
-        //             value={code}
-        //             theme={okaidia}
-        //             height="546px"
-        //             className="overflow-hidden"
-        //             style={{overflowX:"scroll", margin:"0.5rem 0 0.5rem 0"}}
-        //             extensions={[javascript({ jsx: true })]}
-        //             onChange={onChangeCM}
-        //         />
-        //         <Button variant="primary" size="lg" onClick={execute}>Run</Button>
-        //     </div>
-        //     <div className="elem">
-        //         <Form.Label style={{float:"left", marginRight:"0.5rem", marginLeft:"0.5rem", marginTop:"0.2rem"}}>CMD arguments</Form.Label>
-        //         <Form.Control as="textarea" rows={1} placeholder="command line" size="sm" style={{maxWidth:"calc(100% - 124px - 0.5rem)"}} value={cmdargs} onChange={cmdHandler} />
-        //         <div className="result">
-        //             {compiling ? 'compiling...' : <div dangerouslySetInnerHTML={{ __html: result.replace(/\n/g, '<br />') }}></div>}
-        //         </div>
-        //         <div className="botInp">
-        //             <Form.Label style={{ float: "left", margin: "0.5rem", marginTop: "0.5rem" }}>Standard inputs</Form.Label>
-        //             <Form.Control as="textarea" rows={2} placeholder="standard inputs separated by newline" size="md" style={{maxWidth:"calc(100% - 120px - 0.5rem)"}} value={userinp} onChange={userinpHandler} />
-        //         </div>
-        //         <JsRunner code={code} result={result} setResult={setResult} jsRun={jsRun} />
-        //     </div>
-        // </div>
-        <ResizePannel>
-            <div className="elem elem1"><SideBar /></div>
+        <ResizePannel theme={props.theme}>
+            <div className="elem elem1"><SideBar theme={props.theme}/></div>
             <div className="elem elem2">
-                <Form.Select size="sm" style={{width:"auto", float:"left"}} onChange={languageHandler}>
+                <Form.Select size="sm" style={{ width: "auto", float: "left" }} onChange={languageHandler}
+                    className={`select ${props.theme}`}
+                >
                     {Object.keys(languages).map((key) => (
                         <option key={key} value={key}>
                             {languages[key]}
                         </option>
                     ))}
                 </Form.Select>
-                <Form.Select size="sm" style={{width:"auto"}} onChange={versionHandler}>
+                <Form.Select size="sm" style={{ width: "auto" }} onChange={versionHandler}
+                    className={`select ${props.theme}`}
+                >
                     {versions?.map((v, i) => (
                         <option key={i} value={i}>
                             {v}
@@ -158,7 +130,7 @@ const Editor = (props) => {
                 </Form.Select>
                 <CodeMirror
                     value={code}
-                    theme={okaidia}
+                    theme={editorTheme}
                     height="546px"
                     className="overflow-hidden"
                     style={{overflowX:"scroll", margin:"0.5rem 0 0.5rem 0"}}
@@ -168,14 +140,25 @@ const Editor = (props) => {
                 <Button variant="primary" size="lg" onClick={execute} style={{marginBottom:"calc(1rem - 1px)"}}>Run</Button>
             </div>
             <div className="elem">
-                <Form.Label style={{float:"left", marginRight:"0.5rem", marginLeft:"0.5rem", marginTop:"0.2rem"}}>CMD arguments</Form.Label>
-                <Form.Control as="textarea" rows={1} placeholder="command line" size="sm" style={{maxWidth:"calc(100% - 124px - 0.5rem)", minWidth:"120px", marginLeft:"0.5rem"}} value={cmdargs} onChange={cmdHandler} />
-                <div className="result">
+                <Form.Label style={{ float: "left", marginRight: "0.5rem", marginLeft: "0.5rem", marginTop: "0.2rem" }}
+                    className={`text ${props.theme}`}
+                >CMD arguments</Form.Label>
+                <Form.Control as="textarea" rows={1} placeholder="command line" size="sm"
+                    style={{ maxWidth: "calc(100% - 124px - 0.5rem)", minWidth: "120px", marginLeft: "0.5rem" }}
+                    value={cmdargs} onChange={cmdHandler} className={`inp ${props.theme}`}
+                />
+                <div className={`result ${props.theme}`}>
                     {compiling ? 'compiling...' : <div dangerouslySetInnerHTML={{ __html: result.replace(/\n/g, '<br />') }}></div>}
                 </div>
                 <div className="botInp">
-                    <Form.Label style={{ float: "left", margin: "0.5rem", marginTop: "0.5rem" }}>Standard inputs</Form.Label>
-                    <Form.Control as="textarea" rows={2} placeholder="standard inputs separated by newline" size="md" style={{maxWidth:"calc(100% - 120px - 0.5rem)", minWidth:"120px", marginLeft:"0.5rem"}} value={userinp} onChange={userinpHandler} />
+                    <Form.Label style={{ float: "left", margin: "0.5rem", marginTop: "0.5rem" }}
+                        className={`text ${props.theme}`}
+                    >Standard inputs</Form.Label>
+                    <Form.Control as="textarea" rows={2} placeholder="standard inputs separated by newline" size="md"
+                        style={{ maxWidth: "calc(100% - 120px - 0.5rem)", minWidth: "120px", marginLeft: "0.5rem" }}
+                        value={userinp} onChange={userinpHandler}
+                        className={`inp ${props.theme}`}
+                    />
                 </div>
                 <JsRunner code={code} result={result} setResult={setResult} jsRun={jsRun} />
             </div>

@@ -1,3 +1,17 @@
 .side{
     width: auto;
 }
+.side.darktheme{
+    a{
+        background: #191A16;
+        color: #59698d;
+    }
+    a:hover{
+        background: #F8F9FA;
+        color: #495057;
+    }
+    a.active{
+        background: #0D6EFD;
+        color: #FFFFFF;
+    }
+}

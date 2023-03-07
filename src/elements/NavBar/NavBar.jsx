@@ -5,7 +5,7 @@ import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import { Button } from 'react-bootstrap';
 import './Navbar.scss'
-const NavBar = () => {
+const NavBar = (props) => {
     return (
       <Navbar bg="dark" variant="dark" expand="lg">
       <Container fluid={true}>
@@ -36,8 +36,10 @@ const NavBar = () => {
           </Navbar.Collapse>
           <Nav className='ms-auto'>
             <Container>
-            <Button variant="secondary" size="sm" className='active'>Dark</Button>
-            <Button variant="secondary" size="sm">Light</Button>
+              <Button variant={`${props.theme === "darktheme" ? "primary" : "secondary"}`} size="sm"
+                onClick={() => props.setTheme("darktheme")}>Dark</Button>
+              <Button variant={`${props.theme === "lighttheme" ? "primary" : "secondary"}`} size="sm"
+                onClick={() => props.setTheme("lighttheme")}>Light</Button>
             </Container>
           </Nav>
         </Container>       

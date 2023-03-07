@@ -9,11 +9,10 @@ import {
     FaTrashAlt, FaEdit, FaGithub, FaGoogleDrive, FaLockOpen, FaDownload, FaGithubSquare, FaLock,
 } from 'react-icons/fa';
 
-const SideBar = () => {
+const SideBar = (props) => {
   return (
-      <div className="side">
-          {/* <Nav id="sidebarMenu" className="collapse d-lg-block sidebar collapse bg-white"> mx-3 mt-4*/}
-                  <Nav className="list-group list-group-flush "> 
+      <div className={`side ${props.theme}`}>
+                  <Nav className="list-group list-group-flush " > 
                       <Nav.Link href="#1" exact className="list-group-item list-group-item-action py-2 ripple active" aria-current="true">
                           <FaFileCode className="me-3" /><span>Editor (project/filename)</span>
                       </Nav.Link>                      
@@ -57,7 +56,6 @@ const SideBar = () => {
                           <FaTrashAlt className="me-3" /><span>Delete</span>
                       </Nav.Link>
                   </Nav>
-          {/* </Nav> */}
       </div>  
     )
 }

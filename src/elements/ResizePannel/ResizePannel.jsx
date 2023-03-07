@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import './ResizePannel.scss';
 
-const ResizePannel = ({ children }) => {
+const ResizePannel = ({ children, theme }) => {
   const childrenArray = React.Children.toArray(children);
   const sideElem = childrenArray[0];
   const leftElem = childrenArray[1];
@@ -67,7 +67,7 @@ const ResizePannel = ({ children }) => {
         style={{ width: `${sideWidth}%` }}
       >{ sideElem}</div>
       <div
-        className="resize-controll"
+        className={`resize-controll ${theme}`}
         onMouseDown={startResizingSide}
         ref={resizeRefSide}
       ></div>
@@ -76,7 +76,7 @@ const ResizePannel = ({ children }) => {
           style={{ width: `${leftWidth}%` }}
         >{ leftElem}</div>
         <div
-          className="resize-controll"
+          className={`resize-controll ${theme}`}
           onMouseDown={startResizing}
           ref={resizeRef}
         ></div>
