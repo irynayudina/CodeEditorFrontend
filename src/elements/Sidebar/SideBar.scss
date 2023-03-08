@@ -15,3 +15,18 @@
         color: #FFFFFF;
     }
 }
+.darktheme{
+    .dropdown-menu, .show{
+        background: #191A16;
+    }
+    .dropdown-divider{
+        background-color: #59698d
+    }
+}
+.dropdown-menu, .show{
+    width: 100%;
+}
+.sidebar-dropdown-name{
+    font-size: 18px;
+    margin-bottom: 0;
+}

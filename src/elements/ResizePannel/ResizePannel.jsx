@@ -6,12 +6,6 @@ const ResizePannel = ({ children, theme }) => {
   const sideElem = childrenArray[0];
   const leftElem = childrenArray[1];
   const rightElem = childrenArray[2];
-  const [xscroll1, setXscroll1] = useState("")
-  const [xscroll2, setXscroll2] = useState("")
-  const [xscroll3, setXscroll3] = useState("")
-  const [yscroll1, setYscroll1] = useState("")
-  const [yscroll2, setYscroll2] = useState("")
-  const [yscroll3, setYscroll3] = useState("")
   const [sideWidth, setSideWidth] = useState(17);
   const [leftWidth, setLeftWidth] = useState(50);
   const [isResizing, setIsResizing] = useState(false);

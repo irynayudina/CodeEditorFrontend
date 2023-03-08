@@ -75,3 +75,34 @@
         border-left: 4px solid #1c2a48;
     } 
 }
+@media (max-width: 814px) {
+    .pannel-resize{
+        width: 100%;
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        .item{
+            height: auto;
+            width: 100% !important;
+            min-width: unset;
+            max-width: unset;
+            border: 1px solid #212529;
+        }
+        .side-item{
+            border: none;
+        }
+        .resize-controll{
+            display: none;
+        }
+        .two-main-items{
+            display: flex;
+            flex-direction: column;
+        }
+        .two-main-items{
+            width: 100% !important;
+            .right-item{
+                border-bottom: none;
+            }
+        }
+    }
+}

@@ -1,13 +1,17 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import { Button } from 'react-bootstrap';
 import './Navbar.scss'
-const NavBar = (props) => {
+const NavBar = (props) => {    
+  // useEffect(() => {
+  //   document.getElementById('basic-navbar-nav')
+  // }, [])
+  
     return (
-      <Navbar bg="dark" variant="dark" expand="lg">
+      <Navbar bg={`${props.theme == "lighttheme" ? "primary" : "dark"}`} variant="dark" expand="lg" className={props.theme}> 
       <Container fluid={true}>
         <Navbar.Brand href="#home" >Code-Network</Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />

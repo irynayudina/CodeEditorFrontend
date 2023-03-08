@@ -18,22 +18,6 @@ import { javascript } from '@codemirror/lang-javascript';
 
 
 const Editor = (props) => {
-    const [shortScreen, setShortScreen] = useState(false);
-    useEffect(() => {
-      const handleWindowResize = () => {
-        if (window.innerHeight <= 740) {
-            setShortScreen(true);
-            console.log(window.innerHeight)
-        } else {
-            setShortScreen(false);
-        }
-      };
-      window.addEventListener('resize', handleWindowResize);
-      handleWindowResize();
-      return () => {
-        window.removeEventListener('resize', handleWindowResize);
-      };
-    }, []);
     const defaultResult = `<p class="text-muted">&lt;--------Output of your program goes here --------&gt;</p>`;
     const [code, setCode] = useState(sampleCodes.javascript)
     const [language, setLangauge] = useState("javascript")
@@ -108,7 +92,7 @@ const Editor = (props) => {
     }
     return (
         <ResizePannel theme={props.theme}>
-            <div className="elem elem1"><SideBar theme={props.theme}/></div>
+            <div className="elem elem1"><SideBar theme={props.theme} editorSize={props.editorSize}/></div>
             <div className="elem elem2">
                 <Form.Select size="sm" style={{ width: "auto", float: "left" }} onChange={languageHandler}
                     className={`select ${props.theme}`}
@@ -137,7 +121,9 @@ const Editor = (props) => {
                     extensions={[javascript({ jsx: true })]}
                     onChange={onChangeCM}
                 />
-                <Button variant="primary" size="lg" onClick={execute} style={{marginBottom:"calc(1rem - 1px)"}}>Run</Button>
+                <Button variant="primary" size={`${props.editorSize}`} className={`btn-editor-${props.editorSize}`}
+                    onClick={execute} style={{ marginBottom: "calc(1rem - 1px)" }}
+                >Run</Button>
             </div>
             <div className="elem">
                 <Form.Label style={{ float: "left", marginRight: "0.5rem", marginLeft: "0.5rem", marginTop: "0.2rem" }}
