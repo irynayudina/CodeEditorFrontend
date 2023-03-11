@@ -4,6 +4,7 @@ import './Editor.scss'
 
 import JsRunner from './JsRunner';
 import { sampleCodes, languageVersions, languages } from './EditorData.ts'
+import { languageAutocompletions } from './LanguageAutocompletions';
 import SideBar from '../../elements/Sidebar/SideBar';
 import ResizePannel from '../../elements/ResizePannel/ResizePannel';
 
@@ -15,6 +16,7 @@ import CodeMirror from '@uiw/react-codemirror';
 import { okaidia } from '@uiw/codemirror-theme-okaidia';
 import { githubLight, githubLightInit, githubDark, githubDarkInit } from '@uiw/codemirror-theme-github';
 import { javascript } from '@codemirror/lang-javascript';
+import { autocompletion } from '@codemirror/autocomplete';
 
 
 const Editor = (props) => {
@@ -29,14 +31,20 @@ const Editor = (props) => {
     const [cmdargs, setCmdargs] = useState("")
     const [userinp, setUserinp] = useState("")
     const [editorTheme, setEditorTheme] = useState(okaidia)
+
+    const extensionsObj = languageAutocompletions[language] ? [javascript({ jsx: true, ts: true }),
+        autocompletion({ override: [languageAutocompletions[language]] })] : [javascript({ jsx: true, ts: true })
+    ]
+    
     useEffect(() => {
         if (props.theme === "lighttheme") {
             setEditorTheme(githubLight)
         } else {
             setEditorTheme(okaidia)
         }
+        console.log(languageAutocompletions[language])
     }, [props.theme])
-    
+
     const userinpHandler = (e) => {
         setUserinp(e.target.value)
     }
@@ -90,9 +98,25 @@ const Editor = (props) => {
                 setCompiling(false)
             });
     }
+    function myCompletions(context) {
+        let word = context.matchBefore(/\w*/)
+        if (word.from == word.to && !context.explicit)
+          return null
+        return {
+          from: word.from,
+          options: [
+            {label: "match", type: "keyword"},
+            {label: "hello", type: "variable", info: "(World)"},
+            {label: "magic", type: "text", apply: "⠁⭒*.✩.*⭒⠁", detail: "macro"}
+          ]
+        }
+    }
+    const [expanded, setExpanded] = useState("expandedCustom-pannel")
     return (
-        <ResizePannel theme={props.theme}>
-            <div className="elem elem1"><SideBar theme={props.theme} editorSize={props.editorSize}/></div>
+        <ResizePannel theme={props.theme} expanded={expanded}>
+            <div className="elem elem1"><SideBar theme={props.theme} editorSize={props.editorSize}
+                setExpanded={setExpanded} expanded={expanded}
+            /></div>
             <div className="elem elem2">
                 <Form.Select size="sm" style={{ width: "auto", float: "left" }} onChange={languageHandler}
                     className={`select ${props.theme}`}
@@ -114,11 +138,12 @@ const Editor = (props) => {
                 </Form.Select>
                 <CodeMirror
                     value={code}
+                    mode={language}
                     theme={editorTheme}
                     height="546px"
                     className="overflow-hidden"
                     style={{overflowX:"scroll", margin:"0.5rem 0 0.5rem 0"}}
-                    extensions={[javascript({ jsx: true })]}
+                    extensions={extensionsObj}
                     onChange={onChangeCM}
                 />
                 <Button variant="primary" size={`${props.editorSize}`} className={`btn-editor-${props.editorSize}`}
@@ -130,7 +155,7 @@ const Editor = (props) => {
                     className={`text ${props.theme}`}
                 >CMD arguments</Form.Label>
                 <Form.Control as="textarea" rows={1} placeholder="command line" size="sm"
-                    style={{ maxWidth: "calc(100% - 124px - 0.5rem)", minWidth: "120px", marginLeft: "0.5rem" }}
+                    style={{ maxWidth: "calc(100% - 124px - 0.5rem - 6px)", minWidth: "120px", marginLeft: "0.5rem" }}
                     value={cmdargs} onChange={cmdHandler} className={`inp ${props.theme}`}
                 />
                 <div className={`result ${props.theme}`}>
@@ -141,7 +166,7 @@ const Editor = (props) => {
                         className={`text ${props.theme}`}
                     >Standard inputs</Form.Label>
                     <Form.Control as="textarea" rows={2} placeholder="standard inputs separated by newline" size="md"
-                        style={{ maxWidth: "calc(100% - 120px - 0.5rem)", minWidth: "120px", marginLeft: "0.5rem" }}
+                        style={{ maxWidth: "calc(100% - 120px - 0.5rem - 6px)", minWidth: "120px", marginLeft: "0.5rem" }}
                         value={userinp} onChange={userinpHandler}
                         className={`inp ${props.theme}`}
                     />

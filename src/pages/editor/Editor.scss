@@ -52,13 +52,20 @@
   background-color: #191A16;
   color: white;
 }
+.text{
+  
+}
 .text.darktheme{
   background-color: #191A16;
   color: white;
   border-radius: 5px;
+  padding-left: 3px;
+  padding-right: 3px;
 }
 .btn-editor-sm{
   width: calc(100% - 1rem);
   margin-left: 0.5rem;
   margin-right: 0.5rem;
+  font-weight: 600;
+  font-size: 18px;
 }

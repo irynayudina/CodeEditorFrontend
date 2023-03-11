@@ -1,17 +1,21 @@
 import React, { useRef, useEffect, useState } from 'react';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.css'
+import { BrowserRouter, Route, Routes, Switch, Redirect } from 'react-router-dom';
 import Navbar from './elements/NavBar/NavBar';
+import Home from './pages/Home/Home';
 import Editor from './pages/Editor/Editor';
-
-// import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-
-// import HomePage from './pages/HomePage';
-// import AboutPage from './pages/AboutPage';
-// import ContactPage from './pages/ContactPage';
-// import ProductsPage from './pages/ProductsPage';
-// import NotFoundPage from './pages/NotFoundPage';
-
+import Discussions from './pages/Discussions/Discussions';
+import Challenges from './pages/Challenges/Challenges';
+import Collaboratory from './pages/Collaboratory/Collaboratory'
+import Projects from './pages/Projects/Projects'
+import Login from './pages/Utilities/Login/Login'
+import Register from './pages/Utilities/Register/Register'
+import UserMessages from './pages/Utilities/UserMessages/UserMessages'
+import UserNotifications from './pages/Utilities/UserNotifications/UserNotifications'
+import Userpage from './pages/Utilities/Userpage/Userpage'
+import UserProjects from './pages/Utilities/UserProjects/UserProjects'
+import UserSettings from './pages/Utilities/UserSettings/UserSettings'
 function App() {
   const [theme, setTheme] = useState("darktheme")
   const [breakpoint, setBreakpoint] = useState("xxl")
@@ -25,7 +29,6 @@ function App() {
       else if (window.innerWidth >= 768) setBreakpoint("md");
       else if (window.innerWidth >= 567) setBreakpoint("sm");
       else setBreakpoint("xs");
-      console.log(breakpoint, " ", window.innerWidth)
     };
     window.addEventListener('resize', handleWindowResize);
     handleWindowResize();
@@ -34,18 +37,55 @@ function App() {
     };
 }, [breakpoint]);
   return (
-    // <Router>
-    //   <Switch>
-    //     <Route exact path="/" component={HomePage} />
-    //     <Route path="/about" component={AboutPage} />
-    //     <Route path="/contact" component={ContactPage} />
-    //     <Route path="/products" component={ProductsPage} />
-    //     <Route path="*" component={NotFoundPage} />
-    //   </Switch>
-    // </Router>
     <div className={`App ${theme}`}>
       <Navbar theme={theme} setTheme={setTheme}/>
-      <Editor theme={theme} editorSize={ editorBreakpoint >= 814 ? "lg" : "sm"} />
+      <BrowserRouter>
+      <Routes>      
+          <Route path="/" exact element={
+            <Home />
+          } />
+          <Route path="/editor" element={
+            <Editor theme={theme} editorSize={ editorBreakpoint >= 814 ? "lg" : "sm"} />
+          } />
+          <Route path="/discussions" element={
+            <Discussions theme={theme} />
+          } />
+          <Route path="/challenges" element={
+            <Challenges theme={theme} />
+          } />
+          <Route path="/collaboratory" element={
+            <Collaboratory theme={theme} />
+          } />
+          <Route path="/projects" element={
+            <Projects theme={theme} />
+          } />
+          <Route path="/user" element={
+            <Userpage theme={theme} />
+          } />
+          <Route path="/user/projects" element={
+            <UserProjects theme={theme} />
+          } />
+          <Route path="/user/notifications" element={
+            <UserNotifications theme={theme} />
+          } />
+          <Route path="/user/messages" element={
+            <UserMessages theme={theme} />
+          } />
+          <Route path="/user/settings" element={
+            <UserSettings theme={theme} />
+          } />
+          {/* <Route path="/user/singout" element={
+            // <UserSingout theme={theme} />
+            <UserSettings theme={theme} />
+          } /> */}
+          <Route path="/user/login" element={
+            <Login theme={theme} />
+          }/>
+          <Route path="/user/register" element={
+            <Register theme={theme} />
+          }/>
+        </Routes>      
+      </BrowserRouter>
     </div>
   );
 }

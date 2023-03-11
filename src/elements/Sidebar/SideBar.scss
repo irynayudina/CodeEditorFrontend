@@ -30,3 +30,21 @@
     font-size: 18px;
     margin-bottom: 0;
 }
+.dropdown-turned{
+    transform: rotate(90deg) translateX(200px) translateY(70px);
+    min-width: 200px;
+    width: auto;
+}
+.list-group.list-group-flush.show.dropdown{
+    background: transparent;
+}
+.hiddenDropdown{
+    display: none;
+}
+.hide-btn{
+    width: 100%;
+    border-radius: 0;
+}
+.hiddenSidebar{
+    display: none;
+}

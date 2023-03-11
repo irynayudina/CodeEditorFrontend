@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import './ResizePannel.scss';
 
-const ResizePannel = ({ children, theme }) => {
+const ResizePannel = ({ children, theme, expanded }) => {
   const childrenArray = React.Children.toArray(children);
   const sideElem = childrenArray[0];
   const leftElem = childrenArray[1];
@@ -10,6 +10,14 @@ const ResizePannel = ({ children, theme }) => {
   const [leftWidth, setLeftWidth] = useState(50);
   const [isResizing, setIsResizing] = useState(false);
   const resizeRef = useRef(null);
+  const refSide = useRef(null);
+  useEffect(() => {
+    const sideElemWidth = resizeRefSide.current.offsetWidth;
+    let width = sideElemWidth / window.innerWidth * 100 ;
+    setSideWidth(width)
+    console.log("side ",width)
+  }, [expanded])
+  
   const startResizing = () => {
     setIsResizing(true);
   };
@@ -24,6 +32,7 @@ const ResizePannel = ({ children, theme }) => {
     const leftItemWidth = e.pageX - resizeRef.current.parentNode.offsetLeft;
     const rightItemWidth = containerWidth - leftWidth - resizeWidth;
     setLeftWidth((leftItemWidth / containerWidth) * 100);
+    console.log("left ", leftWidth)
   };
   const [isResizingSide, setIsResizingSide] = useState(false);
   const resizeRefSide = useRef(null);
@@ -57,11 +66,12 @@ const ResizePannel = ({ children, theme }) => {
 
   return (
     <div className="pannel-resize">
-      <div className={`item side-item`}
+      <div className={`item side-item ${expanded}`}
         style={{ width: `${sideWidth}%` }}
+        ref={refSide}
       >{ sideElem}</div>
       <div
-        className={`resize-controll ${theme}`}
+        className={`resize-controll ${theme} ${expanded}-controll`}
         onMouseDown={startResizingSide}
         ref={resizeRefSide}
       ></div>

@@ -7,8 +7,8 @@
     .item{
         height: calc(100% - 1rem);
         width: calc(100vw / 12 * 2 );
-        min-width: 250px;
-        max-width: calc(100vw - 348px - 2rem);
+        // min-width: 250px;
+        // max-width: calc(100vw - 348px - 2rem);
     }
     .side-item{
         height: calc(100% + 1rem);
@@ -105,4 +105,13 @@
             }
         }
     }
+}
+.expandedCustom-pannel{
+    min-width: 250px !important;
+}
+.hiddenPannel{
+    width: 62px !important;
+}
+.hiddenPannel-controll{
+    display: none;
 }

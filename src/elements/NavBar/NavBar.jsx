@@ -1,38 +1,35 @@
-import React, {useEffect} from 'react'
+import React, {useEffect, useState} from 'react'
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import { Button } from 'react-bootstrap';
 import './Navbar.scss'
-const NavBar = (props) => {    
-  // useEffect(() => {
-  //   document.getElementById('basic-navbar-nav')
-  // }, [])
-  
+const NavBar = (props) => {  
+  const [activeTab, setActiveTab] = useState(window.location.pathname)
     return (
       <Navbar bg={`${props.theme == "lighttheme" ? "primary" : "dark"}`} variant="dark" expand="lg" className={props.theme}> 
       <Container fluid={true}>
-        <Navbar.Brand href="#home" >Code-Network</Navbar.Brand>
+        <Navbar.Brand href="/" >Code-Network</Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto">
-            <Nav.Link href="#home">Home</Nav.Link>
-            <Nav.Link href="#editor" exact activeClassName="active" active>Editor</Nav.Link>
-            <Nav.Link href="#discussions">Discussions</Nav.Link>
-            <Nav.Link href="#challenge">Challenges</Nav.Link>
-            <Nav.Link href="#collaboratory">Collaboratory</Nav.Link>
-            <Nav.Link href="#projects">Projects</Nav.Link>
+            <Nav.Link href="/" className={activeTab == '/' ? 'active' : ""}>Home</Nav.Link>
+            <Nav.Link href="/editor" exact="true" activeclassname="active" className={activeTab == '/editor' ? 'active' : ""}>Editor</Nav.Link>
+            <Nav.Link href="/discussions" className={activeTab == '/discussions' ? 'active' : ""}>Discussions</Nav.Link>
+            <Nav.Link href="/challenges" className={activeTab == '/challenges' ? 'active' : ""}>Challenges</Nav.Link>
+            <Nav.Link href="/collaboratory" className={activeTab == '/collaboratory' ? 'active' : ""}>Collaboratory</Nav.Link>
+            <Nav.Link href="/projects" className={activeTab == '/projects' ? 'active' : ""}>Projects</Nav.Link>
             <NavDropdown title="User menu" id="basic-nav-dropdown">
-              <NavDropdown.Item href="#action/3.1">My page</NavDropdown.Item>
-              <NavDropdown.Item href="#action/3.2">My projects</NavDropdown.Item>
-              <NavDropdown.Item href="#action/3.3">Notifications</NavDropdown.Item>
-              <NavDropdown.Item href="#action/3.4">Messages</NavDropdown.Item>
+              <NavDropdown.Item href="/user">My page</NavDropdown.Item>
+              <NavDropdown.Item href="/user/projects">My projects</NavDropdown.Item>
+              <NavDropdown.Item href="/user/notifications">Notifications</NavDropdown.Item>
+              <NavDropdown.Item href="/user/messages">Messages</NavDropdown.Item>
               <NavDropdown.Divider />
-              <NavDropdown.Item href="#action/3.5">
+              <NavDropdown.Item href="/user/settings">
                 Settings
               </NavDropdown.Item>
-              <NavDropdown.Item href="#action/3.6">
+              <NavDropdown.Item href="/user/singout">
                 Sing out
               </NavDropdown.Item>
             </NavDropdown>
