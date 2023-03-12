@@ -38,9 +38,9 @@ const NavBar = (props) => {
           <Nav className='ms-auto'>
             <Container>
               <Button variant={`${props.theme === "darktheme" ? "primary" : "secondary"}`} size="sm"
-                onClick={() => props.setTheme("darktheme")}>Dark</Button>
+                onClick={() => { props.setTheme("darktheme"); localStorage.setItem('mainThemeStored', "darktheme")}}>Dark</Button>
               <Button variant={`${props.theme === "lighttheme" ? "primary" : "secondary"}`} size="sm"
-                onClick={() => props.setTheme("lighttheme")}>Light</Button>
+                onClick={() => { props.setTheme("lighttheme") ; localStorage.setItem('mainThemeStored', "lighttheme")}}>Light</Button>
             </Container>
           </Nav>
         </Container>       

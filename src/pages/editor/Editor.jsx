@@ -1,6 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react'
-import axios from "axios";
 import './Editor.scss'
+import axios from "axios";
+import { Button } from 'react-bootstrap';
+import Form from 'react-bootstrap/Form';
 
 import JsRunner from './JsRunner';
 import { sampleCodes, languageVersions, languages } from './EditorData.ts'
@@ -8,17 +10,31 @@ import { languageAutocompletions } from './LanguageAutocompletions';
 import SideBar from '../../elements/Sidebar/SideBar';
 import ResizePannel from '../../elements/ResizePannel/ResizePannel';
 
-import { Button } from 'react-bootstrap';
-import Form from 'react-bootstrap/Form';
-
-
 import CodeMirror from '@uiw/react-codemirror';
-import { okaidia } from '@uiw/codemirror-theme-okaidia';
-import { githubLight, githubLightInit, githubDark, githubDarkInit } from '@uiw/codemirror-theme-github';
-import { noctisLilac, noctisLilacInit } from '@uiw/codemirror-theme-noctis-lilac';
 import { javascript } from '@codemirror/lang-javascript';
 import { autocompletion } from '@codemirror/autocomplete';
 
+import { okaidia } from '@uiw/codemirror-theme-okaidia';
+import { githubLight, githubLightInit, githubDark, githubDarkInit } from '@uiw/codemirror-theme-github';
+import { noctisLilac, noctisLilacInit } from '@uiw/codemirror-theme-noctis-lilac';
+import { abcdef } from '@uiw/codemirror-theme-abcdef';
+import { androidstudio } from '@uiw/codemirror-theme-androidstudio';
+import { atomone } from '@uiw/codemirror-theme-atomone';
+import { aura } from '@uiw/codemirror-theme-aura';
+import { bbedit } from '@uiw/codemirror-theme-bbedit';
+import { bespin } from '@uiw/codemirror-theme-bespin';
+import { darcula } from '@uiw/codemirror-theme-darcula';
+import { dracula } from '@uiw/codemirror-theme-dracula';
+import { duotoneLight, duotoneDark } from '@uiw/codemirror-theme-duotone';
+import { eclipse } from '@uiw/codemirror-theme-eclipse';
+import { gruvboxDark, gruvboxLight } from '@uiw/codemirror-theme-gruvbox-dark';
+import { materialDark, materialDarkInit, materialLight, materialLightInit } from '@uiw/codemirror-theme-material';
+import { nord, nordInit } from '@uiw/codemirror-theme-nord';
+import { solarizedLight, solarizedLightInit, solarizedDark, solarizedDarkInit } from '@uiw/codemirror-theme-solarized';
+import { sublime, sublimeInit } from '@uiw/codemirror-theme-sublime';
+import { tokyoNight, tokyoNightInit } from '@uiw/codemirror-theme-tokyo-night';
+import { vscodeDark, vscodeDarkInit } from '@uiw/codemirror-theme-vscode';
+import { xcodeLight, xcodeLightInit, xcodeDark, xcodeDarkInit } from '@uiw/codemirror-theme-xcode';
 
 const Editor = (props) => {
     const defaultResult = `<p class="text-muted">&lt;--------Output of your program goes here --------&gt;</p>`;
@@ -50,19 +66,119 @@ const Editor = (props) => {
         })] : [javascript({ jsx: true, ts: true })
     ]
     
+    // useEffect(() => {
+    //     let themeName = localStorage.getItem('editorThemeStored')
+    //     console.log(themeName) // returns the correct name
+    //     console.log(window[themeName]) // returns undefined
+    //     if (themeName) {
+    //         setEditorTheme(window[themeName])
+    //     } else {
+    //         if (props.theme === "lighttheme") {
+    //             setEditorTheme(githubLight)
+    //         } else {
+    //             setEditorTheme(okaidia)
+    //         }
+    //     }        
+    // }, [props.theme])
+    
     useEffect(() => {
-        if (props.theme === "lighttheme") {
-            // setEditorTheme(githubLight)
-            setEditorTheme(noctisLilacInit({
-                settings: {
-                  caret: '#c6c6c6',
-                  fontFamily: 'monospace',
-                }
-            }))
+        if (props.theme === 'lighttheme') {
+            let themeName = localStorage.getItem('editorThemeStoredLight');
+            switch (themeName) {
+                case 'githubLight':
+                    setEditorTheme(githubLight);
+                    break;
+                case 'noctisLilac':
+                    setEditorTheme(noctisLilac);
+                    break;
+                case 'bbedit':
+                    setEditorTheme(bbedit);
+                    break;
+                case 'duotoneLight':
+                    setEditorTheme(duotoneLight);
+                    break;
+                case 'eclipse':
+                    setEditorTheme(eclipse);
+                    break;
+                case 'gruvboxLight':
+                    setEditorTheme(gruvboxLight);
+                    break;
+                case 'materialLight':
+                    setEditorTheme(materialLight);
+                    break;
+                case 'solarizedLight':
+                    setEditorTheme(solarizedLight);
+                    break;
+                case 'xcodeLight':
+                    setEditorTheme(xcodeLight);
+                    break;
+                default:
+                    setEditorTheme(githubLight);
+                    break;
+            }
         } else {
-            setEditorTheme(okaidia)
-        }
-    }, [props.theme])
+            let themeName = localStorage.getItem('editorThemeStoredDark');
+            switch (themeName) {
+                case 'okaidia':
+                    setEditorTheme(okaidia);
+                    break;
+                case 'abcdef':
+                    setEditorTheme(abcdef);
+                    break;
+                case 'androidstudio':
+                    setEditorTheme(androidstudio);
+                    break;  
+                case 'atomone':
+                    setEditorTheme(atomone);
+                    break;
+                case 'aura':
+                    setEditorTheme(aura);
+                    break;
+                case 'bespin':
+                    setEditorTheme(bespin);
+                    break;  
+                case 'darcula':
+                    setEditorTheme(darcula);
+                    break;
+                case 'dracula':
+                    setEditorTheme(dracula);
+                    break;
+                case 'duotoneDark':
+                    setEditorTheme(duotoneDark);
+                    break;  
+                case 'githubDark':
+                    setEditorTheme(githubDark);
+                    break;
+                case 'gruvboxDark':
+                    setEditorTheme(gruvboxDark);
+                    break;
+                case 'materialDark':
+                    setEditorTheme(materialDark);
+                    break;  
+                case 'nord':
+                    setEditorTheme(nord);
+                    break;
+                case 'solarizedDark':
+                    setEditorTheme(solarizedDark);
+                    break;
+                case 'sublime':
+                    setEditorTheme(sublime);
+                    break;  
+                case 'tokyoNight':
+                    setEditorTheme(tokyoNight);
+                    break;
+                case 'vscodeDark':
+                    setEditorTheme(vscodeDark);
+                    break;
+                case 'xcodeDark':
+                    setEditorTheme(xcodeDark);
+                    break;  
+                default:
+                    setEditorTheme(okaidia);
+                    break;
+                }
+            }
+      }, [props.theme]);
 
     const userinpHandler = (e) => {
         setUserinp(e.target.value)
@@ -120,7 +236,7 @@ const Editor = (props) => {
     return (
         <ResizePannel theme={props.theme} expanded={expanded}>
             <div className="elem elem1"><SideBar theme={props.theme} editorSize={props.editorSize}
-                setExpanded={setExpanded} expanded={expanded}
+                setExpanded={setExpanded} expanded={expanded} setEditorTheme={setEditorTheme}
             /></div>
             <div className="elem elem2">
                 <Form.Select size="sm" style={{ width: "auto", float: "left" }} onChange={languageHandler}

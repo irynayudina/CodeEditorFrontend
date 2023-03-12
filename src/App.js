@@ -31,11 +31,17 @@ function App() {
       else setBreakpoint("xs");
     };
     window.addEventListener('resize', handleWindowResize);
-    handleWindowResize();
     return () => {
     window.removeEventListener('resize', handleWindowResize);
     };
-}, [breakpoint]);
+  }, []);
+  useEffect(() => {
+    let mainThemeStored = localStorage.getItem('mainThemeStored')
+    if (mainThemeStored) {
+      setTheme(mainThemeStored)
+    }
+  }, [])
+  
   return (
     <div className={`App ${theme}`}>
       <Navbar theme={theme} setTheme={setTheme}/>
