@@ -15,6 +15,7 @@ import Form from 'react-bootstrap/Form';
 import CodeMirror from '@uiw/react-codemirror';
 import { okaidia } from '@uiw/codemirror-theme-okaidia';
 import { githubLight, githubLightInit, githubDark, githubDarkInit } from '@uiw/codemirror-theme-github';
+import { noctisLilac, noctisLilacInit } from '@uiw/codemirror-theme-noctis-lilac';
 import { javascript } from '@codemirror/lang-javascript';
 import { autocompletion } from '@codemirror/autocomplete';
 
@@ -32,17 +33,35 @@ const Editor = (props) => {
     const [userinp, setUserinp] = useState("")
     const [editorTheme, setEditorTheme] = useState(okaidia)
 
+    function myCompletions(context) {
+        let word = context.matchBefore(/\w*/)
+        if (word.from == word.to && !context.explicit)
+          return null
+        return {
+          from: word.from,
+          options: languageAutocompletions[language]
+        }
+    }
     const extensionsObj = languageAutocompletions[language] ? [javascript({ jsx: true, ts: true }),
-        autocompletion({ override: [languageAutocompletions[language]] })] : [javascript({ jsx: true, ts: true })
+        autocompletion({
+            override: [
+                myCompletions
+            ]
+        })] : [javascript({ jsx: true, ts: true })
     ]
     
     useEffect(() => {
         if (props.theme === "lighttheme") {
-            setEditorTheme(githubLight)
+            // setEditorTheme(githubLight)
+            setEditorTheme(noctisLilacInit({
+                settings: {
+                  caret: '#c6c6c6',
+                  fontFamily: 'monospace',
+                }
+            }))
         } else {
             setEditorTheme(okaidia)
         }
-        console.log(languageAutocompletions[language])
     }, [props.theme])
 
     const userinpHandler = (e) => {
@@ -50,7 +69,6 @@ const Editor = (props) => {
     }
     const cmdHandler = (e) => {
         setCmdargs(e.target.value);
-        console.log(cmdargs)
     }
     const onChangeCM = React.useCallback((value, viewUpdate) => {
         setCode(value)
@@ -98,19 +116,6 @@ const Editor = (props) => {
                 setCompiling(false)
             });
     }
-    function myCompletions(context) {
-        let word = context.matchBefore(/\w*/)
-        if (word.from == word.to && !context.explicit)
-          return null
-        return {
-          from: word.from,
-          options: [
-            {label: "match", type: "keyword"},
-            {label: "hello", type: "variable", info: "(World)"},
-            {label: "magic", type: "text", apply: "⠁⭒*.✩.*⭒⠁", detail: "macro"}
-          ]
-        }
-    }
     const [expanded, setExpanded] = useState("expandedCustom-pannel")
     return (
         <ResizePannel theme={props.theme} expanded={expanded}>
@@ -146,7 +151,9 @@ const Editor = (props) => {
                     extensions={extensionsObj}
                     onChange={onChangeCM}
                 />
-                <Button variant="primary" size={`${props.editorSize}`} className={`btn-editor-${props.editorSize}`}
+                <Button variant={props.theme == "lighttheme" ? 'primary' : 'dark'}  
+                    // size={`${props.editorSize}`} 
+                    className={`btn-editor-${props.editorSize}`}
                     onClick={execute} style={{ marginBottom: "calc(1rem - 1px)" }}
                 >Run</Button>
             </div>

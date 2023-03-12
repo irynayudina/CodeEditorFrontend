@@ -10,7 +10,7 @@ import {
     FaArrowLeft, FaFileCode, 
     FaGlobe, FaBuilding, FaCalendar, FaUsers, FaMoneyBill,
     FaBloggerB, FaCloudUploadAlt, FaCloudDownloadAlt, FaCopy, FaBriefcase, FaSdCard, FaFolderOpen,
-    FaTrashAlt, FaEdit, FaGithub, FaGoogleDrive, FaLockOpen, FaDownload, FaGithubSquare, FaLock,
+    FaTrashAlt, FaEdit, FaGithub, FaGoogleDrive, FaLockOpen, FaDownload, FaGithubSquare, FaLock, FaWhmcs,
 } from 'react-icons/fa';
 
 const SideBar = (props) => {
@@ -151,6 +151,23 @@ const SideBar = (props) => {
             <Nav.Link href="#14" className="list-group-item list-group-item-action py-2 ripple">
                 <FaTrashAlt className="me-3" /><span>Delete</span>
             </Nav.Link>
+            <Dropdown className={`list-group list-group-flush `} drop='end'>
+              <Dropdown.Toggle className={`${props.theme == "lighttheme" ?
+                'configure-view-editor-toggle-light' : 'configure-view-editor-toggle'}`}
+              ><FaWhmcs className="me-3" /><span>Configure view</span>
+              </Dropdown.Toggle>
+              <Dropdown.Menu >
+                <Dropdown.Item href="#15">
+                  <span>Okaida</span>
+                </Dropdown.Item>
+                <Dropdown.Item href="#16">
+                  <span>GitHub Light</span>
+                </Dropdown.Item>
+                <Dropdown.Item href="#17">
+                  <span>Noctis Lilac</span>
+                </Dropdown.Item>
+              </Dropdown.Menu>
+            </Dropdown>
           </Nav>
         </>)
       }                  

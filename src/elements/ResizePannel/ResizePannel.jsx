@@ -15,7 +15,6 @@ const ResizePannel = ({ children, theme, expanded }) => {
     const sideElemWidth = resizeRefSide.current.offsetWidth;
     let width = sideElemWidth / window.innerWidth * 100 ;
     setSideWidth(width)
-    console.log("side ",width)
   }, [expanded])
   
   const startResizing = () => {
@@ -32,7 +31,6 @@ const ResizePannel = ({ children, theme, expanded }) => {
     const leftItemWidth = e.pageX - resizeRef.current.parentNode.offsetLeft;
     const rightItemWidth = containerWidth - leftWidth - resizeWidth;
     setLeftWidth((leftItemWidth / containerWidth) * 100);
-    console.log("left ", leftWidth)
   };
   const [isResizingSide, setIsResizingSide] = useState(false);
   const resizeRefSide = useRef(null);

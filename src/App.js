@@ -41,7 +41,7 @@ function App() {
       <Navbar theme={theme} setTheme={setTheme}/>
       <BrowserRouter>
       <Routes>      
-          <Route path="/" exact element={
+          <Route path="/" exact="true" element={
             <Home />
           } />
           <Route path="/editor" element={
