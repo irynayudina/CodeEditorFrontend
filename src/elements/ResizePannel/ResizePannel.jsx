@@ -73,8 +73,8 @@ const ResizePannel = ({ children, theme, expanded }) => {
         onMouseDown={startResizingSide}
         ref={resizeRefSide}
       ></div>
-      <div className="two-main-items" style={{ width: `${100 - sideWidth}%` }}>
-        <div className="item left-item"
+      <div className={`two-main-items ${theme}`} style={{ width: `${100 - sideWidth}%` }}>
+        <div className={`item left-item ${theme}`}
           style={{ width: `${leftWidth}%` }}
         >{ leftElem}</div>
         <div
@@ -83,7 +83,7 @@ const ResizePannel = ({ children, theme, expanded }) => {
           ref={resizeRef}
         ></div>
         <div
-          className="item right-item"
+          className={`item right-item ${theme}`}
           style={{ width: `${100 - leftWidth}%` }}
         >{rightElem}</div>
       </div>

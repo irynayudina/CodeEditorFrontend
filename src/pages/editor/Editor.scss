@@ -5,26 +5,22 @@
   }
   .elem{
     border-top: 1px solid #212529;
-    // border-bottom: 1px solid #212529;
-    &:nth-child(1){
-      // padding-top: 1rem;
-    }
     &:nth-child(2){
-      // margin-top: 1rem;
       overflow: hidden;
-    border-bottom: 10px solid #212529 !important;
+      border-bottom: 10px solid #212529 !important;
     }    
     &:nth-child(3){
       margin: 1rem 1rem 0 0 ;
     } 
   }
+  .elem.lighttheme{
+    border-top: 1px solid #4285F4;
+  }
   .result{
     background-color: white;
     width: 100%;
-    // overflow: scroll;
     overflow: hidden;
     height: 546px;
-    // margin-top:calc(30.6px + 0.5rem);
     margin-top: 0.5rem;
     padding-left: 0.5rem;
     box-sizing: border-box;
@@ -32,11 +28,6 @@
   .botInp{
     margin-top: 0.5rem;
   }
-  
-.elem2{
-  // border-bottom: none;
-  // padding-bottom: auto;
-}
 .elem1{
   border: none;
 }
@@ -51,9 +42,6 @@
 .select.darktheme{
   background-color: #191A16;
   color: white;
-}
-.text{
-  
 }
 .text.darktheme{
   background-color: #191A16;

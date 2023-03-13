@@ -30,6 +30,7 @@ function App() {
       else if (window.innerWidth >= 567) setBreakpoint("sm");
       else setBreakpoint("xs");
     };
+    handleWindowResize(); // initially on load without resize
     window.addEventListener('resize', handleWindowResize);
     return () => {
     window.removeEventListener('resize', handleWindowResize);

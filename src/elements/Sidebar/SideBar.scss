@@ -15,6 +15,12 @@
         color: #FFFFFF;
     }
 }
+.side.lighttheme{
+    border-top: 1px solid white;
+}
+.side.lighttheme.sm{
+    border-top: none;
+}
 .darktheme{
     .dropdown-menu, .show{
         background: #191A16;

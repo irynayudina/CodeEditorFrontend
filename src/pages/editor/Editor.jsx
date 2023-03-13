@@ -238,7 +238,7 @@ const Editor = (props) => {
             <div className="elem elem1"><SideBar theme={props.theme} editorSize={props.editorSize}
                 setExpanded={setExpanded} expanded={expanded} setEditorTheme={setEditorTheme}
             /></div>
-            <div className="elem elem2">
+            <div className={`elem elem2 ${props.theme}`}>
                 <Form.Select size="sm" style={{ width: "auto", float: "left" }} onChange={languageHandler}
                     className={`select ${props.theme}`}
                 >
@@ -273,12 +273,13 @@ const Editor = (props) => {
                     onClick={execute} style={{ marginBottom: "calc(1rem - 1px)" }}
                 >Run</Button>
             </div>
-            <div className="elem">
+            <div className={`elem ${props.theme}`}>
                 <Form.Label style={{ float: "left", marginRight: "0.5rem", marginLeft: "0.5rem", marginTop: "0.2rem" }}
                     className={`text ${props.theme}`}
                 >CMD arguments</Form.Label>
                 <Form.Control as="textarea" rows={1} placeholder="command line" size="sm"
-                    style={{ maxWidth: "calc(100% - 124px - 0.5rem - 6px)", minWidth: "120px", marginLeft: "0.5rem" }}
+                    style={props.theme == 'lighttheme' ? { maxWidth: "calc(100% - 124px - 0.5rem)", minWidth: "120px", marginLeft: "0.5rem" }
+                        : { maxWidth: "calc(100% - 124px - 0.5rem - 6px)", minWidth: "120px", marginLeft: "0.5rem" }}
                     value={cmdargs} onChange={cmdHandler} className={`inp ${props.theme}`}
                 />
                 <div className={`result ${props.theme}`}>
@@ -289,7 +290,8 @@ const Editor = (props) => {
                         className={`text ${props.theme}`}
                     >Standard inputs</Form.Label>
                     <Form.Control as="textarea" rows={2} placeholder="standard inputs separated by newline" size="md"
-                        style={{ maxWidth: "calc(100% - 120px - 0.5rem - 6px)", minWidth: "120px", marginLeft: "0.5rem" }}
+                        style={props.theme == 'lighttheme' ? { maxWidth: "calc(100% - 120px - 0.5rem)", minWidth: "120px", marginLeft: "0.5rem" }
+                            : { maxWidth: "calc(100% - 120px - 0.5rem - 6px)", minWidth: "120px", marginLeft: "0.5rem" }}
                         value={userinp} onChange={userinpHandler}
                         className={`inp ${props.theme}`}
                     />

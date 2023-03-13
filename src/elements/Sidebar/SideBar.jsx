@@ -165,7 +165,7 @@ const SideBar = (props) => {
   }, [props.theme])
   
   return (
-      <div className={`side ${props.theme}`}>
+      <div className={`side ${props.theme} ${props.editorSize}`}>
           {props.editorSize == "sm" ?
         (<Dropdown className={`list-group list-group-flush`}>
                   <Dropdown.Toggle variant={`${props.theme == "lighttheme" ? "primary" : "dark"}`} id="dropdown-basic">
@@ -230,6 +230,15 @@ const SideBar = (props) => {
                 <Dropdown.Item href="#14">
                   <FaTrashAlt className="me-3" />
                   <span>Delete</span>
+                </Dropdown.Item>
+                <Dropdown.Item>
+                  <Dropdown className={`list-group list-group-flush `} onClick={(e) => e.stopPropagation()}>
+                    <Dropdown.Toggle className={`${props.theme == "lighttheme" ?
+                      'configure-view-editor-toggle-light-sm' : 'configure-view-editor-toggle-sm'}`}
+                      ><FaWhmcs className="me-3" /><span>Configure view</span>
+                      </Dropdown.Toggle>
+                      {themesPick}
+                    </Dropdown>
                 </Dropdown.Item>
               </Dropdown.Menu>
             </Dropdown>

@@ -51,6 +51,9 @@
             }  
         }
     }
+    .two-main-items.lighttheme{
+        border-bottom: 1px solid #4285F4;
+    }
     .resize-controll{
         height: calc(100vh - 56px - 1rem - 1rem);
         width: calc(1rem + 8px);
@@ -87,6 +90,9 @@
             min-width: unset;
             max-width: unset;
             border: 1px solid #212529;
+        }
+        .item.lighttheme{
+            border: 1px solid #0D47A1;
         }
         .side-item{
             border: none;
