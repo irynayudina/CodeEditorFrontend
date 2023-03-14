@@ -9,7 +9,7 @@ import { sampleCodes, languageVersions, languages, languageExtensions } from './
 import { languageAutocompletions } from './LanguageAutocompletions';
 import SideBar from './Sidebar/SideBar';
 import ResizePannel from './ResizePannel/ResizePannel';
-import { handleDownloadClick } from './WorkWithCodeFile';
+import { handleDownloadClick, handleFileUpload } from './WorkWithCodeFile';
 
 import CodeMirror from '@uiw/react-codemirror';
 import { javascript } from '@codemirror/lang-javascript';
@@ -225,9 +225,10 @@ const Editor = (props) => {
     }
     return (
         <ResizePannel theme={props.theme} expanded={expanded}>
-            <div className="elem elem1"><SideBar theme={props.theme} editorSize={props.editorSize}
+            <div className="elem elem1">
+                <SideBar theme={props.theme} editorSize={props.editorSize}
                 setExpanded={setExpanded} expanded={expanded} setEditorTheme={setEditorTheme}
-                handleDownloadClick={downloadFileLocally}
+                handleDownloadClick={downloadFileLocally} setCode={setCode} handleFileUpload={handleFileUpload}
             /></div>
             <div className={`elem elem2 ${props.theme}`}>
                 <Form.Select size="sm" style={{ width: "auto", float: "left" }} onChange={languageHandler}

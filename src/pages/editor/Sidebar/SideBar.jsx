@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react'
 import { Nav } from 'react-bootstrap';
 import { Dropdown } from 'react-bootstrap';
 import { Button } from 'react-bootstrap';
+import { Form } from 'react-bootstrap';
 import './SideBar.scss'
 import {
     FaArrowLeft, FaFileCode, 
@@ -205,7 +206,11 @@ const SideBar = (props) => {
                 </Dropdown.Item>
                 <Dropdown.Item href="#7">
                   <FaSdCard className="me-3" />
-                  <span>Open from drive</span>
+              <span>Open from drive <Form.Control type="file" className='open-drive-editor'
+                onChange={(event) => {
+                  props.handleFileUpload(event, props.setCode);
+                }}
+              /></span>
                 </Dropdown.Item>
                 <Dropdown.Item href="#8">
                   <FaFolderOpen className="me-3" />
@@ -280,7 +285,12 @@ const SideBar = (props) => {
                 <FaCloudDownloadAlt className="me-3" /><span>Open from Google</span>
             </Nav.Link>
             <Nav.Link href="#7" className="list-group-item list-group-item-action py-2 ripple">
-                <FaSdCard className="me-3" /><span>Open from drive</span>
+              <FaSdCard className="me-3" /><span>Open from drive
+                <Form.Control type="file" className='open-drive-editor-side'
+                onChange={(event) => {
+                  props.handleFileUpload(event, props.setCode);
+                }}
+              /></span>
             </Nav.Link>
             <Nav.Link href="#8" className="list-group-item list-group-item-action py-2 ripple">
                 <FaFolderOpen className="me-3" /><span>Open from project</span>

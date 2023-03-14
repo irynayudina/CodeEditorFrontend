@@ -66,3 +66,15 @@
     text-align: left;
     border-radius: 0;
 }
+.open-drive-editor{
+    width: auto;
+    // display: inline;
+    padding: 1px;
+    margin-left: 2rem;
+}
+.open-drive-editor-side{
+    min-width: 200px;
+    width: calc(100% - 2rem);
+    padding: 1px;
+    margin-left: 2rem;
+}

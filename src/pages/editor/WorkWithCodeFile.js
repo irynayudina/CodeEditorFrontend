@@ -9,4 +9,12 @@ export const handleDownloadClick = (code, extention) => {
     downloadLink.click();
     URL.revokeObjectURL(fileURL);
   };
-  
+export const handleFileUpload = (event, setCode) => {
+    const file = event.target.files[0];
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const fileContent = e.target.result;
+      setCode(fileContent);
+    };
+    reader.readAsText(file);
+  };
