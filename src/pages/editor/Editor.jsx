@@ -7,6 +7,7 @@ import Form from 'react-bootstrap/Form';
 import JsRunner from './JsRunner';
 import { sampleCodes, languageVersions, languages } from './EditorData.ts'
 import { languageAutocompletions } from './LanguageAutocompletions';
+import { customInfo } from './LanguageAutocompletions';
 import SideBar from '../../elements/Sidebar/SideBar';
 import ResizePannel from '../../elements/ResizePannel/ResizePannel';
 
@@ -65,6 +66,26 @@ const Editor = (props) => {
             ]
         })] : [javascript({ jsx: true, ts: true })
     ]
+    // const customCompletion = (data, completion) => {
+    //     const { from, to } = data
+    //     const { label, type, info } = completion
+    //     const content = info ? (
+    //       <div>
+    //         <div>{label}</div>
+    //         <div>{info}</div>
+    //       </div>
+    //     ) : label
+    //     return {
+    //       from,
+    //       to,
+    //       render: () => (
+    //         <div className="cm-completion">
+    //           <div className={`cm-completion-icon cm-${type}`}></div>
+    //           <div className="cm-completion-label">{content}</div>
+    //         </div>
+    //       )
+    //     }
+    //   }
     
     // useEffect(() => {
     //     let themeName = localStorage.getItem('editorThemeStored')
@@ -188,7 +209,18 @@ const Editor = (props) => {
     }
     const onChangeCM = React.useCallback((value, viewUpdate) => {
         setCode(value)
+        console.log('current dom: ')        
     }, []);
+    // const cm = CodeMirror.fromTextArea(document.getElementById("editor"), {
+    //     mode: "javascript",
+    //     hintOptions: {
+    //       hint: myCompletions,
+    //       hintRenderer: function(elem, data, cur) {
+    //         const link = '<a href="https://example.com">' + cur.info + '</a>';
+    //         elem.innerHTML = cur.displayText + '<br>' + link;
+    //       }
+    //     }
+    //   });
     const languageHandler = (e) => {
         const lang = e.target.value
         setLangauge(lang)
@@ -258,6 +290,7 @@ const Editor = (props) => {
                     ))}
                 </Form.Select>
                 <CodeMirror
+                    id="CodeEditor"
                     value={code}
                     mode={language}
                     theme={editorTheme}
