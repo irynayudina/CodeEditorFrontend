@@ -781,7 +781,7 @@ case 2:
         apply: "switch (expression) {\n  case constant-expression:\n    // statements\n    break;\n  default:\n    // statements\n    break;\n}"
       }
   ],
-  'python': [
+  'python2': [
     {
       label: "and",
       type: "keyword",

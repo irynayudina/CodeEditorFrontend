@@ -32,6 +32,7 @@ import { tokyoNight, tokyoNightInit } from '@uiw/codemirror-theme-tokyo-night';
 import { vscodeDark, vscodeDarkInit } from '@uiw/codemirror-theme-vscode';
 import { xcodeLight, xcodeLightInit, xcodeDark, xcodeDarkInit } from '@uiw/codemirror-theme-xcode';
 
+import { handleDownloadClick } from '../WorkWithCodeFile';
 const SideBar = (props) => {
   const [visibleDropdown, setVisibleDropdown] = useState("hiddenDropdown")
   const [visibleSidebar, setVisibleSidebar] = useState("")
@@ -185,7 +186,7 @@ const SideBar = (props) => {
                   <FaGoogleDrive className="me-3" />
                   <span>Save in Google</span>
                 </Dropdown.Item>
-                <Dropdown.Item href="#3">
+                <Dropdown.Item href="#3" onClick={()=>props.handleDownloadClick()}>
                   <FaDownload className="me-3" />
                   <span>Save locally</span>
                 </Dropdown.Item>
@@ -265,7 +266,8 @@ const SideBar = (props) => {
             <Nav.Link href="#2" className="list-group-item list-group-item-action py-2 ripple ">
                 <FaGoogleDrive className="me-3" /><span>Save in Google</span>
             </Nav.Link>
-            <Nav.Link href="#3" className="list-group-item list-group-item-action py-2 ripple">
+            <Nav.Link href="#3" className="list-group-item list-group-item-action py-2 ripple"
+              onClick={()=>props.handleDownloadClick()} >
                 <FaDownload className="me-3" /><span>Save locally</span>
             </Nav.Link>
             <Nav.Link href="#4" className="list-group-item list-group-item-action py-2 ripple">

@@ -5,11 +5,11 @@ import { Button } from 'react-bootstrap';
 import Form from 'react-bootstrap/Form';
 
 import JsRunner from './JsRunner';
-import { sampleCodes, languageVersions, languages } from './EditorData.ts'
+import { sampleCodes, languageVersions, languages, languageExtensions } from './EditorData.ts'
 import { languageAutocompletions } from './LanguageAutocompletions';
-import { customInfo } from './LanguageAutocompletions';
-import SideBar from '../../elements/Sidebar/SideBar';
-import ResizePannel from '../../elements/ResizePannel/ResizePannel';
+import SideBar from './Sidebar/SideBar';
+import ResizePannel from './ResizePannel/ResizePannel';
+import { handleDownloadClick } from './WorkWithCodeFile';
 
 import CodeMirror from '@uiw/react-codemirror';
 import { javascript } from '@codemirror/lang-javascript';
@@ -50,58 +50,23 @@ const Editor = (props) => {
     const [userinp, setUserinp] = useState("")
     const [editorTheme, setEditorTheme] = useState(okaidia)
 
+    const autocompleteOptions = language == 'cpp14' ? languageAutocompletions['cpp'] : language == 'cpp17' ? languageAutocompletions['cpp'] : language == 'python3' ? languageAutocompletions['python2']: languageAutocompletions[language];
     function myCompletions(context) {
         let word = context.matchBefore(/\w*/)
         if (word.from == word.to && !context.explicit)
           return null
         return {
           from: word.from,
-          options: languageAutocompletions[language]
+          options: autocompleteOptions
         }
     }
-    const extensionsObj = languageAutocompletions[language] ? [javascript({ jsx: true, ts: true }),
+    const extensionsObj = autocompleteOptions ? [javascript({ jsx: true, ts: true }),
         autocompletion({
             override: [
                 myCompletions
             ]
         })] : [javascript({ jsx: true, ts: true })
     ]
-    // const customCompletion = (data, completion) => {
-    //     const { from, to } = data
-    //     const { label, type, info } = completion
-    //     const content = info ? (
-    //       <div>
-    //         <div>{label}</div>
-    //         <div>{info}</div>
-    //       </div>
-    //     ) : label
-    //     return {
-    //       from,
-    //       to,
-    //       render: () => (
-    //         <div className="cm-completion">
-    //           <div className={`cm-completion-icon cm-${type}`}></div>
-    //           <div className="cm-completion-label">{content}</div>
-    //         </div>
-    //       )
-    //     }
-    //   }
-    
-    // useEffect(() => {
-    //     let themeName = localStorage.getItem('editorThemeStored')
-    //     console.log(themeName) // returns the correct name
-    //     console.log(window[themeName]) // returns undefined
-    //     if (themeName) {
-    //         setEditorTheme(window[themeName])
-    //     } else {
-    //         if (props.theme === "lighttheme") {
-    //             setEditorTheme(githubLight)
-    //         } else {
-    //             setEditorTheme(okaidia)
-    //         }
-    //     }        
-    // }, [props.theme])
-    
     useEffect(() => {
         if (props.theme === 'lighttheme') {
             let themeName = localStorage.getItem('editorThemeStoredLight');
@@ -211,16 +176,6 @@ const Editor = (props) => {
         setCode(value)
         console.log('current dom: ')        
     }, []);
-    // const cm = CodeMirror.fromTextArea(document.getElementById("editor"), {
-    //     mode: "javascript",
-    //     hintOptions: {
-    //       hint: myCompletions,
-    //       hintRenderer: function(elem, data, cur) {
-    //         const link = '<a href="https://example.com">' + cur.info + '</a>';
-    //         elem.innerHTML = cur.displayText + '<br>' + link;
-    //       }
-    //     }
-    //   });
     const languageHandler = (e) => {
         const lang = e.target.value
         setLangauge(lang)
@@ -265,10 +220,14 @@ const Editor = (props) => {
             });
     }
     const [expanded, setExpanded] = useState("expandedCustom-pannel")
+    const downloadFileLocally = () => {
+        handleDownloadClick(code, languageExtensions[language])
+    }
     return (
         <ResizePannel theme={props.theme} expanded={expanded}>
             <div className="elem elem1"><SideBar theme={props.theme} editorSize={props.editorSize}
                 setExpanded={setExpanded} expanded={expanded} setEditorTheme={setEditorTheme}
+                handleDownloadClick={downloadFileLocally}
             /></div>
             <div className={`elem elem2 ${props.theme}`}>
                 <Form.Select size="sm" style={{ width: "auto", float: "left" }} onChange={languageHandler}
