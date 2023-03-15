@@ -61,7 +61,7 @@ const ResizePannel = ({ children, theme, expanded }) => {
       document.removeEventListener('mouseup', stopResizingSide);
     };
   });
-
+  
   return (
     <div className="pannel-resize">
       <div className={`item side-item ${expanded}`}
