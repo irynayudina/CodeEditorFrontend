@@ -298,7 +298,22 @@ const Editor = (props) => {
     if (viewUpdateState) {
       const newCmValue = viewUpdateState.state.doc;
       console.log(newCmValue);
-      console.log(newCmValue.constructor.name);
+      if (newCmValue.constructor.name === "TextNode") {
+        let resultArray = [];
+        for (let j = 0; j < newCmValue.children.length; j++){
+          console.log(newCmValue.children[j])
+        }
+        for (let i = 0; i < newCmValue.children.length; i++) {
+          const currentTextLeaf = newCmValue.children[i];
+          for (let j = 0; j < currentTextLeaf.text.length; j++) {
+            const currentLine = currentTextLeaf.text[j];
+            console.log(currentLine);
+            resultArray.push(currentLine); // add at the end of result array
+          }
+        }
+        console.log(resultArray)
+        newCmValue.text = resultArray
+      }
       if (cmValuePrevious && newCmValue && cmValuePrevious.text && newCmValue.text&& cmValuePrevious !== newCmValue) {
         let previousErrorContent = []
         for (let i = 0; i < errorLines.length; i++){
@@ -354,16 +369,18 @@ const Editor = (props) => {
   const highlightErrors = () => {
     const linesEditor = document.getElementsByClassName("cm-line");
     if (linesEditor.length >= errorLines.length) {
-      errorLines.forEach((lineNumber) => {
-        linesEditor[lineNumber - 1].classList.add("error-line");
+      errorLines.forEach((lineNumber) => { 
+        if (props.theme === "lighttheme") {
+          linesEditor[lineNumber - 1].classList.add("error-line");
+        } else {
+          linesEditor[lineNumber - 1].classList.add("error-line-dark");
+        }
       });
     }
     console.log("we r highlighting");
   };
   useEffect(() => {
-    document.addEventListener('click', highlightErrors)
-    document.addEventListener('touchstart', highlightErrors);
-    document.addEventListener("visibilitychange", function() {
+    const handleVisibilityChange = () => {
       if (document.visibilityState === "visible") {
         let timeoutId;
         clearTimeout(timeoutId);
@@ -371,15 +388,14 @@ const Editor = (props) => {
           highlightErrors();
         }, 500);
       }
-    });
+    };
+    document.addEventListener('click', highlightErrors)
+    document.addEventListener('touchstart', highlightErrors);
+    document.addEventListener('visibilitychange', handleVisibilityChange);
     return () => {
       document.removeEventListener('click', highlightErrors)
       document.removeEventListener('touchstart', highlightErrors);
-      document.removeEventListener("visibilitychange", function() {
-        if (document.visibilityState === "visible") {
-          highlightErrors()
-        }
-      });
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
     };
   });
   return (
