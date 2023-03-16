@@ -77,8 +77,10 @@ const Editor = (props) => {
   const [cmdargs, setCmdargs] = useState("");
   const [userinp, setUserinp] = useState("");
   const [editorTheme, setEditorTheme] = useState(okaidia);
-  
-  const [codeWasChanged, setCodeWasChanged] = useState(false)
+  const [viewUpdateState, setViewUpdateState] = useState();
+  const [cmValuePrevious, setCmValuePrevious] = useState();
+  const [expanded, setExpanded] = useState("expandedCustom-pannel");
+  const [errorLines, setErrorLines] = useState([1]);
 
   const autocompleteOptions =
     language == "cpp14"
@@ -104,6 +106,7 @@ const Editor = (props) => {
         }),
       ]
     : [javascript({ jsx: true, ts: true })];
+
   useEffect(() => {
     if (props.theme === "lighttheme") {
       let themeName = localStorage.getItem("editorThemeStoredLight");
@@ -202,19 +205,14 @@ const Editor = (props) => {
       }
     }
   }, [props.theme]);
-
   const userinpHandler = (e) => {
     setUserinp(e.target.value);
   };
   const cmdHandler = (e) => {
     setCmdargs(e.target.value);
   };
-  const [viewUpdateState, setViewUpdateState] = useState();
-  const [viewUpdateStateValue, setViewUpdateStateValue] = useState();
-  const [cmValuePrevious, setCmValuePrevious] = useState();
   const onChangeCM = React.useCallback((value, viewUpdate) => {
     setCode(value);
-    setViewUpdateStateValue(value)
     setViewUpdateState(viewUpdate);
   }, []);
   const languageHandler = (e) => {
@@ -277,17 +275,15 @@ const Editor = (props) => {
         setCompiling(false);
       });
   };
-  const [expanded, setExpanded] = useState("expandedCustom-pannel");
   const downloadFileLocally = () => {
     handleDownloadClick(code, languageExtensions[language]);
   };
-  const [errorLines, setErrorLines] = useState([1]);
   useEffect(() => {
     highlightErrors();
   }, [errorLines]);
   const highlightErrors = () => {
     if (viewUpdateState) {
-        const newCmValue = viewUpdateState.state.doc;
+      const newCmValue = viewUpdateState.state.doc;
       console.log(newCmValue);
       if (cmValuePrevious && cmValuePrevious !== newCmValue) {
         console.log("was changed");
@@ -298,32 +294,60 @@ const Editor = (props) => {
         // in 1 case - for loop newCm and find at what index strings arent same, it will be insertion index
         // in 2 case - for loop previousCm and find at what index strings arent same, it will be deletion index
         // if more than one line were inserted/deleted needed additional logic
-        if(cmValuePrevious.text.length < newCmValue.text.length){
-            console.log('inserted lines')
-            const errorLinesVar = errorLines
-            for (let i = 0; i < newCmValue.text.length; i++){
-                if (cmValuePrevious.text[i] !== newCmValue.text[i]) {
-                    console.log('inserted one line at index ', i)
-                    for (let j = 0; j < errorLines.length; j++){
-                        console.log('current iteration of erlns ', errorLinesVar[j], ' ins ', i)
-                        if (errorLinesVar[j] >= i+1) {
-                            errorLinesVar[j] += 1;
-                            console.log('got shifted')
-                        }
-                    }
-                    break;
+        if (cmValuePrevious.text.length < newCmValue.text.length) {
+          console.log("inserted lines");
+          const errorLinesVar = errorLines;
+          for (let i = 0; i < newCmValue.text.length; i++) {
+            if (cmValuePrevious.text[i] !== newCmValue.text[i]) {
+              console.log("inserted one line at index ", i);
+              for (let j = 0; j < errorLines.length; j++) {
+                console.log(
+                  "current error line ",
+                  errorLinesVar[j],
+                  " inserted line ",
+                  i
+                );
+                if (errorLinesVar[j] >= i + 1) {
+                  errorLinesVar[j] += 1;
+                  console.log("got shifted");
                 }
+              }
+              break;
             }
-            setErrorLines(errorLinesVar)
-            console.log(errorLinesVar)
+          }
+          setErrorLines(errorLinesVar);
+          console.log(errorLinesVar);
         } else if (cmValuePrevious.text.length > newCmValue.text.length) {
-            console.log('removed lines')
-            for (let i = 0; i < cmValuePrevious.text.length; i++){
-                if (cmValuePrevious.text[i] !== newCmValue.text[i]) {
-                    console.log('removed one line at index ', i)
-                    break;
+          console.log("removed lines");
+          const errorLinesVar = errorLines;
+          for (let i = 0; i < cmValuePrevious.text.length; i++) {
+            if (cmValuePrevious.text[i] !== newCmValue.text[i]) {
+              console.log("removed one line at index ", i);
+              for (let j = 0; j < errorLines.length; j++) {
+                console.log(
+                  "current errorline ",
+                  errorLinesVar[j],
+                  " deleted line ",
+                  i
+                );
+                if (errorLinesVar[j] > i + 1) {
+                  errorLinesVar[j] -= 1;
+                  console.log("got shifted up");
                 }
+                // if (errorLines[j] == i + 1) {
+                //   if (cmValuePrevious.text[i] === newCmValue.text[i - 1]) {
+                //     errorLinesVar[j] -= 1;
+                //     console.log("errorline removed and up");
+                //   } else {
+                //     errorLinesVar.splice(j, 1);
+                //     console.log("errorline removed");
+                //   }
+                // }
+              }
+              break;
             }
+          }
+          setErrorLines(errorLinesVar);
         }
       }
       setCmValuePrevious(viewUpdateState.state.doc);
@@ -335,28 +359,16 @@ const Editor = (props) => {
       });
     }
     console.log("we r highlighting");
-    
   };
   useEffect(() => {
-    document.addEventListener("click", highlightErrors);
-    document.getElementById("CodeEditor").addEventListener("keyup", (event) => {
-      if (event.key == "ArrowUp") {
-        console.log("entered cm");
-      }
-    });
+    document.addEventListener('click', highlightErrors)
     return () => {
-      document.removeEventListener("click", highlightErrors);
-      document
-        .getElementById("CodeEditor")
-        .removeEventListener("keyup", (event) => {
-          if (event.key == "ArrowUp") {
-            console.log("entered cm");
-          }
-        });
+      document.removeEventListener('click', highlightErrors)
     };
   });
   return (
     <ResizePannel
+      id='pannelEditor'
       theme={props.theme}
       expanded={expanded}
       highlightErrors={highlightErrors}
@@ -373,7 +385,7 @@ const Editor = (props) => {
           handleFileUpload={handleFileUpload}
         />
       </div>
-      <div className={`elem elem2 ${props.theme}`}>
+      <div className={`elem elem2 ${props.theme}`} id='CodeEditor'>
         <Form.Select
           size="sm"
           style={{ width: "auto", float: "left" }}
@@ -399,7 +411,6 @@ const Editor = (props) => {
           ))}
         </Form.Select>
         <CodeMirror
-          id="CodeEditor"
           value={code}
           mode={language}
           theme={editorTheme}
@@ -407,7 +418,6 @@ const Editor = (props) => {
           className="overflow-hidden"
           style={{ overflowX: "scroll", margin: "0.5rem 0 0.5rem 0" }}
           extensions={extensionsObj}
-          onInput={()=>{ setCodeWasChanged(true)}}
           onChange={onChangeCM}
         />
         <Button
