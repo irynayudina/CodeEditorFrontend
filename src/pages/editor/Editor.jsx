@@ -80,7 +80,8 @@ const Editor = (props) => {
   const [viewUpdateState, setViewUpdateState] = useState();
   const [cmValuePrevious, setCmValuePrevious] = useState();
   const [expanded, setExpanded] = useState("expandedCustom-pannel");
-  const [errorLines, setErrorLines] = useState([1]);
+  const [errorLines, setErrorLines] = useState([]);
+  const [errorLinesContent, setErrorLinesContent] = useState(['using namespace std;', 'cout<<\"Hello World2\" << \" \";'])
 
   const autocompleteOptions =
     language == "cpp14"
@@ -223,7 +224,7 @@ const Editor = (props) => {
     setResult(defaultResult);
     setCmdargs("");
     setUserinp("");
-    setErrorLines([2, 4]);
+    setErrorLines([]);
   };
   const versionHandler = (e) => {
     setVersion(e.target.value);
@@ -263,6 +264,18 @@ const Editor = (props) => {
           );
           console.log("Error lines:", errorLinesArr);
           setErrorLines(errorLinesArr);
+          /*
+          const errorLinesContentArr = [];
+          const linesEditor = document.getElementsByClassName("cm-line");
+          if (linesEditor.length >= errorLines.length) {
+            errorLines.forEach((lineNumber) => {
+              errorLinesContentArr.push(linesEditor[lineNumber-1].innerHTML.trim())
+            });
+          }
+          setErrorLinesContent(errorLinesContentArr)
+          console.log('errors content', errorLinesContent)
+          */
+          
         } else {
           setResult("error in response");
           setCompiling(false);
@@ -281,68 +294,55 @@ const Editor = (props) => {
   useEffect(() => {
     highlightErrors();
   }, [errorLines]);
-  const highlightErrors = () => {
+  useEffect(() => {
+    if (viewUpdateState && viewUpdateState.state && viewUpdateState.state.doc && errorLines) {
+      const errorLinesContentArr = [];
+      const codeLines = viewUpdateState.state.doc.text
+      for (let j = 0; j < errorLines.length; j++){
+        errorLinesContentArr.push(codeLines[errorLines[j]-1])
+      }
+      setErrorLinesContent(errorLinesContentArr)
+    }
+    console.log('errors content', errorLinesContent)
+    let timeoutId;
+    // if (viewUpdateState) {
+    //   setOldCmValue(viewUpdateState.startState.doc)
+    // }
+    // console.log('states: ')
+    // console.log(oldCmValue)
+    moveErrors()
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => {
+      highlightErrors();
+    }, 500);
+  }, [viewUpdateState, errorLines])
+  const moveErrors = () => {
     if (viewUpdateState) {
       const newCmValue = viewUpdateState.state.doc;
       console.log(newCmValue);
-      if (cmValuePrevious && cmValuePrevious !== newCmValue) {
-        console.log("was changed");
-        // 3 cases here:
-        // 1 - added lines, newCm has bigger length
-        // 2 - removed lines, newCm has smaller length
-        // 3 - changes did not afffect number of lines
-        // in 1 case - for loop newCm and find at what index strings arent same, it will be insertion index
-        // in 2 case - for loop previousCm and find at what index strings arent same, it will be deletion index
-        // if more than one line were inserted/deleted needed additional logic
+      console.log(newCmValue.constructor.name);
+      if (cmValuePrevious && newCmValue && cmValuePrevious.text && newCmValue.text&& cmValuePrevious !== newCmValue) {
         if (cmValuePrevious.text.length < newCmValue.text.length) {
-          console.log("inserted lines");
           const errorLinesVar = errorLines;
           for (let i = 0; i < newCmValue.text.length; i++) {
             if (cmValuePrevious.text[i] !== newCmValue.text[i]) {
-              console.log("inserted one line at index ", i);
               for (let j = 0; j < errorLines.length; j++) {
-                console.log(
-                  "current error line ",
-                  errorLinesVar[j],
-                  " inserted line ",
-                  i
-                );
                 if (errorLinesVar[j] >= i + 1) {
                   errorLinesVar[j] += 1;
-                  console.log("got shifted");
                 }
               }
               break;
             }
           }
           setErrorLines(errorLinesVar);
-          console.log(errorLinesVar);
         } else if (cmValuePrevious.text.length > newCmValue.text.length) {
-          console.log("removed lines");
           const errorLinesVar = errorLines;
           for (let i = 0; i < cmValuePrevious.text.length; i++) {
             if (cmValuePrevious.text[i] !== newCmValue.text[i]) {
-              console.log("removed one line at index ", i);
               for (let j = 0; j < errorLines.length; j++) {
-                console.log(
-                  "current errorline ",
-                  errorLinesVar[j],
-                  " deleted line ",
-                  i
-                );
                 if (errorLinesVar[j] > i + 1) {
                   errorLinesVar[j] -= 1;
-                  console.log("got shifted up");
                 }
-                // if (errorLines[j] == i + 1) {
-                //   if (cmValuePrevious.text[i] === newCmValue.text[i - 1]) {
-                //     errorLinesVar[j] -= 1;
-                //     console.log("errorline removed and up");
-                //   } else {
-                //     errorLinesVar.splice(j, 1);
-                //     console.log("errorline removed");
-                //   }
-                // }
               }
               break;
             }
@@ -352,6 +352,8 @@ const Editor = (props) => {
       }
       setCmValuePrevious(viewUpdateState.state.doc);
     }
+  }
+  const highlightErrors = () => {
     const linesEditor = document.getElementsByClassName("cm-line");
     if (linesEditor.length >= errorLines.length) {
       errorLines.forEach((lineNumber) => {
@@ -362,8 +364,10 @@ const Editor = (props) => {
   };
   useEffect(() => {
     document.addEventListener('click', highlightErrors)
+    document.addEventListener('touchstart', highlightErrors);
     return () => {
       document.removeEventListener('click', highlightErrors)
+      document.removeEventListener('touchstart', highlightErrors);
     };
   });
   return (
@@ -429,7 +433,7 @@ const Editor = (props) => {
         >
           Run
         </Button>
-        {/* <Button onClick={highlightErrors}>highlight errors</Button> */}
+        <Button onClick={highlightErrors}>highlight errors</Button>
       </div>
       <div className={`elem ${props.theme}`}>
         <Form.Label
