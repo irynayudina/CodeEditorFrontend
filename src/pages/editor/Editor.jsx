@@ -81,8 +81,7 @@ const Editor = (props) => {
   const [cmValuePrevious, setCmValuePrevious] = useState();
   const [expanded, setExpanded] = useState("expandedCustom-pannel");
   const [errorLines, setErrorLines] = useState([]);
-  const [errorLinesContent, setErrorLinesContent] = useState(['using namespace std;', 'cout<<\"Hello World2\" << \" \";'])
-
+  
   const autocompleteOptions =
     language == "cpp14"
       ? languageAutocompletions["cpp"]
@@ -205,6 +204,11 @@ const Editor = (props) => {
           break;
       }
     }
+    let timeoutId;
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => {
+      highlightErrors();
+    }, 500);
   }, [props.theme]);
   const userinpHandler = (e) => {
     setUserinp(e.target.value);
@@ -300,14 +304,17 @@ const Editor = (props) => {
         for (let i = 0; i < errorLines.length; i++){
           previousErrorContent.push(cmValuePrevious.text[errorLines[i] - 1].trim())
         }
-        console.log('prev: ',previousErrorContent)
+        console.log('prev: ', previousErrorContent)
+        let deltaLength = 0;
         if (cmValuePrevious.text.length < newCmValue.text.length) {
+          deltaLength = newCmValue.text.length - cmValuePrevious.text.length;
+          console.log('deltaLength: ', deltaLength)
           const errorLinesVar = errorLines;
           for (let i = 0; i < newCmValue.text.length; i++) {
             if (cmValuePrevious.text[i] !== newCmValue.text[i]) {
               for (let j = 0; j < errorLines.length; j++) {
                 if (errorLinesVar[j] >= i + 1) {
-                  errorLinesVar[j] += 1;
+                  errorLinesVar[j] += deltaLength;
                 }
               }
               break;
@@ -315,12 +322,13 @@ const Editor = (props) => {
           }
           setErrorLines(errorLinesVar);
         } else if (cmValuePrevious.text.length > newCmValue.text.length) {
+          deltaLength = cmValuePrevious.text.length - newCmValue.text.length;
           const errorLinesVar = errorLines;
           for (let i = 0; i < cmValuePrevious.text.length; i++) {
             if (cmValuePrevious.text[i] !== newCmValue.text[i]) {
               for (let j = 0; j < errorLines.length; j++) {
                 if (errorLinesVar[j] > i + 1) {
-                  errorLinesVar[j] -= 1;
+                  errorLinesVar[j] -= deltaLength;
                 }
               }
               break;
@@ -355,9 +363,23 @@ const Editor = (props) => {
   useEffect(() => {
     document.addEventListener('click', highlightErrors)
     document.addEventListener('touchstart', highlightErrors);
+    document.addEventListener("visibilitychange", function() {
+      if (document.visibilityState === "visible") {
+        let timeoutId;
+        clearTimeout(timeoutId);
+        timeoutId = setTimeout(() => {
+          highlightErrors();
+        }, 500);
+      }
+    });
     return () => {
       document.removeEventListener('click', highlightErrors)
       document.removeEventListener('touchstart', highlightErrors);
+      document.removeEventListener("visibilitychange", function() {
+        if (document.visibilityState === "visible") {
+          highlightErrors()
+        }
+      });
     };
   });
   return (
