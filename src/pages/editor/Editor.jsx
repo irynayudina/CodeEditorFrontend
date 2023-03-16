@@ -264,18 +264,6 @@ const Editor = (props) => {
           );
           console.log("Error lines:", errorLinesArr);
           setErrorLines(errorLinesArr);
-          /*
-          const errorLinesContentArr = [];
-          const linesEditor = document.getElementsByClassName("cm-line");
-          if (linesEditor.length >= errorLines.length) {
-            errorLines.forEach((lineNumber) => {
-              errorLinesContentArr.push(linesEditor[lineNumber-1].innerHTML.trim())
-            });
-          }
-          setErrorLinesContent(errorLinesContentArr)
-          console.log('errors content', errorLinesContent)
-          */
-          
         } else {
           setResult("error in response");
           setCompiling(false);
@@ -295,21 +283,7 @@ const Editor = (props) => {
     highlightErrors();
   }, [errorLines]);
   useEffect(() => {
-    if (viewUpdateState && viewUpdateState.state && viewUpdateState.state.doc && errorLines) {
-      const errorLinesContentArr = [];
-      const codeLines = viewUpdateState.state.doc.text
-      for (let j = 0; j < errorLines.length; j++){
-        errorLinesContentArr.push(codeLines[errorLines[j]-1])
-      }
-      setErrorLinesContent(errorLinesContentArr)
-    }
-    console.log('errors content', errorLinesContent)
     let timeoutId;
-    // if (viewUpdateState) {
-    //   setOldCmValue(viewUpdateState.startState.doc)
-    // }
-    // console.log('states: ')
-    // console.log(oldCmValue)
     moveErrors()
     clearTimeout(timeoutId);
     timeoutId = setTimeout(() => {
@@ -322,6 +296,11 @@ const Editor = (props) => {
       console.log(newCmValue);
       console.log(newCmValue.constructor.name);
       if (cmValuePrevious && newCmValue && cmValuePrevious.text && newCmValue.text&& cmValuePrevious !== newCmValue) {
+        let previousErrorContent = []
+        for (let i = 0; i < errorLines.length; i++){
+          previousErrorContent.push(cmValuePrevious.text[errorLines[i] - 1].trim())
+        }
+        console.log('prev: ',previousErrorContent)
         if (cmValuePrevious.text.length < newCmValue.text.length) {
           const errorLinesVar = errorLines;
           for (let i = 0; i < newCmValue.text.length; i++) {
@@ -348,6 +327,17 @@ const Editor = (props) => {
             }
           }
           setErrorLines(errorLinesVar);
+        }
+        let currentErrorContent = []
+        for (let i = 0; i < errorLines.length; i++){
+          currentErrorContent.push(newCmValue.text[errorLines[i] - 1].trim())
+        }
+        console.log('current: ', currentErrorContent)
+        for (let i = 0; i < errorLines.length; i++){
+          if (currentErrorContent[i] !== previousErrorContent[i]) {
+            console.log('remove error', i)
+            errorLines.splice(i, 1)
+          }
         }
       }
       setCmValuePrevious(viewUpdateState.state.doc);
