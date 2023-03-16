@@ -1,5 +1,4 @@
 export const handleDownloadClick = (code, extention) => {
-    // code to download file
     const fileContents = code;
     const file = new Blob([fileContents], { type: 'text/plain' });
     const fileURL = URL.createObjectURL(file);
@@ -9,8 +8,11 @@ export const handleDownloadClick = (code, extention) => {
     downloadLink.click();
     URL.revokeObjectURL(fileURL);
   };
-export const handleFileUpload = (event, setCode) => {
+export const handleFileUpload = (event, setCode, setLangauge, languageExtensions) => {
     const file = event.target.files[0];
+    const fileExtension = file?.name.split(".").pop();
+    const languageFromFile = Object.keys(languageExtensions).find(key => languageExtensions[key] === fileExtension);
+    setLangauge(languageFromFile)
     const reader = new FileReader();
     reader.onload = (e) => {
       const fileContent = e.target.result;

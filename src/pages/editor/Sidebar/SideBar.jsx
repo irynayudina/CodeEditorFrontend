@@ -208,7 +208,7 @@ const SideBar = (props) => {
                   <FaSdCard className="me-3" />
               <span>Open from drive <Form.Control type="file" className='open-drive-editor'
                 onChange={(event) => {
-                  props.handleFileUpload(event, props.setCode);
+                  props.handleFileUpload(event, props.setCode, props.setLangauge, props.languageExtensions);
                 }}
               /></span>
                 </Dropdown.Item>
@@ -286,9 +286,9 @@ const SideBar = (props) => {
             </Nav.Link>
             <Nav.Link href="#7" className="list-group-item list-group-item-action py-2 ripple">
               <FaSdCard className="me-3" /><span>Open from drive
-                <Form.Control type="file" className='open-drive-editor-side'
+                <Form.Control type="file" className={`${props.theme}-opndrv open-drive-editor-side`}
                 onChange={(event) => {
-                  props.handleFileUpload(event, props.setCode);
+                  props.handleFileUpload(event, props.setCode, props.setLangauge, props.languageExtensions);
                 }}
               /></span>
             </Nav.Link>

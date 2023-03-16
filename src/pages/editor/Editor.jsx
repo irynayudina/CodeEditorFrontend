@@ -229,7 +229,7 @@ const Editor = (props) => {
     setCmdargs("");
     setUserinp("");
     setErrorLines([]);
-  };
+  }; 
   const versionHandler = (e) => {
     setVersion(e.target.value);
   };
@@ -266,7 +266,6 @@ const Editor = (props) => {
           const errorLinesArr = errorLineMatches.map((match) =>
             parseInt(match.split(":")[1])
           );
-          console.log("Error lines:", errorLinesArr);
           setErrorLines(errorLinesArr);
         } else {
           setResult("error in response");
@@ -297,21 +296,15 @@ const Editor = (props) => {
   const moveErrors = () => {
     if (viewUpdateState) {
       const newCmValue = viewUpdateState.state.doc;
-      console.log(newCmValue);
       if (newCmValue.constructor.name === "TextNode") {
         let resultArray = [];
-        for (let j = 0; j < newCmValue.children.length; j++){
-          console.log(newCmValue.children[j])
-        }
         for (let i = 0; i < newCmValue.children.length; i++) {
           const currentTextLeaf = newCmValue.children[i];
           for (let j = 0; j < currentTextLeaf.text.length; j++) {
             const currentLine = currentTextLeaf.text[j];
-            console.log(currentLine);
             resultArray.push(currentLine); // add at the end of result array
           }
         }
-        console.log(resultArray)
         newCmValue.text = resultArray
       }
       if (cmValuePrevious && newCmValue && cmValuePrevious.text && newCmValue.text&& cmValuePrevious !== newCmValue) {
@@ -319,11 +312,9 @@ const Editor = (props) => {
         for (let i = 0; i < errorLines.length; i++){
           previousErrorContent.push(cmValuePrevious.text[errorLines[i] - 1].trim())
         }
-        console.log('prev: ', previousErrorContent)
         let deltaLength = 0;
         if (cmValuePrevious.text.length < newCmValue.text.length) {
           deltaLength = newCmValue.text.length - cmValuePrevious.text.length;
-          console.log('deltaLength: ', deltaLength)
           const errorLinesVar = errorLines;
           for (let i = 0; i < newCmValue.text.length; i++) {
             if (cmValuePrevious.text[i] !== newCmValue.text[i]) {
@@ -355,10 +346,8 @@ const Editor = (props) => {
         for (let i = 0; i < errorLines.length; i++){
           currentErrorContent.push(newCmValue.text[errorLines[i] - 1].trim())
         }
-        console.log('current: ', currentErrorContent)
         for (let i = 0; i < errorLines.length; i++){
           if (currentErrorContent[i] !== previousErrorContent[i]) {
-            console.log('remove error', i)
             errorLines.splice(i, 1)
           }
         }
@@ -377,7 +366,6 @@ const Editor = (props) => {
         }
       });
     }
-    console.log("we r highlighting");
   };
   useEffect(() => {
     const handleVisibilityChange = () => {
@@ -414,6 +402,8 @@ const Editor = (props) => {
           setEditorTheme={setEditorTheme}
           handleDownloadClick={downloadFileLocally}
           setCode={setCode}
+          setLangauge={setLangauge}
+          languageExtensions={languageExtensions}
           handleFileUpload={handleFileUpload}
         />
       </div>
@@ -422,6 +412,7 @@ const Editor = (props) => {
           size="sm"
           style={{ width: "auto", float: "left" }}
           onChange={languageHandler}
+          value={language}
           className={`select ${props.theme}`}
         >
           {Object.keys(languages).map((key) => (
@@ -461,7 +452,6 @@ const Editor = (props) => {
         >
           Run
         </Button>
-        <Button onClick={highlightErrors}>highlight errors</Button>
       </div>
       <div className={`elem ${props.theme}`}>
         <Form.Label
