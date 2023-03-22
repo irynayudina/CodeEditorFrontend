@@ -638,8 +638,6 @@ export const languageExtensions = {
     'freebasic': "bas",
     'verilog': "v",
     'cobol': "cob",
-
-
     'dart': "dart",
     'clojure': "clj",
     'nodejs': "js",
@@ -670,7 +668,6 @@ export const languageExtensions = {
     'mozart': "oz",
     'racket': "rkt",
     'kotlin': "kt",
-
     'whitespace': 'ws',
     'erlang': 'erl',
     'jlang': 'j',

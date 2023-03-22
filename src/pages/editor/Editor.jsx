@@ -4,33 +4,26 @@ import axios from "axios";
 import { Button } from "react-bootstrap";
 import Form from "react-bootstrap/Form";
 
-import JsRunner from "./JsRunner";
+import JsRunner from "./Syntax/JsRunner";
 import {
   sampleCodes,
   languageVersions,
   languages,
   languageExtensions,
-} from "./EditorData.ts";
-import { languageAutocompletions } from "./LanguageAutocompletions";
+} from "./Syntax/EditorData.ts";
+import { languageAutocompletions } from "./Syntax/LanguageAutocompletions";
 import SideBar from "./Sidebar/SideBar";
 import ResizePannel from "./ResizePannel/ResizePannel";
 import { handleDownloadClick, handleFileUpload } from "./WorkWithCodeFile";
+import { moveErrors, parseErrors } from "./Syntax/WorkWithErrors";
 
 import CodeMirror from "@uiw/react-codemirror";
 import { javascript } from "@codemirror/lang-javascript";
 import { autocompletion } from "@codemirror/autocomplete";
 
 import { okaidia } from "@uiw/codemirror-theme-okaidia";
-import {
-  githubLight,
-  githubLightInit,
-  githubDark,
-  githubDarkInit,
-} from "@uiw/codemirror-theme-github";
-import {
-  noctisLilac,
-  noctisLilacInit,
-} from "@uiw/codemirror-theme-noctis-lilac";
+import { githubLight, githubDark } from "@uiw/codemirror-theme-github";
+import { noctisLilac } from "@uiw/codemirror-theme-noctis-lilac";
 import { abcdef } from "@uiw/codemirror-theme-abcdef";
 import { androidstudio } from "@uiw/codemirror-theme-androidstudio";
 import { atomone } from "@uiw/codemirror-theme-atomone";
@@ -42,28 +35,13 @@ import { dracula } from "@uiw/codemirror-theme-dracula";
 import { duotoneLight, duotoneDark } from "@uiw/codemirror-theme-duotone";
 import { eclipse } from "@uiw/codemirror-theme-eclipse";
 import { gruvboxDark, gruvboxLight } from "@uiw/codemirror-theme-gruvbox-dark";
-import {
-  materialDark,
-  materialDarkInit,
-  materialLight,
-  materialLightInit,
-} from "@uiw/codemirror-theme-material";
-import { nord, nordInit } from "@uiw/codemirror-theme-nord";
-import {
-  solarizedLight,
-  solarizedLightInit,
-  solarizedDark,
-  solarizedDarkInit,
-} from "@uiw/codemirror-theme-solarized";
-import { sublime, sublimeInit } from "@uiw/codemirror-theme-sublime";
-import { tokyoNight, tokyoNightInit } from "@uiw/codemirror-theme-tokyo-night";
-import { vscodeDark, vscodeDarkInit } from "@uiw/codemirror-theme-vscode";
-import {
-  xcodeLight,
-  xcodeLightInit,
-  xcodeDark,
-  xcodeDarkInit,
-} from "@uiw/codemirror-theme-xcode";
+import { materialDark, materialLight } from "@uiw/codemirror-theme-material";
+import { nord } from "@uiw/codemirror-theme-nord";
+import { solarizedLight, solarizedDark } from "@uiw/codemirror-theme-solarized";
+import { sublime } from "@uiw/codemirror-theme-sublime";
+import { tokyoNight } from "@uiw/codemirror-theme-tokyo-night";
+import { vscodeDark } from "@uiw/codemirror-theme-vscode";
+import { xcodeLight, xcodeDark } from "@uiw/codemirror-theme-xcode";
 
 const Editor = (props) => {
   const defaultResult = `<p class="text-muted">&lt;--------Output of your program goes here --------&gt;</p>`;
@@ -81,7 +59,7 @@ const Editor = (props) => {
   const [cmValuePrevious, setCmValuePrevious] = useState();
   const [expanded, setExpanded] = useState("expandedCustom-pannel");
   const [errorLines, setErrorLines] = useState([]);
-  
+
   const autocompleteOptions =
     language == "cpp14"
       ? languageAutocompletions["cpp"]
@@ -107,6 +85,72 @@ const Editor = (props) => {
       ]
     : [javascript({ jsx: true, ts: true })];
 
+  const userinpHandler = (e) => {
+    setUserinp(e.target.value);
+  };
+  const cmdHandler = (e) => {
+    setCmdargs(e.target.value);
+  };
+  const onChangeCM = React.useCallback((value, viewUpdate) => {
+    setCode(value);
+    setViewUpdateState(viewUpdate);
+  }, []);
+  const languageHandler = (e) => {
+    const lang = e.target.value;
+    setLangauge(lang);
+    setVersions(languageVersions[lang]);
+    setCode(sampleCodes[lang]);
+    setResult(defaultResult);
+    setCmdargs("");
+    setUserinp("");
+    setErrorLines([]);
+  };
+  const versionHandler = (e) => {
+    setVersion(e.target.value);
+  };
+  const execute = (e) => {
+    e.preventDefault();
+    setCompiling(true);
+    if (language === "javascript") {
+      setRunJs((value) => (value += 1));
+      setCompiling(false);
+      return;
+    }
+    setRunJs(0);
+    const data = {
+      code: code,
+      language: language,
+      version: version,
+      userInput: userinp,
+      cmdargs: cmdargs,
+    };
+    axios
+      .post("http://localhost:5000/editor/execute", data, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+      .then((response) => {
+        if (response.status === 200) {
+          setResult(response.data.output);
+          console.log(response);
+          setCompiling(false);
+          parseErrors(response, setErrorLines, language)
+        } else {
+          setResult("error in response");
+          setCompiling(false);
+          throw new Error("Network response was not ok: ", response);
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+        setResult("error in request");
+        setCompiling(false);
+      });
+  };
+  const downloadFileLocally = () => {
+    handleDownloadClick(code, languageExtensions[language]);
+  };
   useEffect(() => {
     if (props.theme === "lighttheme") {
       let themeName = localStorage.getItem("editorThemeStoredLight");
@@ -210,158 +254,31 @@ const Editor = (props) => {
       highlightErrors();
     }, 500);
   }, [props.theme]);
-  const userinpHandler = (e) => {
-    setUserinp(e.target.value);
-  };
-  const cmdHandler = (e) => {
-    setCmdargs(e.target.value);
-  };
-  const onChangeCM = React.useCallback((value, viewUpdate) => {
-    setCode(value);
-    setViewUpdateState(viewUpdate);
-  }, []);
-  const languageHandler = (e) => {
-    const lang = e.target.value;
-    setLangauge(lang);
-    setVersions(languageVersions[lang]);
-    setCode(sampleCodes[lang]);
-    setResult(defaultResult);
-    setCmdargs("");
-    setUserinp("");
-    setErrorLines([]);
-  }; 
-  const versionHandler = (e) => {
-    setVersion(e.target.value);
-  };
-  const execute = (e) => {
-    e.preventDefault();
-    setCompiling(true);
-    if (language === "javascript") {
-      setRunJs((value) => (value += 1));
-      setCompiling(false);
-      return;
-    }
-    setRunJs(0);
-    const data = {
-      code: code,
-      language: language,
-      version: version,
-      userInput: userinp,
-      cmdargs: cmdargs,
-    };
-    axios
-      .post("http://localhost:5000/editor/execute", data, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      })
-      .then((response) => {
-        if (response.status === 200) {
-          setResult(response.data.output);
-          console.log(response);
-          setCompiling(false);
-          const errorText = response.data.output;
-          const errorLineMatches =
-            errorText.match(/([a-z]+\.cpp:)([0-9]+)/gi) || [];
-          const errorLinesArr = errorLineMatches.map((match) =>
-            parseInt(match.split(":")[1])
-          );
-          setErrorLines(errorLinesArr);
-        } else {
-          setResult("error in response");
-          setCompiling(false);
-          throw new Error("Network response was not ok: ", response);
-        }
-      })
-      .catch((error) => {
-        console.error(error);
-        setResult("error in request");
-        setCompiling(false);
-      });
-  };
-  const downloadFileLocally = () => {
-    handleDownloadClick(code, languageExtensions[language]);
-  };
   useEffect(() => {
     highlightErrors();
   }, [errorLines]);
   useEffect(() => {
     let timeoutId;
-    moveErrors()
+    moveErrors(
+      viewUpdateState,
+      cmValuePrevious,
+      errorLines,
+      setErrorLines,
+      setCmValuePrevious
+    );
     clearTimeout(timeoutId);
     timeoutId = setTimeout(() => {
       highlightErrors();
     }, 500);
-  }, [viewUpdateState, errorLines])
-  const moveErrors = () => {
-    if (viewUpdateState) {
-      const newCmValue = viewUpdateState.state.doc;
-      if (newCmValue.constructor.name === "TextNode") {
-        let resultArray = [];
-        for (let i = 0; i < newCmValue.children.length; i++) {
-          const currentTextLeaf = newCmValue.children[i];
-          for (let j = 0; j < currentTextLeaf.text.length; j++) {
-            const currentLine = currentTextLeaf.text[j];
-            resultArray.push(currentLine); // add at the end of result array
-          }
-        }
-        newCmValue.text = resultArray
-      }
-      if (cmValuePrevious && newCmValue && cmValuePrevious.text && newCmValue.text&& cmValuePrevious !== newCmValue) {
-        let previousErrorContent = []
-        for (let i = 0; i < errorLines.length; i++){
-          previousErrorContent.push(cmValuePrevious.text[errorLines[i] - 1].trim())
-        }
-        let deltaLength = 0;
-        if (cmValuePrevious.text.length < newCmValue.text.length) {
-          deltaLength = newCmValue.text.length - cmValuePrevious.text.length;
-          const errorLinesVar = errorLines;
-          for (let i = 0; i < newCmValue.text.length; i++) {
-            if (cmValuePrevious.text[i] !== newCmValue.text[i]) {
-              for (let j = 0; j < errorLines.length; j++) {
-                if (errorLinesVar[j] >= i + 1) {
-                  errorLinesVar[j] += deltaLength;
-                }
-              }
-              break;
-            }
-          }
-          setErrorLines(errorLinesVar);
-        } else if (cmValuePrevious.text.length > newCmValue.text.length) {
-          deltaLength = cmValuePrevious.text.length - newCmValue.text.length;
-          const errorLinesVar = errorLines;
-          for (let i = 0; i < cmValuePrevious.text.length; i++) {
-            if (cmValuePrevious.text[i] !== newCmValue.text[i]) {
-              for (let j = 0; j < errorLines.length; j++) {
-                if (errorLinesVar[j] > i + 1) {
-                  errorLinesVar[j] -= deltaLength;
-                }
-              }
-              break;
-            }
-          }
-          setErrorLines(errorLinesVar);
-        }
-        let currentErrorContent = []
-        for (let i = 0; i < errorLines.length; i++){
-          currentErrorContent.push(newCmValue.text[errorLines[i] - 1].trim())
-        }
-        for (let i = 0; i < errorLines.length; i++){
-          if (currentErrorContent[i] !== previousErrorContent[i]) {
-            errorLines.splice(i, 1)
-          }
-        }
-      }
-      setCmValuePrevious(viewUpdateState.state.doc);
-    }
-  }
+  }, [viewUpdateState, errorLines]);
   const highlightErrors = () => {
     const linesEditor = document.getElementsByClassName("cm-line");
-    if (linesEditor.length >= errorLines.length) {
-      errorLines.forEach((lineNumber) => { 
-        if (props.theme === "lighttheme") {
+    if (linesEditor?.length >= errorLines?.length) {
+      console.log(errorLines);
+      errorLines.forEach((lineNumber) => {
+        if (props.theme === "lighttheme" && linesEditor[lineNumber - 1]) {
           linesEditor[lineNumber - 1].classList.add("error-line");
-        } else {
+        } else if (linesEditor[lineNumber - 1]) {
           linesEditor[lineNumber - 1].classList.add("error-line-dark");
         }
       });
@@ -377,18 +294,18 @@ const Editor = (props) => {
         }, 500);
       }
     };
-    document.addEventListener('click', highlightErrors)
-    document.addEventListener('touchstart', highlightErrors);
-    document.addEventListener('visibilitychange', handleVisibilityChange);
+    document.addEventListener("click", highlightErrors);
+    document.addEventListener("touchstart", highlightErrors);
+    document.addEventListener("visibilitychange", handleVisibilityChange);
     return () => {
-      document.removeEventListener('click', highlightErrors)
-      document.removeEventListener('touchstart', highlightErrors);
-      document.removeEventListener('visibilitychange', handleVisibilityChange);
+      document.removeEventListener("click", highlightErrors);
+      document.removeEventListener("touchstart", highlightErrors);
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
     };
   });
   return (
     <ResizePannel
-      id='pannelEditor'
+      id="pannelEditor"
       theme={props.theme}
       expanded={expanded}
       highlightErrors={highlightErrors}
@@ -407,7 +324,7 @@ const Editor = (props) => {
           handleFileUpload={handleFileUpload}
         />
       </div>
-      <div className={`elem elem2 ${props.theme}`} id='CodeEditor'>
+      <div className={`elem elem2 ${props.theme}`} id="CodeEditor">
         <Form.Select
           size="sm"
           style={{ width: "auto", float: "left" }}
@@ -493,7 +410,7 @@ const Editor = (props) => {
           ) : (
             <div
               dangerouslySetInnerHTML={{
-                __html: result.replace(/\n/g, "<br />"),
+                __html: result?.replace(/\n/g, "<br />"),
               }}
             ></div>
           )}

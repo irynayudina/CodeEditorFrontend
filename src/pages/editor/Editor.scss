@@ -24,6 +24,9 @@
     margin-top: 0.5rem;
     padding-left: 0.5rem;
     box-sizing: border-box;
+    &:hover{
+      overflow-y: scroll;
+    }
   }
   .botInp{
     margin-top: 0.5rem;
