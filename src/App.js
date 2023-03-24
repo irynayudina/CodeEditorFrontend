@@ -49,7 +49,8 @@ function App() {
       <BrowserRouter>
       <Routes>      
           <Route path="/" exact="true" element={
-            <Home />
+            // <Home />
+            <Editor theme={theme} editorSize={ editorBreakpoint >= 814 ? "lg" : "sm"} />
           } />
           <Route path="/editor" element={
             <Editor theme={theme} editorSize={ editorBreakpoint >= 814 ? "lg" : "sm"} />
