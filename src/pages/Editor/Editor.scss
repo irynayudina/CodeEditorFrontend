@@ -80,3 +80,29 @@
   background-color: #ff1f1fa2 !important;
   // background-color: #e315157a !important;
 }
+.inp{
+  min-width: 120px;
+  margin-left: 0.5rem;
+}
+.editor-input-up.lighttheme{
+  max-width: calc(100% - 124px - 0.5rem);
+}
+.editor-input-up.darktheme{
+  max-width: calc(100% - 124px - 0.5rem - 6px);
+}
+.editor-input-down.lighttheme{
+  max-width: calc(100% - 120px - 0.5rem);
+}
+.editor-input-down.darktheme{
+  max-width: calc(100% - 120px - 0.5rem - 6px);
+}
+.result-sm{
+  .inp{
+    min-width: calc(100% - 1rem);
+  }
+}
+@media (max-width: 306px) {
+  .inp{
+    min-width: calc(100% - 1rem);
+  }
+}

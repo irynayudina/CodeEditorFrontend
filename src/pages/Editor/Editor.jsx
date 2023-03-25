@@ -125,7 +125,7 @@ const Editor = (props) => {
       cmdargs: cmdargs,
     };
     axios
-      .post("http://localhost:5000/editor/execute", data, {
+      .post("https://dry-field-3178.fly.dev/editor/execute", data, {
         headers: {
           "Content-Type": "application/json",
         },
@@ -303,12 +303,41 @@ const Editor = (props) => {
       document.removeEventListener("visibilitychange", handleVisibilityChange);
     };
   });
+  const [resultSm, setResultSm] = useState('')
+  const resizeRef = useRef(null);
+  // const handleResize = (e) => {
+  //   if (!isResizing) return;
+  //   const resizeWidth = resizeRef.current.offsetWidth;
+  //   console.log(resizeRef.current.offsetWidth)
+  //   if (resizeWidth < 260) {
+  //     setResultSm('result-sm')
+  //   } else {
+  //     setResultSm('')
+  //   }
+  // };
+  // useEffect(() => {
+  //   document.addEventListener('mousemove', handleResize);
+  //   document.addEventListener('mouseup', stopResizing);
+  //   return () => {
+  //     document.removeEventListener('mousemove', handleResize);
+  //     document.removeEventListener('mouseup', stopResizing);
+  //   };
+  // });
+  // const stopResizing = () => {
+  //   setIsResizing(false);
+  // };
+  // const startResizing = () => {
+  //   setIsResizing(true);
+  // };
+  // const [isResizing, setIsResizing] = useState(false);
+
   return (
     <ResizePannel
       id="pannelEditor"
       theme={props.theme}
       expanded={expanded}
       highlightErrors={highlightErrors}
+      // onClick={startResizing}
     >
       <div className="elem elem1">
         <SideBar
@@ -370,7 +399,7 @@ const Editor = (props) => {
           Run
         </Button>
       </div>
-      <div className={`elem ${props.theme}`}>
+      <div className={`elem ${props.theme} ${resultSm}`} ref={resizeRef} >
         <Form.Label
           style={{
             float: "left",
@@ -387,22 +416,9 @@ const Editor = (props) => {
           rows={1}
           placeholder="command line"
           size="sm"
-          style={
-            props.theme == "lighttheme"
-              ? {
-                  maxWidth: "calc(100% - 124px - 0.5rem)",
-                  minWidth: "120px",
-                  marginLeft: "0.5rem",
-                }
-              : {
-                  maxWidth: "calc(100% - 124px - 0.5rem - 6px)",
-                  minWidth: "120px",
-                  marginLeft: "0.5rem",
-                }
-          }
           value={cmdargs}
           onChange={cmdHandler}
-          className={`inp ${props.theme}`}
+          className={`inp ${props.theme} editor-input-up `}
         />
         <div className={`result ${props.theme}`}>
           {compiling ? (
@@ -427,22 +443,9 @@ const Editor = (props) => {
             rows={2}
             placeholder="standard inputs separated by newline"
             size="md"
-            style={
-              props.theme == "lighttheme"
-                ? {
-                    maxWidth: "calc(100% - 120px - 0.5rem)",
-                    minWidth: "120px",
-                    marginLeft: "0.5rem",
-                  }
-                : {
-                    maxWidth: "calc(100% - 120px - 0.5rem - 6px)",
-                    minWidth: "120px",
-                    marginLeft: "0.5rem",
-                  }
-            }
             value={userinp}
             onChange={userinpHandler}
-            className={`inp ${props.theme}`}
+            className={`inp ${props.theme} editor-input-down`}
           />
         </div>
         <JsRunner
