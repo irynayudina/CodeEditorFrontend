@@ -10,7 +10,7 @@ const NavBar = (props) => {
     return (
       <Navbar bg={`${props.theme == "lighttheme" ? "primary" : "dark"}`} variant="dark" expand="lg" className={props.theme}> 
       <Container fluid={true}>
-        <Navbar.Brand href="/" >Code-Network</Navbar.Brand>
+          <Navbar.Brand href="/" >Code-Network &lt;/&gt;</Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto">
