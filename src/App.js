@@ -58,7 +58,7 @@ function App() {
             <Discussions theme={theme} />
           } />
           <Route path="/challenges" element={
-            <Challenges theme={theme} />
+            <Challenges theme={theme} breakpoint={breakpoint} />
           } />
           <Route path="/collaboratory" element={
             <Collaboratory theme={theme} />
