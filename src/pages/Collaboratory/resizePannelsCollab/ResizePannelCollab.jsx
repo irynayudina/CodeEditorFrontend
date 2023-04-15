@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-
+import './ResizePannelCollab.scss'
 const ResizePannelCollab = ({children}) => {
     const childrenArray = React.Children.toArray(children);
     const leftElem = childrenArray[0];

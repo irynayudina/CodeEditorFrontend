@@ -1,18 +1,18 @@
 .topnav {
     background: rgb(8, 137, 226);
-    // background: linear-gradient(90deg, rgba(8, 137, 226, 1) 0%, #d683e6 100%);
-
     display: flex;
     flex-wrap: wrap;
     align-items: center;
     justify-content: space-between;
-    height: 2.5rem;
+    min-height: 2.5rem;
+    height: auto;
     .activeusers {
       display: flex;
       flex-wrap: wrap;
       align-items: center;
+      margin-bottom: 0.5rem;
+      margin-top: 0.5rem;
       .actvusr {
-        // border: 1px solid #0d6efd;
         margin-left: 0.5rem;
         display: flex;
         flex-wrap: wrap;
@@ -44,6 +44,6 @@
       display: flex;
       text-align: center;
       align-items: center;
-      height: 20px;
+      flex-wrap: wrap;
     }
   }

@@ -10,7 +10,6 @@
     h3 {
         font-size: 72px;
         font-weight: 700;
-        // background: linear-gradient(to left, #05679B, #01E096);
         background: rgb(8,137,226);
         background: linear-gradient(90deg, rgba(8,137,226,1) 0%, rgba(255,130,231,1) 100%);
         background-clip: text;
@@ -21,6 +20,16 @@
         all: initial;
         font-size: inherit;
       }
+}
+@media (max-width: 750px) {
+  .landing-logo-animation{
+    width: 100vw;
+    height: 300px;
+    h3{
+      font-size: 9vw;
+      font-weight: 700;
+    }
+  }
 }
   
   
