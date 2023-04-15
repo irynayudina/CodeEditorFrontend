@@ -121,3 +121,12 @@
 .hiddenPannel-controll{
     display: none;
 }
+.pannel-resize.collab{
+    min-height: 70vh;
+    height: auto;
+    margin-bottom: 0;
+    border: none;
+    .two-main-items{
+        border: none;
+    }
+}

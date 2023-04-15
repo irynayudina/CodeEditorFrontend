@@ -1,8 +1,4 @@
-.container-grid {  
-    display: grid;
-    gap: 1rem;
-    grid-template-columns: 2fr 5fr 5fr;
-  }
+
   .elem{
     border-top: 1px solid #212529;
     &:nth-child(2){

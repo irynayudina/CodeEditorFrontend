@@ -305,31 +305,6 @@ const Editor = (props) => {
   });
   const [resultSm, setResultSm] = useState('')
   const resizeRef = useRef(null);
-  // const handleResize = (e) => {
-  //   if (!isResizing) return;
-  //   const resizeWidth = resizeRef.current.offsetWidth;
-  //   console.log(resizeRef.current.offsetWidth)
-  //   if (resizeWidth < 260) {
-  //     setResultSm('result-sm')
-  //   } else {
-  //     setResultSm('')
-  //   }
-  // };
-  // useEffect(() => {
-  //   document.addEventListener('mousemove', handleResize);
-  //   document.addEventListener('mouseup', stopResizing);
-  //   return () => {
-  //     document.removeEventListener('mousemove', handleResize);
-  //     document.removeEventListener('mouseup', stopResizing);
-  //   };
-  // });
-  // const stopResizing = () => {
-  //   setIsResizing(false);
-  // };
-  // const startResizing = () => {
-  //   setIsResizing(true);
-  // };
-  // const [isResizing, setIsResizing] = useState(false);
 
   return (
     <ResizePannel
