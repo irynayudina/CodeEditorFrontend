@@ -42,6 +42,10 @@
         }
     }
 
+    .form-check-input{
+        cursor: pointer;
+    }
+
     .challenges-left{
         border-radius: 0;
         border: none;
@@ -60,4 +64,18 @@
         background: whitesmoke;
         // background: none;
     }
+
+    
+//     .configure-view-editor-toggle{
+//     background: #191A16;
+//     border-radius: 0;
+//     text-align: left;
+//     color: #59698d;
+//     box-shadow: none;
+//     border-color: transparent;
+// }
+// .configure-view-editor-toggle-light{
+//     text-align: left;
+//     border-radius: 0;
+// }
 }
