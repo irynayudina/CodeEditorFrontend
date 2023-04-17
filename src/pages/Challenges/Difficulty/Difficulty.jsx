@@ -1,7 +1,7 @@
 import React from 'react'
 import { FaStar } from "react-icons/fa";
 import { Container, Row, Col, Form } from "react-bootstrap";
-
+import './Difficulty.scss'
 const Difficulty = ({ difficultyLevelsSelected, setDifficultyLevelsSelected}) => {
   const handleDifficultyLevelChange = (level) => {
     if (difficultyLevelsSelected.includes(level)) {
@@ -45,7 +45,7 @@ const Difficulty = ({ difficultyLevelsSelected, setDifficultyLevelsSelected}) =>
   };
   return (
     <div className="challenges-difficulty">
-      Difficulty Level
+      <p className="difficulty-title">Difficulty Level</p>
       <div className="difficulty-levels">
         {renderDifficultyLevel("easy")}
         {renderDifficultyLevel("medium")}

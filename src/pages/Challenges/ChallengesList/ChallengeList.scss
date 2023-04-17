@@ -1,0 +1,30 @@
+.challenge-item{
+    background: rgb(105, 182, 233);// rgb(202, 226, 242);
+    border-radius: 0.5rem;
+    padding: 0.5rem;
+    margin-bottom: 0.5rem;
+    p{
+        margin: 0;
+    }
+    .challenge-title{
+    margin-bottom: 0.5rem;
+    }
+    .metadata-challenge{
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+        column-gap: 0.5rem;
+        max-width: 15rem;
+        // border: 1px solid red;
+        font-size: 14px;
+        text-align: right;
+    }
+    .challenge-topsection{
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        .topic-name{
+            font-size: 14px;
+        }
+    }
+}
