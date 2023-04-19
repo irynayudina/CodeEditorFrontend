@@ -1,0 +1,49 @@
+.discussions{
+    margin: 1rem;
+    // margin-top: 20px;
+    .discussions-topsection{
+        display: flex;
+        justify-content: space-evenly;
+        flex-wrap: wrap;
+        gap: 1rem;
+        margin-bottom: 1rem;
+        .select-discussion-topic{
+            width: 300px;
+            display: flex;
+            gap: 0.5rem;
+        }
+        .sesrch-discussion{
+            display: flex;
+        }
+    }
+    .discussion-item{
+        background-color: whitesmoke;
+        border-radius: 5px;
+        padding: 0.5rem;
+        margin-bottom: 0.5rem;
+        .down-section, .top-section{
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            .tags{
+                display: flex;
+                flex-wrap: wrap;
+                gap: 0.5rem;
+                align-items: flex-start;
+            }
+            .response-statistics{
+                display: flex;
+                gap: 0.5rem;
+            }
+        }
+        .metadata-discussions{
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+            column-gap: 0.5rem;
+            max-width: 15rem;
+            text-align: right;
+            font-size: 14px;
+        }
+    }
+}
