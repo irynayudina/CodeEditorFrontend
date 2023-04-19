@@ -32,21 +32,21 @@ const TopUsers = () => {
       <div className="topic-select-users">
         <Form.Check
           type="radio"
-          label={"topic1"}
+          label={"web"}
           value="topic1Rating"
           onChange={handleTopicSelect}
           checked={selectedTopic === "topic1Rating"}
         />
         <Form.Check
           type="radio"
-          label={"topic2"}
+          label={"algorithms"}
           value="topic2Rating"
           onChange={handleTopicSelect}
           checked={selectedTopic === "topic2Rating"}
         />
         <Form.Check
           type="radio"
-          label={"topic3"}
+          label={"custom"}
           value="topic3Rating"
           onChange={handleTopicSelect}
           checked={selectedTopic === "topic3Rating"}

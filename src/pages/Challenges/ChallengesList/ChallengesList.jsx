@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { Container, Row, Col, Form, Badge } from "react-bootstrap";
 import './ChallengeList.scss'
 const ChallengesList = () => {
   const allChallenges = [
@@ -20,9 +21,22 @@ const ChallengesList = () => {
     },
   ];
   const [challengesShow, setChallengesShow] = useState(allChallenges);
+  const [sortChallenges, setSortchallenges] = useState('0')
   return (
     <div className="challenges-list">
-      <p className="challenge-title">Challenges List</p>
+      <div className="challenge-list-top-section">
+        <div className="challenge-title">Challenges List</div>
+        <div className="sort-challenges">
+          <Form.Select
+            value={sortChallenges}
+            onChange={(e) => setSortchallenges(e.target.value)}
+          >
+            <option value="0">Trending</option>
+            <option value="1">Recent</option>
+            <option value="2">Popular</option>
+          </Form.Select>
+        </div>
+      </div>
       {challengesShow.map((c, index) => (
         <div key={index} className="challenge-item">
           <div className="challenge-topsection">

@@ -6,9 +6,6 @@
     p{
         margin: 0;
     }
-    .challenge-title{
-    margin-bottom: 0.5rem;
-    }
     .metadata-challenge{
         display: flex;
         flex-wrap: wrap;
@@ -25,5 +22,20 @@
         .topic-name{
             font-size: 14px;
         }
+    }
+}
+.challenge-list-top-section{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+    .challenge-title{
+        margin: 0;
+    }
+    .sort-challenges{
+        width: calc(100% - 10rem);
+
     }
 }
