@@ -11,8 +11,8 @@ const Collaboratory = () => {
     <div className="collaboratory">
       <TopNav />
       <ResizePannelCollab>
-        <CodeEditor theme="lighttheme" />
-        <CodeOutput theme="lighttheme" />
+        <CodeEditor theme="lighttheme" className="collab" />
+        <CodeOutput theme="lighttheme" className="collab" />
       </ResizePannelCollab>
     </div>
   );

@@ -92,7 +92,7 @@ const CodeEditor = (props) => {
         mode={language}
         // theme={editorTheme}
         height="546px"
-        className="overflow-hidden"
+        className="overflow-hidden collab-editor"
         style={{ overflowX: "scroll", margin: "0.5rem 0 0.5rem 0" }}
         extensions={extensionsObj}
         onChange={onChangeCM}

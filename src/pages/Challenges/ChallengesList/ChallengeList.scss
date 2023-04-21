@@ -24,18 +24,57 @@
         }
     }
 }
-.challenge-list-top-section{
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    align-items: center;
-    gap: 0.5rem;
-    margin-bottom: 0.5rem;
-    .challenge-title{
-        margin: 0;
-    }
-    .sort-challenges{
-        width: calc(100% - 10rem);
 
+.challenge-list-top-section{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        // gap: 1rem;
+        margin-bottom: 0.5rem;
+        .select-discussion-topic{
+            width: 300px;
+            display: flex;
+            gap: 0.5rem;
+        }
+        .search-challenge{
+            display: flex;
+        }
     }
-}
+
+// .challenge-list-top-section{
+//     display: flex;
+//     flex-wrap: wrap;
+//     justify-content: space-between;
+//     align-items: center;
+//     // gap: 0.5rem;
+//     margin-bottom: 0.5rem;
+//     .challenge-title{
+//         margin: 0;
+//     }
+//     .filters-challenge{
+//     width: calc(100% - 8rem);
+//     min-width: 200px;
+//     display: flex;
+//     flex-wrap: wrap;
+//     justify-content: space-between;
+//         .sort-challenges{
+//         width: calc(50%);
+//         min-width: 200px;
+//         }
+//         .search-challenge{
+//             width: calc(50%);
+//             min-width: 200px;
+//             display: flex;
+//             flex-direction: row;
+//             flex-wrap: wrap;
+//             justify-content: center;
+//             // input{
+//             //     width: calc(100% - 72px);
+//             // }
+//             // .btn{
+//             //     width: 72px;
+//             // }
+//         }
+//     }
+// }

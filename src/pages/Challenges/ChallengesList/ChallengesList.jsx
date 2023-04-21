@@ -1,5 +1,7 @@
 import React, { useState } from 'react'
-import { Container, Row, Col, Form, Badge } from "react-bootstrap";
+import { Form, Badge } from "react-bootstrap";
+import { Button } from "react-bootstrap";
+
 import './ChallengeList.scss'
 const ChallengesList = () => {
   const allChallenges = [
@@ -25,7 +27,7 @@ const ChallengesList = () => {
   return (
     <div className="challenges-list">
       <div className="challenge-list-top-section">
-        <div className="challenge-title">Challenges List</div>
+        {/* <div className="challenge-title">Challenges List</div> */}
         <div className="sort-challenges">
           <Form.Select
             value={sortChallenges}
@@ -36,6 +38,24 @@ const ChallengesList = () => {
             <option value="2">Popular</option>
           </Form.Select>
         </div>
+        <div className="search-challenge">
+          <Form.Control
+            type="text"
+            placeholder="Search"
+            // value={searchText}
+            // onChange={(e) => setSearchText(e.target.value)}
+          />
+          <Button
+            // variant={`${props.theme === "darktheme" ? "secondary" : "primary"}`}
+            size="md"
+            // onClick={filterDiscussions}
+          >
+            Search
+          </Button>
+        </div>
+        {/* <div className="filters-challenge">
+          
+        </div> */}
       </div>
       {challengesShow.map((c, index) => (
         <div key={index} className="challenge-item">

@@ -24,6 +24,9 @@
       overflow-y: scroll;
     }
   }
+  .collab-result, .collab-editor{
+    height: calc(100vh - 96px - 3rem - 110px) !important;
+  }
   .botInp{
     margin-top: 0.5rem;
   }

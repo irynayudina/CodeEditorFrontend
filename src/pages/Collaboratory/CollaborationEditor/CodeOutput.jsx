@@ -39,7 +39,7 @@ const CodeOutput = (props) => {
         onChange={cmdHandler}
         className={`inp ${props.theme} editor-input-up `}
       />
-      <div className={`result ${props.theme}`}>
+      <div className={`result collab-result ${props.theme}`}>
         {compiling ? (
           "compiling..."
         ) : (
