@@ -21,10 +21,12 @@ const NavBar = (props) => {
             <Nav.Link href="/collaboratory" className={activeTab == '/collaboratory' ? 'active' : ""}>Collaboratory</Nav.Link>
             <Nav.Link href="/projects" className={activeTab == '/projects' ? 'active' : ""}>Projects</Nav.Link>
             <NavDropdown title="User menu" id="basic-nav-dropdown">
-              <NavDropdown.Item href="/user">My page</NavDropdown.Item>
-              <NavDropdown.Item href="/user/projects">My projects</NavDropdown.Item>
+              <NavDropdown.Item href="/user#projects">My projects</NavDropdown.Item>
               <NavDropdown.Item href="/user/notifications">Notifications</NavDropdown.Item>
-              <NavDropdown.Item href="/user/messages">Messages</NavDropdown.Item>
+              <NavDropdown.Item href="/user/messages">Discussions</NavDropdown.Item>
+              <NavDropdown.Item href="/user/messages">Challenges</NavDropdown.Item>
+              <NavDropdown.Item href="/user/messages">Charts</NavDropdown.Item>
+              <NavDropdown.Item href="/user/messages">People</NavDropdown.Item>
               <NavDropdown.Divider />
               <NavDropdown.Item href="/user/settings">
                 Settings
