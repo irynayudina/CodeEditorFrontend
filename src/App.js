@@ -11,7 +11,6 @@ import Collaboratory from './pages/Collaboratory/Collaboratory'
 import Projects from './pages/Projects/Projects'
 import Login from './pages/Utilities/Login/Login'
 import Register from './pages/Utilities/Register/Register'
-import UserMessages from './pages/Utilities/UserMessages/UserMessages'
 import UserNotifications from './pages/Utilities/UserNotifications/UserNotifications'
 import Userpage from './pages/Utilities/Userpage/Userpage'
 import UserProjects from './pages/Utilities/UserProjects/UserProjects'
@@ -74,9 +73,6 @@ function App() {
           } />
           <Route path="/user/notifications" element={
             <UserNotifications theme={theme} />
-          } />
-          <Route path="/user/messages" element={
-            <UserMessages theme={theme} />
           } />
           <Route path="/user/settings" element={
             <UserSettings theme={theme} />
