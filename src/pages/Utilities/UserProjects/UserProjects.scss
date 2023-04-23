@@ -16,7 +16,6 @@
         margin-top: 1rem;
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-        // grid-auto-flow: row dense;
         gap: 0.5rem;
         .project-item{
             width: 150px;
@@ -25,6 +24,9 @@
             background-color: whitesmoke;
             border-radius: 5px;
             padding: 0.5rem;
+            @media (max-width:372px) {
+                width: 100%;
+            }
             .project-name{
                 word-wrap: break-word;
             }

@@ -11,7 +11,7 @@ import UserChallenges from "../UserChallenges/UserChallenges";
 import UserDiscussions from "../UserDiscussions/UserDiscussions";
 const Userpage = () => {
   const [subpage, setSubpage] = useState();
-  const [pageContent, setPageContent] = useState(<UserProjects />);
+  const [pageContent, setPageContent] = useState();
   useEffect(() => {
     console.log(subpage);
     switch (subpage) {

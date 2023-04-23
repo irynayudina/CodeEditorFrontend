@@ -81,14 +81,8 @@
     grid-auto-flow: row;
     grid-template-areas:
       ". .";
-    // *{
-    // padding: 0.5rem;}
-    .user-nav-item{
-      // // border: 1px solid gray;
-      // display: flex;
-      // flex-direction: column;
-      // flex-wrap: wrap;
-      // // height: 100px;
+    @media (max-width: 304px) {
+      display: flex;
     }
   }
   .userpage-content {
