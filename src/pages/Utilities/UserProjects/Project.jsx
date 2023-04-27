@@ -11,6 +11,14 @@ import {
 } from "react-icons/bs";
 import PopUp from "../../../elements/PopUp/PopUp";
 const Project = ({ project, index }) => {
+    const handleProjectDelete = () => {
+        //here modal
+        alert('deleted the project')
+    }
+    const handleCollaboratorDelete = () => {
+      //here modal
+      alert("deleted a person from collaboration list. he will no longer have an access to editing the project code");
+    };
     const collaborators = [
         'username 1',
         'username collab 2',
@@ -53,7 +61,7 @@ const Project = ({ project, index }) => {
           {collaborators.map((person, i) => (
             <div>
               {person}{" "}
-              <Button size="sm" variant="outline-dark">
+              <Button size="sm" variant="outline-dark" onClick={handleCollaboratorDelete}>
                 <BsFillTrashFill />
               </Button>
             </div>
@@ -71,7 +79,11 @@ const Project = ({ project, index }) => {
             </Button>
           </div>
           <div>
-            <Button size="sm" variant="outline-danger">
+            <Button
+              size="sm"
+              variant="outline-danger"
+              onClick={handleProjectDelete}
+            >
               <BsFillTrashFill /> Delete
             </Button>
           </div>
