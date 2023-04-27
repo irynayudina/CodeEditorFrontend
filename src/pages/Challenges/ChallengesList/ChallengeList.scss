@@ -1,5 +1,6 @@
 .challenge-item{
-    background: rgb(105, 182, 233);// rgb(202, 226, 242);
+    background: rgb(105, 182, 233);
+    background: whitesmoke;
     border-radius: 0.5rem;
     padding: 0.5rem;
     margin-bottom: 0.5rem;
@@ -14,6 +15,7 @@
         max-width: 15rem;
         font-size: 14px;
         text-align: right;
+        // flex-direction: column;
     }
     .challenge-topsection{
         display: flex;

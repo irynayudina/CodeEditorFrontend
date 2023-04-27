@@ -1,5 +1,9 @@
 import React from 'react'
-import { BsTrophyFill, BsFillHandThumbsUpFill } from "react-icons/bs";
+import {
+  BsTrophyFill,
+  BsFillHandThumbsUpFill,
+  BsBarChartLineFill,
+} from "react-icons/bs";
 import {Button} from 'react-bootstrap'
 const UserInfo = () => {
   return (
@@ -12,7 +16,7 @@ const UserInfo = () => {
           <div>20</div>
         </div>
         <div className="rating">
-          <BsFillHandThumbsUpFill className="amount" />
+          <BsBarChartLineFill className="amount" />
           <div>30</div>
         </div>
       </div>

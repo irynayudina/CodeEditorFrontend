@@ -1,0 +1,27 @@
+.list-group-item {
+//   display: flex;
+//   justify-content: space-between;
+//   align-items: center;
+//   padding: 1rem;
+
+  &.status-passed {
+    background-color: #c8e6c9;
+    svg{
+        color: #007E33;
+    }
+  }
+
+  &.status-attempted  {
+    background-color: #ffcc80;
+    svg{
+        color: #FF8800;
+    }
+  }
+
+  &.status-failed {
+    background-color: #ffcdd2;
+    svg{
+        color: #CC0000;
+    }
+  }
+}

@@ -70,7 +70,7 @@ const ChallengesList = () => {
               <p className="text-wrap">{c.author}</p>
             </div>
           </div>
-          <p>{c.text}</p>
+          {/* <p>{c.text}</p> */}
         </div>
       ))}
     </div>

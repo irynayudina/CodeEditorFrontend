@@ -1,3 +1,14 @@
 .user-challenges{
     margin: 1rem;
+    .user-header-challenges{
+        text-align: center;
+    }
+    .challenges-user-list{
+        // display: flex;
+        .challenge-user-item{
+            border: 1px solid red;
+            display: flex;
+            gap: 0.5rem;
+        }
+    }
 }

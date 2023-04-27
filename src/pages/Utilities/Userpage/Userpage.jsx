@@ -13,7 +13,6 @@ const Userpage = () => {
   const [subpage, setSubpage] = useState();
   const [pageContent, setPageContent] = useState();
   useEffect(() => {
-    console.log(subpage);
     switch (subpage) {
       case "#projects":
         setPageContent(<UserProjects />);
@@ -44,9 +43,7 @@ const Userpage = () => {
         <UserInfo />
         <UserNav subpage={subpage} setSubpage={setSubpage} />
       </div>
-      <div className="userpage-content">
-        {pageContent}
-      </div>
+      <div className="userpage-content">{pageContent}</div>
     </div>
   );
 }

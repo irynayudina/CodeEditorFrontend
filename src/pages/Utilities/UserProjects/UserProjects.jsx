@@ -1,9 +1,117 @@
 import React, {useState} from 'react'
 import './UserProjects.scss'
 import { Container, Row, Col, Form, Badge } from "react-bootstrap";
-
+import Project from './Project';
 const UserProjects = () => {
+  const projects = [
+    {
+      name: "project1",
+      language: "c++",
+      createdAt: "26.04.2023",
+      codeFile: "...",
+      likes: "999k",
+    },
+    {
+      name: "project1",
+      language: "c++",
+      createdAt: "26.04.2023",
+      codeFile: "...",
+      likes: "10",
+    },
+    {
+      name: "project1",
+      language: "c++",
+      createdAt: "26.04.2023",
+      codeFile: "...",
+      likes: "10",
+    },
+    {
+      name: "project1",
+      language: "c++",
+      createdAt: "26.04.2023",
+      codeFile: "...",
+      likes: "10",
+    },
+    {
+      name: "project1",
+      language: "c++",
+      createdAt: "26.04.2023",
+      codeFile: "...",
+      likes: "10",
+    },
+    {
+      name: "project1",
+      language: "c++",
+      createdAt: "26.04.2023",
+      codeFile: "...",
+      likes: "10",
+    },
+    {
+      name: "project1",
+      language: "c++",
+      createdAt: "26.04.2023",
+      codeFile: "...",
+      likes: "10",
+    },
+    {
+      name: "project1",
+      language: "c++",
+      createdAt: "26.04.2023",
+      codeFile: "...",
+      likes: "10",
+    },
+    {
+      name: "project1",
+      language: "c++",
+      createdAt: "26.04.2023",
+      codeFile: "...",
+      likes: "10",
+    },
+    {
+      name: "project1",
+      language: "c++",
+      createdAt: "26.04.2023",
+      codeFile: "...",
+      likes: "10",
+    },
+    {
+      name: "project1",
+      language: "c++",
+      createdAt: "26.04.2023",
+      codeFile: "...",
+      likes: "10",
+    },
+    {
+      name: "project1",
+      language: "c++",
+      createdAt: "26.04.2023",
+      codeFile: "...",
+      likes: "10",
+    },
+    {
+      name: "project1",
+      language: "c++",
+      createdAt: "26.04.2023",
+      codeFile: "...",
+      likes: "10",
+    },
+    {
+      name: "project1",
+      language: "c++",
+      createdAt: "26.04.2023",
+      codeFile: "...",
+      likes: "10",
+    },
+    {
+      name: "project1",
+      language: "c++",
+      createdAt: "26.04.2023",
+      codeFile: "...",
+      likes: "10",
+    },
+  ];
   const [sortProjects, setSortProjects] = useState("0");
+  const [actionsShow, setActionsShow] = useState(false)
   return (
     <div className="projects-container">
       <h5 className="title-projects">Created projects & Collaborations</h5>
@@ -19,32 +127,18 @@ const UserProjects = () => {
         <div>
           <Form.Check
             type="switch"
-            id="custom-switch"
             label="Only my prodjects"
           />
           <Form.Check
             type="switch"
-            id="custom-switch"
             label="Only collaborations"
           />
         </div>
       </div>
       <div className="projects-display">
-        <div className="project-item">
-          <p className="project-name">
-            Project
-          </p>
-          <div className="likes">Likes</div>
-          <div className="tags">tags</div>
-          <div className="dateCreated">19.04.2023</div>
-        </div>
-        <div className="project-item">Project</div>
-        <div className="project-item">Project</div>
-        <div className="project-item">Project</div>
-        <div className="project-item">Project</div>
-        <div className="project-item">Project</div>
-        <div className="project-item">Project</div>
-        <div className="project-item">Project</div>
+        {projects.map((project, i) => (
+          <Project project={project} index={i} />
+        ))}
       </div>
     </div>
   );
