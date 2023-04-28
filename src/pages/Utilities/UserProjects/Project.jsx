@@ -1,6 +1,7 @@
-import React from 'react'
+import React, {useState} from 'react'
 import { Form, Badge } from "react-bootstrap";
 import { Button } from 'react-bootstrap';
+import { Link } from "react-router-dom";
 import {
   BsFillGearFill,
   BsFillTrashFill,
@@ -10,22 +11,33 @@ import {
   BsClock,
 } from "react-icons/bs";
 import PopUp from "../../../elements/PopUp/PopUp";
-const Project = ({ project, index }) => {
-    const handleProjectDelete = () => {
-        //here modal
-        alert('deleted the project')
+const Project = ({ project, index, deleteProjectHandler }) => {
+  const [closePopup, setClosePopup] = useState()
+    const handleProjectDelete = async () => {
+      let deleteProject = window.confirm('Delete the project?');
+      if (deleteProject) {
+        setClosePopup("closePopup");
+        deleteProjectHandler(index);
+      }
     }
-    const handleCollaboratorDelete = () => {
-      //here modal
-      alert("deleted a person from collaboration list. he will no longer have an access to editing the project code");
+  const handleCollaboratorDelete = (i) => {
+      console.log(i)
+      let deleteCollab = window.confirm(
+        "Delete a person from collaboration list? He will no longer have an access to editing the project code"
+      );
+      if (deleteCollab) {
+        let newList = [...collaborators]; 
+        newList.splice(i, 1); 
+        setCollaborators(newList);
+      }
     };
-    const collaborators = [
-        'username 1',
-        'username collab 2',
-        '3rd person'
-    ]
+    const [collaborators, setCollaborators] = useState([
+      "username 1",
+      "username collab 2",
+      "3rd person",
+    ]);
   return (
-    <PopUp>
+    <PopUp className={closePopup}>
       <div className="project-item" key={index}>
         <h6 className="project-name">{project.name + index}</h6>
         <div className="project-language">
@@ -40,6 +52,7 @@ const Project = ({ project, index }) => {
           </div>
         </div>
       </div>
+
       <div className="actions">
         <div className="settings-project">
           <BsFillGearFill /> {project.name + index}
@@ -59,9 +72,13 @@ const Project = ({ project, index }) => {
         <div className="collaborators">
           Collaborations:
           {collaborators.map((person, i) => (
-            <div>
+            <div key={i}>
               {person}{" "}
-              <Button size="sm" variant="outline-dark" onClick={handleCollaboratorDelete}>
+              <Button
+                size="sm"
+                variant="outline-dark"
+                onClick={() => handleCollaboratorDelete(i)}
+              >
                 <BsFillTrashFill />
               </Button>
             </div>
@@ -74,9 +91,11 @@ const Project = ({ project, index }) => {
         </div>
         <div className="bottom-options">
           <div>
-            <Button variant="outline-primary" size="sm">
-              <BsCodeSlash /> Edit code
-            </Button>
+            <Link to="/editor">
+              <Button variant="outline-primary" size="sm">
+                <BsCodeSlash /> Edit code
+              </Button>
+            </Link>
           </div>
           <div>
             <Button

@@ -1,12 +1,11 @@
 import React, {useRef, useEffect, useState} from 'react'
 import './PopUp.scss'
 import {BsXCircle} from 'react-icons/bs'
-const PopUp = ({children}) => {
-  
+const PopUp = ({ children, className }) => {
   const childrenArray = React.Children.toArray(children);
   const trigger = childrenArray[0];
   const content = childrenArray[1];
-  
+
   const [showPopup, setShowPopup] = useState(false);
 
   const handleShowPopup = () => {
@@ -40,7 +39,7 @@ const PopUp = ({children}) => {
     };
   }, [popupRef, triggerRef]);
   return (
-    <div>
+    <div className={className}>
       <div onClick={handleShowPopup} ref={triggerRef}>
         {trigger}
       </div>

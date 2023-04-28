@@ -3,7 +3,7 @@ import './UserProjects.scss'
 import { Container, Row, Col, Form, Badge } from "react-bootstrap";
 import Project from './Project';
 const UserProjects = () => {
-  const projects = [
+  const [projects, setProjects] = useState([
     {
       name: "project1",
       language: "c++",
@@ -109,9 +109,14 @@ const UserProjects = () => {
       codeFile: "...",
       likes: "10",
     },
-  ];
+  ]);
   const [sortProjects, setSortProjects] = useState("0");
-  const [actionsShow, setActionsShow] = useState(false)
+  const deleteProjectHandler = (i) => {
+    let newList = [...projects];
+    newList.splice(i, 1);
+    setProjects(newList);
+    console.log(projects)
+  }
   return (
     <div className="projects-container">
       <h5 className="title-projects">Created projects & Collaborations</h5>
@@ -125,19 +130,13 @@ const UserProjects = () => {
           <option value="2">Popular</option>
         </Form.Select>
         <div>
-          <Form.Check
-            type="switch"
-            label="Only my prodjects"
-          />
-          <Form.Check
-            type="switch"
-            label="Only collaborations"
-          />
+          <Form.Check type="switch" label="Only my prodjects" />
+          <Form.Check type="switch" label="Only collaborations" />
         </div>
       </div>
       <div className="projects-display">
         {projects.map((project, i) => (
-          <Project project={project} index={i} />
+          <Project project={project} index={i} key={i} deleteProjectHandler={deleteProjectHandler} />
         ))}
       </div>
     </div>
