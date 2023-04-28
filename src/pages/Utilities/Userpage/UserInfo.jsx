@@ -10,6 +10,7 @@ const UserInfo = () => {
     <div className="userpage-header">
       <div className="circle-img"></div>
       <h5 className="username">User Name</h5>
+      <p className="text-muted text-center">user_name</p>
       <div className="ratings">
         <div className="rating">
           <BsTrophyFill className="type" />
@@ -28,9 +29,9 @@ const UserInfo = () => {
           <div>Following</div> <div>300</div>
         </div>
       </div>
-      <Button size="sm" className="follow-btn">
+      {/* <Button size="sm" className="follow-btn">
         Follow
-      </Button>
+      </Button> */}
       <hr />
       <div className="contacts">
         <div className="contact">

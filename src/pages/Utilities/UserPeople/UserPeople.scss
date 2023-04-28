@@ -1,0 +1,16 @@
+.peopleContainer{
+    margin: 1rem;
+    .title-people{
+        text-align: center;
+    }
+    .people-topsection{
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        select{
+            max-width: 320px;
+        }
+    }
+   
+}
