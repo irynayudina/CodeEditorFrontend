@@ -5,7 +5,7 @@ import {
   BsBarChartLineFill,
 } from "react-icons/bs";
 import {Button} from 'react-bootstrap'
-const UserInfo = () => {
+const UserInfo = ({isPublic}) => {
   return (
     <div className="userpage-header">
       <div className="circle-img"></div>
@@ -29,9 +29,10 @@ const UserInfo = () => {
           <div>Following</div> <div>300</div>
         </div>
       </div>
-      {/* <Button size="sm" className="follow-btn">
+      {isPublic ?
+        <Button size="sm" className="follow-btn">
         Follow
-      </Button> */}
+      </Button> : ''}
       <hr />
       <div className="contacts">
         <div className="contact">

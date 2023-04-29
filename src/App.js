@@ -15,6 +15,7 @@ import UserNotifications from './pages/Utilities/UserNotifications/UserNotificat
 import Userpage from './pages/Utilities/Userpage/Userpage'
 import UserProjects from './pages/Utilities/UserProjects/UserProjects'
 import UserSettings from './pages/Utilities/UserSettings/UserSettings'
+import PublicUserpage from './pages/Utilities/PublicUserpage/PublicUserpage';
 function App() {
   const [theme, setTheme] = useState("darktheme")
   const [breakpoint, setBreakpoint] = useState("xxl")
@@ -67,6 +68,9 @@ function App() {
           } />
           <Route path="/user" element={
             <Userpage theme={theme} />
+          } />
+           <Route path="/public/user" element={
+            <PublicUserpage theme={theme} />
           } />
           <Route path="/user/projects" element={
             <UserProjects theme={theme} />

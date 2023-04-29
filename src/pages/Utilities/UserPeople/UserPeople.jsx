@@ -44,8 +44,8 @@ const UserPeople = () => {
       </div>
       <div className="people-topsection">
         <Form.Select
-        value={filterParam}
-        onChange={(e) => setFilter(e.target.value)}
+          value={filterParam}
+          onChange={(e) => setFilter(e.target.value)}
         >
           <option value="0">All</option>
           <option value="following">Following</option>
@@ -56,10 +56,10 @@ const UserPeople = () => {
         {people.map((p, i) => (
           <div className="person-item" key={i}>
             <div className="person-info-group">
-              <Link to="/editor">
+              <Link to="/public/user#charts">
                 <div className="person-img"></div>
               </Link>
-              <Link to="/editor">
+              <Link to="/public/user#charts">
                 <div className="person-name">{p.name}</div>
                 <Badge bg="secondary" className="bage-role">
                   {p.role}
