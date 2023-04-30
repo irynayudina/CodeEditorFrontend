@@ -8,7 +8,7 @@ import {
 } from "react-icons/bs";
 const UserPeople = () => {
   const peopleArray = [
-    { name: "person 11111111111111111111", role: "follower" },
+    { name: "person 11111111111111111111 222222222", role: "follower" },
     { name: "person 2", role: "follower" },
     { name: "person3", role: "follower" },
     { name: "person4", role: "following" },
