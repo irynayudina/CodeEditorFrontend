@@ -22,9 +22,9 @@
                     color: aliceblue;
                     color: #69B6E9;
                     margin-top: 0.5rem;
-                    height: 10px;
-                    min-width: 10px;
-                    max-width: 10px;
+                    height: 0.5rem;
+                    min-width: 0.5rem;
+                    max-width: 0.5rem;
                     outline: #d683e6 1px 1px;
                     outline: #535fed 1px 1px;
                     box-shadow: 0px 0px 20px 20px #535fed;
@@ -36,19 +36,29 @@
                         box-shadow: 0 0 10px #0D6EFD, 0 0 20px #0D6EFD, 0 0 30px #0D6EFD,
                         0 0 40px #0D6EFD; /* multiple shadows with increasing size */
                 }
-                .notification-text{
-                    // margin-left: calc(0.5rem + 10px);
-                }
             }
             .top-notification{
                 justify-content: center;
                 align-items: center;
+                // flex-wrap: wrap;
                 .notification-title{
-                    flex-grow: 3;
+                    flex-grow: 2;
                     font-size: 18px;
                     font-weight: 500;
                     display: flex;
                     gap: 0.5rem;
+                    width: auto;
+                    .title{
+                        width: calc(100%);                        
+                        word-wrap: break-word;
+                        max-width: calc(100vw - 7rem - 67px);
+                    }
+                    @media (min-width: 768px) {
+                    //    color: red;
+                       .title{
+                            max-width: calc(100vw - 9rem - 67px - 30vw);
+                        }
+                    } 
                 }
                 .notification-time{
                     font-size: 14px;
@@ -59,11 +69,13 @@
             .top-notification{
                 .notification-title{
                     font-weight: 400;
+                    opacity: 0.5;
                 }
             }
             .middle-notification{
                 .notification-text{
                     margin-left: 0;
+                    opacity: 0.5;
                 }
             }
         }

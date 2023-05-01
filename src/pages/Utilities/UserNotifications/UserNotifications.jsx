@@ -49,7 +49,7 @@ const UserNotifications = () => {
       type: "userIteraction",
     },
     {
-      title: "title 3",
+      title: "title 333333333333333333333333333333333333333333333333",
       text: "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quidem blanditiis quo magnam similique officia recusandae distinctio. Minima rem eius nisi possimus, tenetur ad nulla aspernatur reiciendis deleniti exercitationem inventore alias.",
       createdAt: "2023.04.30",
       read: false,
@@ -86,7 +86,7 @@ const UserNotifications = () => {
             <div className="top-notification">
               <div className="notification-title">
                 {notification.read ? "" : <div className="newCircle"></div>}
-                {notification.title}
+                <div className="title">{notification.title}</div>
               </div>
               <div className="notification-time text-muted">
                 {notification.createdAt}
