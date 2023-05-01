@@ -85,8 +85,13 @@ const UserNotifications = () => {
           >
             <div className="top-notification">
               <div className="notification-title">
-                {notification.read ? "" : <div className="newCircle"></div>}
-                <div className="title">{notification.title}</div>
+                {/* {notification.read ? "" : <div className="newCircle"></div>} */}
+                <div className="title">
+                  <div className="circle">
+                    {notification.read ? "" : <div className="newCircle"></div>}
+                  </div>
+                  {notification.title}
+                </div>
               </div>
               <div className="notification-time text-muted">
                 {notification.createdAt}

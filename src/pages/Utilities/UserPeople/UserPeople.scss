@@ -63,8 +63,9 @@
                 }
             }
             @media (max-width: 1010px) {
-                flex-wrap: wrap;
+                // flex-wrap: wrap;
                 justify-content: center;
+                align-items: flex-start;
                 .person-info-group{
                     justify-content: flex-start;
                     .person-img{
@@ -73,7 +74,7 @@
                     }
                     .person-name{
                         max-width: 100%;
-                        max-width: calc(100vw - 5rem - 80px);
+                        max-width: calc(100vw - 6rem - 92px);
                     }
                     flex-grow: 3;
                 }
