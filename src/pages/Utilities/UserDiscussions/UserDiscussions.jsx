@@ -1,9 +1,58 @@
-import React from 'react'
+import React, {useState} from 'react'
+import './UserDiscussions.scss'
+import { BsFillChatLeftFill, BsHandThumbsUpFill } from "react-icons/bs";
 
 const UserDiscussions = () => {
+  const discussionsArray = [
+    {
+      name: "name of discussion or string representing response to which discussion  or user it is",
+      likes: 10,
+      comments: 10,
+      createdAt: "01.05.2023",
+      text: "text of a discussion or a comment",
+    },
+    {
+      name: "name of discussion or string representing response to which discussion  or user it is",
+      likes: 10,
+      comments: 10,
+      createdAt: "01.05.2023",
+      text: "text of a discussion or a comment",
+    },
+    {
+      name: "name of discussion or string representing response to which discussion  or user it is",
+      likes: 10,
+      comments: 10,
+      createdAt: "01.05.2023",
+      text: "text of a discussion or a comment",
+    },
+  ];
+  const [discussions, setDiscussions] = useState(discussionsArray);
   return (
-    <div>UserDiscussions</div>
-  )
+    <div className="class-discussions">
+      <h5 className="title">Discussions and Comments</h5>
+      {discussions.map((discussion, index) => (
+        <div className="discussion-item" key={index}>
+          <div className="topsection">
+            <div className="discussion-title">{discussion.name}</div>
+            <div className="discussion-date text-muted">
+              {discussion.createdAt}
+            </div>
+          </div>
+          <div className="discussion-text">{discussion.text}</div>
+          <div className="numbers text-muted">
+            <div className="discussion-likes">
+              <BsHandThumbsUpFill />
+              {discussion.likes}
+            </div>
+            <div className="discussion-comments">
+              <BsFillChatLeftFill />
+              {discussion.comments}
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+  );
 }
 
 export default UserDiscussions
