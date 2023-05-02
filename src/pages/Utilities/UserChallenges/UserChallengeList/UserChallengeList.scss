@@ -1,27 +1,57 @@
-.list-group-item {
-//   display: flex;
-//   justify-content: space-between;
-//   align-items: center;
-//   padding: 1rem;
-
-  &.status-passed {
-    background-color: #c8e6c9;
-    svg{
-        color: #007E33;
+.challenges-user-list{
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: 0.5rem;
+  .challenge-user-item {
+    display: flex;
+    justify-content: space-between;
+    gap: 0.5rem;
+    background-color: whitesmoke;
+    border-radius: 0.5rem;
+    padding: 0.5rem;
+    .left{
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      .left-top, .left-bottom{
+        display: flex;
+        // justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+      }
     }
-  }
-
-  &.status-attempted  {
-    background-color: #ffcc80;
-    svg{
-        color: #FF8800;
+    .right{
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: end;
+      .top-right{
+        text-align: right;
+      }
+      .date-challenge{
+        // font-size: 14px;
+      }
     }
-  }
+    &.status-passed {
+      background-color: #c8e6c9;
+      svg{
+          color: #007E33;
+      }
+    }
 
-  &.status-failed {
-    background-color: #ffcdd2;
-    svg{
-        color: #CC0000;
+    &.status-attempted  {
+      background-color: #ffcc80;
+      svg{
+          color: #FF8800;
+      }
+    }
+
+    &.status-failed {
+      background-color: #ffcdd2;
+      svg{
+          color: #CC0000;
+      }
     }
   }
 }
