@@ -1,6 +1,7 @@
 import React, {useState} from 'react'
 import './UserDiscussions.scss'
 import { BsFillChatLeftFill, BsHandThumbsUpFill } from "react-icons/bs";
+import { Container, Row, Col, Form, Badge } from "react-bootstrap";
 
 const UserDiscussions = () => {
   const discussionsArray = [
@@ -30,6 +31,14 @@ const UserDiscussions = () => {
   return (
     <div className="class-discussions">
       <h5 className="title">Discussions and Comments</h5>
+      <Form.Select 
+      // value={sortDiscussions}
+      // onChange={(e) => setSortDiscussions(e.target.value)}
+      >
+        <option value="0">All</option>
+        <option value="1">Created discussions</option>
+        <option value="2">Comments</option>
+      </Form.Select>
       {discussions.map((discussion, index) => (
         <div className="discussion-item" key={index}>
           <div className="topsection">

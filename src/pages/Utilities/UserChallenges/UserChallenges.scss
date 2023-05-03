@@ -3,15 +3,23 @@
     .user-header-challenges{
         text-align: center;
     }
+    .challenges-menu{
+        display: flex;
+        gap: 0.5rem;
+        justify-content: space-between;
+        select{
+            width: auto;
+        }
+        .custom-form-check{
+            display: flex;
+            align-items: baseline;
+            align-content: baseline;
+        }
+        margin-bottom: 0.5rem;
+        flex-wrap: wrap;
+    }
     @media (max-width: 576px) {
         margin: 0;
+        margin-top: 0.5rem;
     }
-    // .challenges-user-list{
-    //     // display: flex;
-    //     .challenge-user-item{
-    //         border: 1px solid red;
-    //         display: flex;
-    //         gap: 0.5rem;
-    //     }
-    // }
 }

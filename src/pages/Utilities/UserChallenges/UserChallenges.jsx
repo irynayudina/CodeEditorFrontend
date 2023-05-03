@@ -1,6 +1,10 @@
 import React, {useState} from 'react'
 import './UserChallenges.scss'
 import UserChallengeList from './UserChallengeList/UserChallengeList';
+import { Container, Row, Col, Form, Badge } from "react-bootstrap";
+import { Button } from "react-bootstrap";
+import { Link } from "react-router-dom";
+
 const UserChallenges = () => {
   //status - passed, not, failed
   const allChallenges = [
@@ -41,8 +45,34 @@ const UserChallenges = () => {
   const [challengesShow, setChallengesShow] = useState(allChallenges);
   return (
     <div className="user-challenges">
-      <div className="user-header-challenges">
-        <h5>All</h5>
+      <h5 className="user-header-challenges">Challenges</h5>
+      <div className="challenges-menu">
+        <Form.Select
+        // value={sortDiscussions}
+        // onChange={(e) => setSortDiscussions(e.target.value)}
+        >
+          <option value="0">Any difficulty</option>
+          <option value="1">Easy</option>
+          <option value="2">Medium</option>
+          <option value="3">Hard</option>
+        </Form.Select>
+        <Form.Select
+        // value={sortDiscussions}
+        // onChange={(e) => setSortDiscussions(e.target.value)}
+        >
+          <option value="0">Any topic</option>
+          <option value="1">Algorithms</option>
+          <option value="2">Web</option>
+          <option value="3">Custom</option>
+        </Form.Select>
+        <div className="custom-form-check">
+          <Form.Check type="switch" label="Created by me" />
+        </div>
+        <Link to="/editor">
+          <Button variant="primary" size="sm">
+            Create new
+          </Button>
+        </Link>
       </div>
       <UserChallengeList challenges={challengesShow} />
     </div>
