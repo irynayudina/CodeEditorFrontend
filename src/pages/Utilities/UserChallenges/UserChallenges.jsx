@@ -8,34 +8,42 @@ const UserChallenges = () => {
       name: "challenge 1",
       difficulty: "medium",
       topic: "algorithms",
-      text: "solve this challenge",
       createdAt: "17.04.2023",
-      author: "Code-Network",
       status: "passed",
+      casesPassed: 8,
+      casesAll: 8,
+      timeTaken: "1min",
+      pointsEarned: 10,
     },
     {
       name: "challenge 2",
       difficulty: "medium",
       topic: "algorithms",
-      text: "solve this challenge",
       createdAt: "17.04.2023",
-      author: "Code-Network",
       status: "attempted",
+      casesPassed: 7,
+      casesAll: 8,
+      timeTaken: "40s",
+      pointsEarned: 3,
     },
     {
       name: "challenge 3",
       difficulty: "medium",
       topic: "algorithms",
-      text: "solve this challenge",
       createdAt: "17.04.2023",
-      author: "Code-Network",
       status: "failed",
+      casesPassed: 0,
+      casesAll: 8,
+      timeTaken: "20s",
+      pointsEarned: 0,
     },
   ];
   const [challengesShow, setChallengesShow] = useState(allChallenges);
   return (
     <div className="user-challenges">
-      <div className="user-header-challenges">All</div>
+      <div className="user-header-challenges">
+        <h5>All</h5>
+      </div>
       <UserChallengeList challenges={challengesShow} />
     </div>
   );
