@@ -65,14 +65,16 @@ const UserChallenges = () => {
           <option value="2">Web</option>
           <option value="3">Custom</option>
         </Form.Select>
-        <div className="custom-form-check">
-          <Form.Check type="switch" label="Created by me" />
+        <div className="group-bottom">
+          <div className="custom-form-check">
+            <Form.Check type="switch" label="Created by me" />
+          </div>
+          <Link to="/editor">
+            <Button variant="primary" size="sm">
+              Create new
+            </Button>
+          </Link>
         </div>
-        <Link to="/editor">
-          <Button variant="primary" size="sm">
-            Create new
-          </Button>
-        </Link>
       </div>
       <UserChallengeList challenges={challengesShow} />
     </div>
