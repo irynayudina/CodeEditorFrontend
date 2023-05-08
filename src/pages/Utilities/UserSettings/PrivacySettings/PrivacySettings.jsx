@@ -7,21 +7,40 @@ const PrivacySettings = () => {
     <div className="privacy-settings">
       <div className="text-settings">
         <div className="description-setting">
-          <span>Set time for session expiration:</span>
+          <span>Set progress charts visible:</span>
         </div>
         <div className="controls-setting">
           <Form.Control
             type="text"
-            placeholder="Enter new time for session expiration"
+            placeholder="Enter progress charts visible"
           />
           <Button variant="primary" size="sm">
             Save changes
           </Button>
         </div>
       </div>
-      <div className="ratings">progress charts visible</div>
-      <div className="social-links-privacy">social links visible</div>
-      <div className="contact-privacy">contact info visible</div>
+      <div className="text-settings">
+        <div className="description-setting">
+          <span>Set social links visible:</span>
+        </div>
+        <div className="controls-setting">
+          <Form.Control type="text" placeholder="Enter social links visible" />
+          <Button variant="primary" size="sm">
+            Save changes
+          </Button>
+        </div>
+      </div>
+      <div className="text-settings">
+        <div className="description-setting">
+          <span>Set contact info visible:</span>
+        </div>
+        <div className="controls-setting">
+          <Form.Control type="text" placeholder="Entercontact info visible" />
+          <Button variant="primary" size="sm">
+            Save changes
+          </Button>
+        </div>
+      </div>
     </div>
   );
 }
