@@ -40,10 +40,6 @@ function FileInput({ onImageSelected }) {
           />
         </Form.Group>
       </Form>
-
-      {/* <Button variant="primary" onClick={onChooseImg}>
-        Choose
-      </Button> */}
     </div>
   );
 }
