@@ -8,46 +8,114 @@ import './Navbar.scss'
 const NavBar = (props) => {  
   const [activeTab, setActiveTab] = useState(window.location.pathname)
     return (
-      <Navbar bg={`${props.theme == "lighttheme" ? "primary" : "dark"}`} variant="dark" expand="lg" className={props.theme}> 
-      <Container fluid={true}>
-          <Navbar.Brand href="/" >Code-Network &lt;/&gt;</Navbar.Brand>
-        <Navbar.Toggle aria-controls="basic-navbar-nav" />
-        <Navbar.Collapse id="basic-navbar-nav">
-          <Nav className="me-auto">
-            <Nav.Link href="/" className={activeTab == '/' ? 'active' : ""}>Home</Nav.Link>
-            <Nav.Link href="/editor" exact="true" activeclassname="active" className={activeTab == '/editor' ? 'active' : ""}>Editor</Nav.Link>
-            <Nav.Link href="/discussions" className={activeTab == '/discussions' ? 'active' : ""}>Discussions</Nav.Link>
-            <Nav.Link href="/challenges" className={activeTab == '/challenges' ? 'active' : ""}>Challenges</Nav.Link>
-            <Nav.Link href="/collaboratory" className={activeTab == '/collaboratory' ? 'active' : ""}>Collaboratory</Nav.Link>
-            <Nav.Link href="/projects" className={activeTab == '/projects' ? 'active' : ""}>Projects</Nav.Link>
-            <NavDropdown title="User menu" id="basic-nav-dropdown">
-              <NavDropdown.Item href="/user#projects">My projects</NavDropdown.Item>
-              <NavDropdown.Item href="/user#notifications">Notifications</NavDropdown.Item>
-              <NavDropdown.Item href="/user#discussions">Discussions</NavDropdown.Item>
-              <NavDropdown.Item href="/user#challenges">Challenges</NavDropdown.Item>
-              <NavDropdown.Item href="/user#charts">Charts</NavDropdown.Item>
-              <NavDropdown.Item href="/user#people">People</NavDropdown.Item>
-              <NavDropdown.Divider />
-              <NavDropdown.Item href="/user#settings">
-                Settings
-              </NavDropdown.Item>
-              <NavDropdown.Item href="/user#singout">
-                Sing out
-              </NavDropdown.Item>
-            </NavDropdown>
-          </Nav>
+      <Navbar
+        bg={`${props.theme == "lighttheme" ? "primary" : "dark"}`}
+        variant="dark"
+        expand="lg"
+        className={props.theme}
+      >
+        <Container fluid={true}>
+          <Navbar.Brand href="/">Code-Network &lt;/&gt;</Navbar.Brand>
+          <Navbar.Toggle aria-controls="basic-navbar-nav" />
+          <Navbar.Collapse id="basic-navbar-nav">
+            <Nav className="me-auto">
+              <Nav.Link href="/" className={activeTab == "/" ? "active" : ""}>
+                Home
+              </Nav.Link>
+              <Nav.Link
+                href="/editor"
+                exact="true"
+                activeclassname="active"
+                className={activeTab == "/editor" ? "active" : ""}
+              >
+                Editor
+              </Nav.Link>
+              <Nav.Link
+                href="/discussions"
+                className={activeTab == "/discussions" ? "active" : ""}
+              >
+                Discussions
+              </Nav.Link>
+              <Nav.Link
+                href="/challenges"
+                className={activeTab == "/challenges" ? "active" : ""}
+              >
+                Challenges
+              </Nav.Link>
+              <Nav.Link
+                href="/collaboratory"
+                className={activeTab == "/collaboratory" ? "active" : ""}
+              >
+                Collaboratory
+              </Nav.Link>
+              <Nav.Link
+                href="/projects"
+                className={activeTab == "/projects" ? "active" : ""}
+              >
+                Projects
+              </Nav.Link>
+              <NavDropdown title="User menu" id="basic-nav-dropdown">
+                <NavDropdown.Item href="/user#projects">
+                  My projects
+                </NavDropdown.Item>
+                <NavDropdown.Item href="/user#notifications">
+                  Notifications
+                </NavDropdown.Item>
+                <NavDropdown.Item href="/user#discussions">
+                  Discussions
+                </NavDropdown.Item>
+                <NavDropdown.Item href="/user#challenges">
+                  Challenges
+                </NavDropdown.Item>
+                <NavDropdown.Item href="/user#charts">Charts</NavDropdown.Item>
+                <NavDropdown.Item href="/user#people">People</NavDropdown.Item>
+                <NavDropdown.Divider />
+                <NavDropdown.Item href="/user#settings">
+                  Settings
+                </NavDropdown.Item>
+                <NavDropdown.Item href="/user#singout">
+                  Sing out
+                </NavDropdown.Item>
+                <NavDropdown.Item href="/login">
+                  Sign In
+                </NavDropdown.Item>
+                <NavDropdown.Item href="/register">
+                  Sign Up
+                </NavDropdown.Item>
+              </NavDropdown>
+            </Nav>
           </Navbar.Collapse>
-          <Nav className='ms-auto'>
+          <Nav className="ms-auto">
             <Container>
-              <Button variant={`${props.theme === "darktheme" ? "primary" : "secondary"}`} size="sm"
-                onClick={() => { props.setTheme("darktheme"); localStorage.setItem('mainThemeStored', "darktheme")}}>Dark</Button>
-              <Button variant={`${props.theme === "lighttheme" ? "primary" : "secondary"}`} size="sm"
-                onClick={() => { props.setTheme("lighttheme") ; localStorage.setItem('mainThemeStored', "lighttheme")}}>Light</Button>
+              <Button
+                variant={`${
+                  props.theme === "darktheme" ? "primary" : "secondary"
+                }`}
+                size="sm"
+                onClick={() => {
+                  props.setTheme("darktheme");
+                  localStorage.setItem("mainThemeStored", "darktheme");
+                }}
+              >
+                Dark
+              </Button>
+              <Button
+                variant={`${
+                  props.theme === "lighttheme" ? "primary" : "secondary"
+                }`}
+                size="sm"
+                onClick={() => {
+                  props.setTheme("lighttheme");
+                  localStorage.setItem("mainThemeStored", "lighttheme");
+                }}
+              >
+                Light
+              </Button>
             </Container>
           </Nav>
-        </Container>       
-    </Navbar>
-    )
+        </Container>
+      </Navbar>
+    );
 }
 
 export default NavBar

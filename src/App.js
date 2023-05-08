@@ -85,10 +85,10 @@ function App() {
             // <UserSingout theme={theme} />
             <UserSettings theme={theme} />
           } /> */}
-          <Route path="/user/login" element={
+          <Route path="/login" element={
             <Login theme={theme} />
           }/>
-          <Route path="/user/register" element={
+          <Route path="/register" element={
             <Register theme={theme} />
           }/>
         </Routes>      
