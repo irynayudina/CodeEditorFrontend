@@ -47,3 +47,22 @@
         }
     }
 }
+.add-new-discussion-form{
+    h5{
+        text-align: center;
+    }
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1rem;
+    .form-discussion-create{
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+    width: 60vw;
+    @media (max-width: 567px) {
+        width: calc(100vw - 4rem);
+        padding: 0;
+    }
+}

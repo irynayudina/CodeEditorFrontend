@@ -3,8 +3,10 @@ import { Container, Row, Col, Form, Badge } from "react-bootstrap";
 import './Discussions.scss'
 import { Button } from "react-bootstrap";
 import { BsFillChatLeftFill, BsHandThumbsUpFill } from "react-icons/bs";
-
+import PopUp from '../../elements/PopUp/PopUp';
+import AddNewDiscussion from './AddNewDiscussion'
 const Discussions = (props) => {
+  const [closePopup, setClosePopup] = useState();
   const discussions = [
     {
       name: "name1",
@@ -108,9 +110,14 @@ const Discussions = (props) => {
           </Button>
         </div>
         <div>
-          <button className="btn btn-primary" onClick={() => {}}>
-            New Discussion
-          </button>
+          <PopUp className={closePopup}>
+            <button className="btn btn-primary" onClick={() => {}}>
+              New Discussion
+            </button>
+            <div className="add-new-discussion-form">
+              <AddNewDiscussion />
+            </div>
+          </PopUp>
         </div>
       </div>
       <div className="filtered-discussions">
@@ -130,8 +137,12 @@ const Discussions = (props) => {
             <p>{discussion.description}</p>
             <div className="down-section">
               <div className="response-statistics">
-                <div className="discussion-likes">Likes <BsHandThumbsUpFill /> </div>
-                <div className="discussion-answers">Answers <BsFillChatLeftFill /> </div>
+                <div className="discussion-likes">
+                  Likes <BsHandThumbsUpFill />{" "}
+                </div>
+                <div className="discussion-answers">
+                  Answers <BsFillChatLeftFill />{" "}
+                </div>
               </div>
               <div className="metadata-discussions text-secondary">
                 <p>{discussion.createdAt}</p>
