@@ -5,6 +5,17 @@
         width: 100%;
         margin: 0;
     }
+    .challenge-tab-layout{
+        @media (max-width: 576px) {
+            .challenges-left, .challenges-right, .challenges-center{
+                margin-bottom: 2rem;
+                text-align: center;
+            }
+            .challenges-left{
+                border-bottom: 1px solid #0889E2;
+            }
+        }
+    }
     .challenges-left, .challenges-right, .challenges-center{
         padding:0;
         border-radius: 0.5rem;

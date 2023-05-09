@@ -30,3 +30,37 @@
         margin-top: 0.5rem;
     }
 }
+.create-cchallenge-form{
+    h5{
+        text-align: center;
+    }
+    padding: 1rem;
+    .form-challenge-create{
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        select{
+            width: 100%;
+        }
+        .test-description, .test-value{
+            width: calc((100% - 106px - 1.5rem)/2);
+        }
+        .horizontal-tags{
+            max-width: 100%;
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+    }
+    width: 60vw;
+    @media (max-width: 567px) {
+        width: calc(100vw - 4rem);
+        padding: 0;
+    }
+    
+}
+.create-new-challenge-form{
+    max-height: calc(100vh - 4rem);
+    overflow-x: hidden;
+    overflow-y: scroll;
+}

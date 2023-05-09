@@ -55,7 +55,8 @@ const Project = ({ project, index, deleteProjectHandler }) => {
 
       <div className="actions">
         <div className="settings-project">
-          <BsFillGearFill /> {project.name + index}
+          <BsFillGearFill />{" "}
+          <span className="fw-bold">{project.name + index}</span>
         </div>
         <div className="tags">
           <Badge bg="secondary">{project.language}</Badge>

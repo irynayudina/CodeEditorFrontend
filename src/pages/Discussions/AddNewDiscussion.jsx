@@ -28,7 +28,7 @@ const CreateDiscussionForm = () => {
 
   return (
     <div>
-        <h5>Create a new discussion</h5>
+      <h5>Create a new discussion</h5>
       <Form onSubmit={handleSubmit} className="form-discussion-create">
         <Form.Group controlId="formTopic">
           <Form.Label>Select Topic</Form.Label>
@@ -67,7 +67,7 @@ const CreateDiscussionForm = () => {
 
         <Form.Group controlId="formTags">
           <Form.Label>Tags</Form.Label>
-          <Col>
+          <Col className="horizontal-tags">
             <Form.Check type="checkbox" label="Tag 1" />
             <Form.Check type="checkbox" label="Tag 2" />
             <Form.Check type="checkbox" label="Tag 3" />

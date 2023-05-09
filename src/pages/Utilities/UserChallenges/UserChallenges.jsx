@@ -4,8 +4,10 @@ import UserChallengeList from './UserChallengeList/UserChallengeList';
 import { Container, Row, Col, Form, Badge } from "react-bootstrap";
 import { Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
-
+import PopUp from '../../../elements/PopUp/PopUp';
+import CreateChallenge from './CreateChallenge';
 const UserChallenges = () => {
+  const [closePopup, setClosePopup] = useState();
   //status - passed, not, failed
   const allChallenges = [
     {
@@ -69,11 +71,14 @@ const UserChallenges = () => {
           <div className="custom-form-check">
             <Form.Check type="switch" label="Created by me" />
           </div>
-          <Link to="/editor">
+          <PopUp className={closePopup}>
             <Button variant="primary" size="sm">
               Create new
             </Button>
-          </Link>
+            <div className="create-new-challenge-form">
+              <CreateChallenge />
+            </div>
+          </PopUp>
         </div>
       </div>
       <UserChallengeList challenges={challengesShow} />

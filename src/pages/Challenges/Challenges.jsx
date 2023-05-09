@@ -13,7 +13,7 @@ const Challenges = (props) => {
   return (
     <div>
       <Container fluid className="challenges-container">
-        <Row>
+        <Row className='challenge-tab-layout'>
           <Col sm={6} md={6} lg={3} xl={3} xxl={3} className="challenges-left">
             <Difficulty
               difficultyLevelsSelected={difficultyLevelsSelected}
