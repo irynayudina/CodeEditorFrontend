@@ -57,6 +57,15 @@
             gap: 0.5rem;
             padding: 1rem;
             min-width: 50vw;
+            max-height: calc(100vh - 40px);
+            overflow-x: hidden;
+            overflow-y: scroll;
+            @media (max-width: 567px) {
+                min-width: calc(90vw - 4rem);
+            }
+            @media (min-width: 992px) {
+                min-width: 514px;
+            }
             .tags{
                 display: flex;
                 justify-content: space-between;

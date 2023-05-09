@@ -106,7 +106,7 @@ const CreateChallenge = () => {
 
         <Form.Group
           controlId="formTestCases"
-          className="d-flex align-items-center justify-content-between"
+          className="test-cases-forming"
         >
           <Form.Label>Test cases</Form.Label>
           <Form.Control

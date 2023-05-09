@@ -42,8 +42,18 @@
         select{
             width: 100%;
         }
-        .test-description, .test-value{
-            width: calc((100% - 106px - 1.5rem)/2);
+        .test-cases-forming{
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            @media (max-width: 400px) {
+                flex-direction: column;
+            }
+            @media (min-width: 400px) {
+                .test-description, .test-value{
+                    width: calc((100% - 106px - 1.5rem)/2);
+                }
+            }
         }
         .horizontal-tags{
             max-width: 100%;
@@ -57,10 +67,11 @@
         width: calc(100vw - 4rem);
         padding: 0;
     }
+    max-height: calc(100vh - 40px);
+    overflow-x:visible;
+    overflow-y: scroll;
     
 }
 .create-new-challenge-form{
-    max-height: calc(100vh - 4rem);
-    overflow-x: hidden;
-    overflow-y: scroll;
+   
 }
