@@ -62,7 +62,10 @@
             overflow-y: scroll;
             @media (max-width: 567px) {
                 min-width: calc(90vw - 4rem);
+                max-height: calc(100vh - 100px);
             }
+            scrollbar-width: none; /* Hide scrollbar for Firefox */
+            -ms-overflow-style: none; /* Hide scrollbar for IE and Edge */
             @media (min-width: 992px) {
                 min-width: 514px;
             }
@@ -95,6 +98,9 @@
                 display: flex;
                 justify-content: space-between;
             }
+        }
+        .actions::-webkit-scrollbar {
+            display: none;
         }
     }
 }

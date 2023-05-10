@@ -44,7 +44,7 @@ const TopNav = () => {
             Invite
           </Button>
           <div className="invite-popup">
-            <h5 className='invite-header'>Invite user to collaboration</h5>
+            <h5 className="invite-header">Invite user to collaboration</h5>
             <Form.Control
               type="text"
               placeholder="username"
@@ -52,14 +52,25 @@ const TopNav = () => {
               // onChange={(e) => setSearchText(e.target.value)}
             />
             <div className="text-muted">OR</div>
-            <Form.Select
-            // value={sortChallenges}
-            // onChange={(e) => setSortchallenges(e.target.value)}
-            >
-              <option value="0">User1</option>
-              <option value="1">User2</option>
-              <option value="2">User3</option>
-            </Form.Select>
+            <div>
+              <Form.Select size={5}>
+                <option value="1">Option 1</option>
+                <option value="2">Option 2</option>
+                <option value="3">Option 3</option>
+                <option value="4">Option 4</option>
+                <option value="5">Option 5</option>
+                <option value="6">Option 6</option>
+                <option value="7">Option 7</option>
+                <option value="8">Option 8</option>
+                <option value="9">Option 9</option>
+                <option value="10">Option 10</option>
+                <option value="11">Option 11</option>
+                <option value="12">Option 12</option>
+                <option value="13">Option 13</option>
+                <option value="14">Option 14</option>
+                <option value="15">Option 15</option>
+              </Form.Select>
+            </div>
             <Button
               // variant={`${props.theme === "darktheme" ? "secondary" : "primary"}`}
               size="md"

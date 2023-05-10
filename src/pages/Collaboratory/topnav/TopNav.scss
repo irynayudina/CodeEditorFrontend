@@ -53,4 +53,14 @@
     gap: 1rem;
     padding: 1rem;
     min-width: 250px;
+    max-height: calc(100vh - 40px);
+    overflow-y: scroll;
+    @media (max-width: 567px) {
+      max-height: calc(100vh - 100px);
+    }
+    scrollbar-width: none; /* Hide scrollbar for Firefox */
+    -ms-overflow-style: none; /* Hide scrollbar for IE and Edge */
+  }
+  .invite-popup::-webkit-scrollbar {
+    display: none;
   }
