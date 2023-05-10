@@ -53,7 +53,7 @@ const TopNav = () => {
             />
             <div className="text-muted">OR</div>
             <div>
-              <Form.Select size={5}>
+              <Form.Select size={5} style={{height:"200px"}}>
                 <option value="1">Option 1</option>
                 <option value="2">Option 2</option>
                 <option value="3">Option 3</option>
