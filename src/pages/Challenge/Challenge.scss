@@ -1,0 +1,44 @@
+.custom-resizer{
+    background-color: green;
+    width: 20px;
+    border: 1px solid red;
+}
+.challenge-page{
+    display: flex;
+    .challenge-section{
+        border: 1px solid red;
+    }
+}
+// span.react-resizable-handle.react-resizable-handle-se{
+//     height: 100%;
+//     background-color: red;
+// }
+.container-fluid {
+  .row {
+    .col-xs-6 {
+      &.bg-primary {
+        background-color: blue;
+      }
+      .row {
+        &.h-75 {
+          height: 75%;
+        }
+        .col {
+          &.bg-secondary {
+            background-color: gray;
+          }
+        }
+      }
+      .row {
+        &.h-25 {
+          height: 25%;
+        }
+        .col {
+          &.bg-success {
+            background-color: green;
+          }
+        }
+      }
+    }
+  }
+}

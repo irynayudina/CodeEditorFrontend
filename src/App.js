@@ -16,6 +16,7 @@ import Userpage from './pages/Utilities/Userpage/Userpage'
 import UserProjects from './pages/Utilities/UserProjects/UserProjects'
 import UserSettings from './pages/Utilities/UserSettings/UserSettings'
 import PublicUserpage from './pages/Utilities/PublicUserpage/PublicUserpage';
+import Challenge from './pages/Challenge/Challenge'
 function App() {
   const [theme, setTheme] = useState("darktheme")
   const [breakpoint, setBreakpoint] = useState("xxl")
@@ -59,6 +60,9 @@ function App() {
           } />
           <Route path="/challenges" element={
             <Challenges theme={theme} breakpoint={breakpoint} />
+          } />
+          <Route path="/challenge" element={
+            <Challenge theme={theme} breakpoint={breakpoint} />
           } />
           <Route path="/collaboratory" element={
             <Collaboratory theme={theme} />

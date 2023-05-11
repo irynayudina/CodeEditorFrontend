@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { Form, Badge } from "react-bootstrap";
 import { Button } from "react-bootstrap";
+import { Link } from "react-router-dom";
 
 import './ChallengeList.scss'
 const ChallengesList = () => {
@@ -58,20 +59,22 @@ const ChallengesList = () => {
         </div> */}
       </div>
       {challengesShow.map((c, index) => (
-        <div key={index} className="challenge-item">
-          <div className="challenge-topsection">
-            <div>
-              <p>{c.name}</p>
-              <p className="topic-name text-secondary">{c.topic}</p>
+        <Link to="/challenge" key={index} className="text-decoration-none">
+          <div className="challenge-item">
+            <div className="challenge-topsection">
+              <div>
+                <p className="fw-bold">{c.name}</p>
+                <p className="topic-name text-secondary">{c.topic}</p>
+              </div>
+              <div className="metadata-challenge text-secondary">
+                <p>{c.difficulty}</p>
+                <p>{c.createdAt}</p>
+                <p className="text-wrap">{c.author}</p>
+              </div>
             </div>
-            <div className="metadata-challenge text-secondary">
-              <p>{c.difficulty}</p>
-              <p>{c.createdAt}</p>
-              <p className="text-wrap">{c.author}</p>
-            </div>
+            {/* <p>{c.text}</p> */}
           </div>
-          {/* <p>{c.text}</p> */}
-        </div>
+        </Link>
       ))}
     </div>
   );
