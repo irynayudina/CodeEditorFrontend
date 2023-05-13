@@ -10,7 +10,7 @@
   }
   .challenge-section{
     border: 1px solid #0D6EFD;
-    // background-color: white;
+    background-color: white;
     overflow: scroll;
       scrollbar-width: none; /* Hide scrollbar for Firefox */
     -ms-overflow-style: none; /* Hide scrollbar for IE and Edge */
@@ -30,36 +30,33 @@
     }
   }
 }
-// span.react-resizable-handle.react-resizable-handle-se{
-//     height: 100%;
-//     background-color: red;
-// }
-.container-fluid {
-  .row {
-    .col-xs-6 {
-      &.bg-primary {
-        background-color: blue;
-      }
-      .row {
-        &.h-75 {
-          height: 75%;
-        }
-        .col {
-          &.bg-secondary {
-            background-color: gray;
-          }
-        }
-      }
-      .row {
-        &.h-25 {
-          height: 25%;
-        }
-        .col {
-          &.bg-success {
-            background-color: green;
-          }
-        }
-      }
-    }
+.cursor-pointer{
+  &:hover{
+    cursor: pointer;
+  }
+}
+.challenge-comment-section{
+  margin: 1rem;
+}
+.challenge-comment-container{
+  border-radius: 5px;
+  background-color: #97D3E3;
+  padding: 0.5rem;
+}
+.challenge-reply-container{
+  padding: 0.5rem;
+  border-radius: 5px;
+  margin-left: 3rem;
+  background-color: #F7F7F7;
+}
+.show-reply{
+  &:hover{
+    cursor: pointer;
+  }
+}
+.challenge-editor{
+  margin-top: 0.5rem;
+  .challenge-editor-top{
+    margin-left: 30px;
   }
 }
