@@ -10,8 +10,9 @@ import Discussion from './pages/Discussion/Discussion'
 import Challenges from './pages/Challenges/Challenges';
 import Collaboratory from './pages/Collaboratory/Collaboratory'
 import Projects from './pages/Projects/Projects'
-import Login from './pages/Utilities/Login/Login'
-import Register from './pages/Utilities/Register/Register'
+import SignUp from './pages/Utilities/Register/SignUp';
+import SignIn from './pages/Utilities/Login/SignIn';
+import ResetPassword from './pages/Utilities/Login/ResetPassword';
 import UserNotifications from './pages/Utilities/UserNotifications/UserNotifications'
 import Userpage from './pages/Utilities/Userpage/Userpage'
 import UserProjects from './pages/Utilities/UserProjects/UserProjects'
@@ -94,11 +95,14 @@ function App() {
             <UserSettings theme={theme} />
           } /> */}
           <Route path="/login" element={
-            <Login theme={theme} />
+            <SignIn theme={theme} />
           }/>
           <Route path="/register" element={
-            <Register theme={theme} />
-          }/>
+            <SignUp theme={theme} />
+          } />
+          <Route path="/forgot-password" element={
+            <ResetPassword />
+          } />
         </Routes>      
       </BrowserRouter>
     </div>
