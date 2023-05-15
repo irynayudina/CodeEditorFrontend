@@ -1,5 +1,6 @@
 import React, {useState} from 'react'
 import { Container, Row, Col, Form, Badge } from "react-bootstrap";
+import { Link } from "react-router-dom";
 import './Discussions.scss'
 import { Button } from "react-bootstrap";
 import { BsFillChatLeftFill, BsHandThumbsUpFill } from "react-icons/bs";
@@ -122,34 +123,36 @@ const Discussions = (props) => {
       </div>
       <div className="filtered-discussions">
         {filteredDiscussions.map((discussion, index) => (
-          <div key={index} className="discussion-item">
-            <div className="top-section">
-              <h5>{discussion.name}</h5>
-              <div className="tags">
-                <Badge bg="secondary">{discussion.topic}</Badge>
-                {discussion.tags?.map((tag, index) => (
-                  <Badge bg="secondary" key={index}>
-                    {tag}
-                  </Badge>
-                ))}
-              </div>
-            </div>
-            <p>{discussion.description}</p>
-            <div className="down-section">
-              <div className="response-statistics">
-                <div className="discussion-likes">
-                  Likes <BsHandThumbsUpFill />{" "}
-                </div>
-                <div className="discussion-answers">
-                  Answers <BsFillChatLeftFill />{" "}
+          <Link to="/discussion" key={index} className="text-decoration-none black-link">
+            <div key={index} className="discussion-item">
+              <div className="top-section">
+                <h5>{discussion.name}</h5>
+                <div className="tags">
+                  <Badge bg="secondary">{discussion.topic}</Badge>
+                  {discussion.tags?.map((tag, index) => (
+                    <Badge bg="secondary" key={index}>
+                      {tag}
+                    </Badge>
+                  ))}
                 </div>
               </div>
-              <div className="metadata-discussions text-secondary">
-                <p>{discussion.createdAt}</p>
-                <p>{discussion.author}</p>
+              <p>{discussion.description}</p>
+              <div className="down-section">
+                <div className="response-statistics">
+                  <div className="discussion-likes">
+                    Likes <BsHandThumbsUpFill />{" "}
+                  </div>
+                  <div className="discussion-answers">
+                    Answers <BsFillChatLeftFill />{" "}
+                  </div>
+                </div>
+                <div className="metadata-discussions text-secondary">
+                  <p>{discussion.createdAt}</p>
+                  <p>{discussion.author}</p>
+                </div>
               </div>
             </div>
-          </div>
+          </Link>
         ))}
       </div>
     </div>

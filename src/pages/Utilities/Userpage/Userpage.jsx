@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState, useEffect, useRef} from 'react'
 import "./Userpage.scss";
 import UserInfo from './UserInfo';
 import UserNav from "./UserNav";
@@ -12,6 +12,20 @@ import UserDiscussions from "../UserDiscussions/UserDiscussions";
 const Userpage = () => {
   const [subpage, setSubpage] = useState();
   const [pageContent, setPageContent] = useState();
+  const elementRef = useRef(null);
+  const [contentWidth, setContentWidth] = useState()
+  useEffect(() => {
+    function handleResize() {
+      const elementWidth = elementRef.current.offsetWidth;
+      console.log(elementWidth);
+      setContentWidth(elementWidth-50)
+    }
+    window.addEventListener("resize", handleResize);
+    handleResize();
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, [elementRef]);
   useEffect(() => {
     switch (subpage) {
       case "#projects":
@@ -24,7 +38,7 @@ const Userpage = () => {
         setPageContent(<UserDiscussions />);
         break;
       case "#charts":
-        setPageContent(<UserCharts />);
+        setPageContent(<UserCharts lcwidth={contentWidth} />);
         break;
       case "#notifications":
         setPageContent(<UserNotifications />);
@@ -43,7 +57,9 @@ const Userpage = () => {
         <UserInfo />
         <UserNav subpage={subpage} setSubpage={setSubpage} />
       </div>
-      <div className="userpage-content">{pageContent}</div>
+      <div className="userpage-content" ref={elementRef}>
+        {pageContent}
+      </div>
     </div>
   );
 }

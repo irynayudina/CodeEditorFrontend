@@ -6,6 +6,7 @@ import Navbar from './elements/NavBar/NavBar';
 import Home from './pages/Home/Home';
 import Editor from './pages/Editor/Editor';
 import Discussions from './pages/Discussions/Discussions';
+import Discussion from './pages/Discussion/Discussion'
 import Challenges from './pages/Challenges/Challenges';
 import Collaboratory from './pages/Collaboratory/Collaboratory'
 import Projects from './pages/Projects/Projects'
@@ -57,6 +58,9 @@ function App() {
           } />
           <Route path="/discussions" element={
             <Discussions theme={theme} />
+          } />
+          <Route path="/discussion" element={
+            <Discussion theme={theme} />
           } />
           <Route path="/challenges" element={
             <Challenges theme={theme} breakpoint={breakpoint} />
