@@ -1,11 +1,11 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { FaCode, FaPuzzlePiece, FaComments, FaUsers } from 'react-icons/fa';
-import { Container, Row, Col } from 'react-bootstrap';
-
+import { Container, Row, Col, Button } from 'react-bootstrap';
+import { Link } from "react-router-dom";
 const LandingPage = () => {
   return (
-    <Container>
+    <Container className=" landing-headers">
       <Row className="mt-5">
         <Col md={6}>
           <motion.h1
@@ -30,14 +30,19 @@ const LandingPage = () => {
           md={6}
           className="d-flex align-items-center justify-content-center"
         >
-          <motion.img
-            src="code_network_logo.png"
-            alt="Code-Network Logo"
+          <motion.div
             initial={{ opacity: 0, scale: 0.5 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: 0.6 }}
-            className="img-fluid"
-          />
+            className="text-center mb-4"
+          >
+            <Link to="/login">
+              <Button>Log In</Button>
+            </Link>{" "}
+            <Link to="/register">
+              <Button>Sing Up</Button>
+            </Link>
+          </motion.div>
         </Col>
       </Row>
       <Row className="mt-5">
