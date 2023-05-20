@@ -1,8 +1,10 @@
 import React, {useState, useEffect} from "react";
 import { Nav } from "react-bootstrap";
-import { Dropdown } from "react-bootstrap";
-import { Button } from "react-bootstrap";
-import { Form } from "react-bootstrap";
+import { useDispatch } from "react-redux";
+import { useLogoutMutation } from "../../../slices/usersApiSlice";
+import { logout } from "../../../slices/authSlice";
+import { useNavigate } from "react-router-dom";
+
 const UserNav = ({ subpage, setSubpage, isPublic }) => {
   useEffect(() => {
     setSubpage(window.location.hash);
@@ -10,6 +12,18 @@ const UserNav = ({ subpage, setSubpage, isPublic }) => {
       setSubpage(window.location.hash);
     });
   }, []);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const [logoutApiCall] = useLogoutMutation();
+  const logoutHandler = async () => {
+    try {
+      await logoutApiCall().unwrap();
+      dispatch(logout());
+      navigate("/");
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <div>
       <Nav className="list-group list-group-flush usernav">
@@ -112,6 +126,7 @@ const UserNav = ({ subpage, setSubpage, isPublic }) => {
                 subpage == "#signout" ? "active" : ""
               }`}
               aria-current="true"
+              onClick={logoutHandler}
             >
               {/* <FaFileCode className="me-3" /> */}
               <span>Sign Out</span>

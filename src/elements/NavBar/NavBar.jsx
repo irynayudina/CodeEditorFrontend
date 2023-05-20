@@ -5,7 +5,26 @@ import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import { Button } from 'react-bootstrap';
 import './Navbar.scss'
+
+import { useSelector, useDispatch } from 'react-redux';
+import { useLogoutMutation } from '../../slices/usersApiSlice';
+import { logout } from '../../slices/authSlice'
+import {useNavigate} from 'react-router-dom'
+
 const NavBar = (props) => {  
+  const { userInfo } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const [logoutApiCall] = useLogoutMutation();
+  const logoutHandler = async () => {
+    try {
+      await logoutApiCall().unwrap();
+      dispatch(logout());
+      navigate('/');
+    } catch (error) {
+      console.log(error);
+    }
+  }
   const [activeTab, setActiveTab] = useState(window.location.pathname)
     return (
       <Navbar
@@ -54,35 +73,37 @@ const NavBar = (props) => {
               >
                 Projects
               </Nav.Link>
-              <NavDropdown title="User menu" id="basic-nav-dropdown">
-                <NavDropdown.Item href="/user#projects">
-                  My projects
-                </NavDropdown.Item>
-                <NavDropdown.Item href="/user#notifications">
-                  Notifications
-                </NavDropdown.Item>
-                <NavDropdown.Item href="/user#discussions">
-                  Discussions
-                </NavDropdown.Item>
-                <NavDropdown.Item href="/user#challenges">
-                  Challenges
-                </NavDropdown.Item>
-                <NavDropdown.Item href="/user#charts">Charts</NavDropdown.Item>
-                <NavDropdown.Item href="/user#people">People</NavDropdown.Item>
-                <NavDropdown.Divider />
-                <NavDropdown.Item href="/user#settings">
-                  Settings
-                </NavDropdown.Item>
-                <NavDropdown.Item href="/user#singout">
-                  Sing out
-                </NavDropdown.Item>
-                <NavDropdown.Item href="/login">
-                  Sign In
-                </NavDropdown.Item>
-                <NavDropdown.Item href="/register">
-                  Sign Up
-                </NavDropdown.Item>
-              </NavDropdown>
+              {userInfo ? (
+                <NavDropdown title={userInfo.name} id="basic-nav-dropdown">
+                  <NavDropdown.Item href="/user#projects">
+                    My projects
+                  </NavDropdown.Item>
+                  <NavDropdown.Item href="/user#notifications">
+                    Notifications
+                  </NavDropdown.Item>
+                  <NavDropdown.Item href="/user#discussions">
+                    Discussions
+                  </NavDropdown.Item>
+                  <NavDropdown.Item href="/user#challenges">
+                    Challenges
+                  </NavDropdown.Item>
+                  <NavDropdown.Item href="/user#charts">
+                    Charts
+                  </NavDropdown.Item>
+                  <NavDropdown.Item href="/user#people">
+                    People
+                  </NavDropdown.Item>
+                  <NavDropdown.Divider />
+                  <NavDropdown.Item href="/user#settings">
+                    Settings
+                  </NavDropdown.Item>
+                  <NavDropdown.Item onClick={logoutHandler} >
+                    Sing out
+                  </NavDropdown.Item>
+                </NavDropdown>
+              ) : (
+                ""
+              )}
             </Nav>
           </Navbar.Collapse>
           <Nav className="ms-auto">

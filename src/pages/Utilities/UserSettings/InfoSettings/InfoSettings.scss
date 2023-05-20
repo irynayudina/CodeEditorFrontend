@@ -53,11 +53,21 @@
                 flex-shrink: 4;
                 min-width: 120px !important;
             }
+            @media (max-width: 768px) {
+                flex-direction: column;
+                button{
+                    margin: 0.5rem;
+                }
+            }
+            @media (min-width: 992px) {
+                margin-top: 0.5rem;
+            }
         }
         .description-setting{
             justify-content: flex-start;
             span{
                 padding-left: 12px;
+                margin-bottom: 0.5rem;
             }
         }
     }

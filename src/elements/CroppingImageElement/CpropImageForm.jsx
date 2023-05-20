@@ -106,7 +106,7 @@ const CpropImageForm = () => {
                 setImage("");
               }}
             >
-              New Image
+              Save
             </Button>
           </div>
         </div>

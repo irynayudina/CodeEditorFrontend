@@ -13,6 +13,16 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 
+import { useDispatch, useSelector } from "react-redux";
+import { useRegisterMutation } from "../../../slices/usersApiSlice";
+import { setCredentials } from "../../../slices/authSlice";
+import { useNavigate } from "react-router-dom";
+
+import { toast } from "react-toastify";
+
+import Loader from "../../../elements/Loader";
+
+
 function Copyright(props) {
   return (
     <Typography
@@ -34,13 +44,41 @@ function Copyright(props) {
 const theme = createTheme();
 
 export default function SignUp() {
-  const handleSubmit = (event) => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { userInfo } = useSelector((state) => state.auth);
+  const [register, { isLoading }] = useRegisterMutation();
+
+  React.useEffect(() => {
+    if (userInfo) {
+      navigate("/");
+    }
+  }, [navigate, userInfo]);
+
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
-    });
+    const { firstName, lastName, username, email, password, passwordReapeat } = Object.fromEntries(data);
+    const name = firstName + lastName;
+    console.log(
+      firstName,
+      lastName,
+      username,
+      email,
+      password,
+      passwordReapeat
+    );
+    if (password !== passwordReapeat) {
+      toast.error('Passwords do not match')
+    } else {
+      try {
+        const res = await register({ name, email, password }).unwrap();
+        dispatch(setCredentials({ ...res }))
+        navigate('/')
+      } catch (err) {
+        toast.error(err?.data?.message || err.error);
+      }
+    }
   };
 
   return (
@@ -55,7 +93,7 @@ export default function SignUp() {
             alignItems: "center",
           }}
         >
-          <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
+          <Avatar sx={{ m: 1, bgcolor: "primary.main" }}>
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
@@ -99,7 +137,7 @@ export default function SignUp() {
                   autoComplete="username"
                 />
               </Grid>
-              <Grid item xs={12}>
+              <Grid item xs={12} sm={6}>
                 <TextField
                   required
                   fullWidth
@@ -107,6 +145,15 @@ export default function SignUp() {
                   label="Email Address"
                   name="email"
                   autoComplete="email"
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  fullWidth
+                  id="phone"
+                  label="Phone Number"
+                  name="phone"
+                  autoComplete="phone"
                 />
               </Grid>
               <Grid item xs={12}>
@@ -121,6 +168,17 @@ export default function SignUp() {
                 />
               </Grid>
               <Grid item xs={12}>
+                <TextField
+                  required
+                  fullWidth
+                  name="passwordReapeat"
+                  label="Repeat Password"
+                  type="password"
+                  id="passwordReapeat"
+                  autoComplete="new-password"
+                />
+              </Grid>
+              <Grid item xs={12}>
                 <FormControlLabel
                   control={
                     <Checkbox value="allowExtraEmails" color="primary" />
@@ -129,6 +187,7 @@ export default function SignUp() {
                 />
               </Grid>
             </Grid>
+            {isLoading && <Loader />}
             <Button
               type="submit"
               fullWidth

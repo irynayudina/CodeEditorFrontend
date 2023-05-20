@@ -4,12 +4,16 @@ import {
   BsFillHandThumbsUpFill,
   BsBarChartLineFill,
 } from "react-icons/bs";
-import {Button} from 'react-bootstrap'
-const UserInfo = ({isPublic}) => {
+import { Button } from 'react-bootstrap'
+import { useSelector } from "react-redux";
+
+const UserInfo = ({ isPublic }) => {
+  const { userInfo } = useSelector((state) => state.auth);
+  
   return (
     <div className="userpage-header">
       <div className="circle-img"></div>
-      <h5 className="username">User Name</h5>
+      <h5 className="username">{userInfo.name}</h5>
       <p className="text-muted text-center">user_name</p>
       <div className="ratings">
         <div className="rating">
@@ -29,10 +33,13 @@ const UserInfo = ({isPublic}) => {
           <div>Following</div> <div>300</div>
         </div>
       </div>
-      {isPublic ?
+      {isPublic ? (
         <Button size="sm" className="follow-btn">
-        Follow
-      </Button> : ''}
+          Follow
+        </Button>
+      ) : (
+        ""
+      )}
       <hr />
       <div className="contacts">
         <div className="contact">

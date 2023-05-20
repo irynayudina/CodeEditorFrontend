@@ -19,6 +19,12 @@ import UserProjects from './pages/Utilities/UserProjects/UserProjects'
 import UserSettings from './pages/Utilities/UserSettings/UserSettings'
 import PublicUserpage from './pages/Utilities/PublicUserpage/PublicUserpage';
 import Challenge from './pages/Challenge/Challenge'
+
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css'
+
+import PrivateRoute from './private/PrivateRoute';
+
 function App() {
   const [theme, setTheme] = useState("darktheme")
   const [breakpoint, setBreakpoint] = useState("xxl")
@@ -48,62 +54,60 @@ function App() {
   
   return (
     <div className={`App ${theme}`}>
-      <Navbar theme={theme} setTheme={setTheme}/>
       <BrowserRouter>
-      <Routes>      
-          <Route path="/" exact="true" element={
-            <Home />
-          } />
-          <Route path="/editor" element={
-            <Editor theme={theme} editorSize={ editorBreakpoint >= 814 ? "lg" : "sm"} />
-          } />
-          <Route path="/discussions" element={
-            <Discussions theme={theme} />
-          } />
-          <Route path="/discussion" element={
-            <Discussion theme={theme} />
-          } />
-          <Route path="/challenges" element={
-            <Challenges theme={theme} breakpoint={breakpoint} />
-          } />
-          <Route path="/challenge" element={
-            <Challenge theme={theme} breakpoint={breakpoint} />
-          } />
-          <Route path="/collaboratory" element={
-            <Collaboratory theme={theme} />
-          } />
-          <Route path="/projects" element={
-            <Projects theme={theme} />
-          } />
-          <Route path="/user" element={
-            <Userpage theme={theme} />
-          } />
-           <Route path="/public/user" element={
-            <PublicUserpage theme={theme} />
-          } />
-          <Route path="/user/projects" element={
-            <UserProjects theme={theme} />
-          } />
-          <Route path="/user/notifications" element={
-            <UserNotifications theme={theme} />
-          } />
-          <Route path="/user/settings" element={
-            <UserSettings theme={theme} />
-          } />
-          {/* <Route path="/user/singout" element={
-            // <UserSingout theme={theme} />
-            <UserSettings theme={theme} />
-          } /> */}
-          <Route path="/login" element={
-            <SignIn theme={theme} />
-          }/>
-          <Route path="/register" element={
-            <SignUp theme={theme} />
-          } />
-          <Route path="/forgot-password" element={
-            <ResetPassword />
-          } />
-        </Routes>      
+        <Navbar theme={theme} setTheme={setTheme} />
+        <ToastContainer />
+        <Routes>
+          <Route path="/" exact="true" element={<Home />} />
+          <Route
+            path="/editor"
+            element={
+              <Editor
+                theme={theme}
+                editorSize={editorBreakpoint >= 814 ? "lg" : "sm"}
+              />
+            }
+          />
+          <Route path="/discussions" element={<Discussions theme={theme} />} />
+          <Route path="/discussion" element={<Discussion theme={theme} />} />
+          <Route
+            path="/challenges"
+            element={<Challenges theme={theme} breakpoint={breakpoint} />}
+          />
+          <Route
+            path="/challenge"
+            element={<Challenge theme={theme} breakpoint={breakpoint} />}
+          />
+          <Route
+            path="/collaboratory"
+            element={<Collaboratory theme={theme} />}
+          />
+          <Route path="/projects" element={<Projects theme={theme} />} />
+
+          {/* Protected Routes */}
+          <Route path="" element={<PrivateRoute />}>
+            <Route path="/user" element={<Userpage theme={theme} />} />
+            <Route
+              path="/user/projects"
+              element={<UserProjects theme={theme} />}
+            />
+            <Route
+              path="/user/notifications"
+              element={<UserNotifications theme={theme} />}
+            />
+            <Route
+              path="/user/settings"
+              element={<UserSettings theme={theme} />}
+            />
+          </Route>
+          <Route path="/forgot-password" element={<ResetPassword />} />
+          <Route
+            path="/public/user"
+            element={<PublicUserpage theme={theme} />}
+          />
+          <Route path="/login" element={<SignIn theme={theme} />} />
+          <Route path="/register" element={<SignUp theme={theme} />} />
+        </Routes>
       </BrowserRouter>
     </div>
   );

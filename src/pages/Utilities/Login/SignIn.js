@@ -12,6 +12,16 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+// import { useState } from 'react'
+
+import { useDispatch, useSelector } from "react-redux";
+import { useLoginMutation } from "../../../slices/usersApiSlice";
+import { setCredentials } from "../../../slices/authSlice";
+import { useNavigate } from "react-router-dom";
+
+import { toast } from "react-toastify";
+
+import Loader from "../../../elements/Loader";
 
 function Copyright(props) {
   return (
@@ -34,13 +44,32 @@ function Copyright(props) {
 const theme = createTheme();
 
 export default function SignIn() {
-  const handleSubmit = (event) => {
+  
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const [login, { isLoading }] = useLoginMutation();
+
+  const { userInfo } = useSelector((state) => state.auth);
+
+  React.useEffect(() => {
+    if (userInfo) {
+      navigate('/');
+    }
+  }, [navigate, userInfo]);
+
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
-    });
+    const email = data.get("email");
+    const password = data.get('password');
+    try {
+      const res = await login({email, password}).unwrap();
+      dispatch(setCredentials({ ...res }))
+      navigate('/')
+    } catch (err) {
+      toast.error(err?.data?.message || err.error)
+    }
   };
 
   return (
@@ -55,7 +84,7 @@ export default function SignIn() {
             alignItems: "center",
           }}
         >
-          <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
+          <Avatar sx={{ m: 1, bgcolor: "primary.main" }}>
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
@@ -91,6 +120,7 @@ export default function SignIn() {
               control={<Checkbox value="remember" color="primary" />}
               label="Remember me"
             />
+            {isLoading && <Loader />}
             <Button
               type="submit"
               fullWidth

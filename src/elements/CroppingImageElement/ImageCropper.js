@@ -6,7 +6,7 @@ function ImageCropper({ image, onCropDone, onCropCancel }) {
   const [crop, setCrop] = useState({ x: 0, y: 0 });
   const [zoom, setZoom] = useState(1);
   const [croppedArea, setCroppedArea] = useState(null);
-  const [aspectRatio, setAspectRatio] = useState(4 / 3);
+  const [aspectRatio, setAspectRatio] = useState(1 / 1);
 
   const onCropComplete = (croppedAreaPercentage, croppedAreaPixels) => {
     setCroppedArea(croppedAreaPixels);
@@ -53,12 +53,12 @@ function ImageCropper({ image, onCropDone, onCropCancel }) {
         <Form.Group onChange={onAspectRatioChange}>
           <ButtonGroup toggle>
             <Form.Check type="radio" label="1:1" value={1 / 1} name="ratio" />
-            <Form.Check type="radio" label="5:4" value={5 / 4} name="ratio" />
+            {/* <Form.Check type="radio" label="5:4" value={5 / 4} name="ratio" />
             <Form.Check type="radio" label="4:3" value={4 / 3} name="ratio" />
             <Form.Check type="radio" label="3:2" value={3 / 2} name="ratio" />
             <Form.Check type="radio" label="5:3" value={5 / 3} name="ratio" />
             <Form.Check type="radio" label="16:9" value={16 / 9} name="ratio" />
-            <Form.Check type="radio" label="3:1" value={3 / 1} name="ratio" />
+            <Form.Check type="radio" label="3:1" value={3 / 1} name="ratio" /> */}
           </ButtonGroup>
         </Form.Group>
 
