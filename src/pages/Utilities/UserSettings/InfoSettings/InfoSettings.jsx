@@ -1,21 +1,11 @@
 import React, { useEffect, useState } from "react";
 import "./InfoSettings.scss";
-import { Container, Row, Col, Button, Form } from "react-bootstrap";
+import { Button } from "react-bootstrap";
 import CropImageForm from "../../../../elements/CroppingImageElement/CpropImageForm";
 
-import Avatar from "@mui/material/Avatar";
-// import Button from "@mui/material/Button";
-import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
-import Link from "@mui/material/Link";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import Typography from "@mui/material/Typography";
-// import Container from "@mui/material/Container";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
 
 import {toast } from 'react-toastify'
 import Loader from "../../../../elements/Loader";
@@ -24,7 +14,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { useUpdateUserMutation } from "../../../../slices/usersApiSlice";
 
 const InfoSettings = () => {
-  const theme = createTheme();
 
   const [email, setEmail] = useState('')
   const [name, setName] = useState('')
@@ -42,33 +31,21 @@ const InfoSettings = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    const { firstName, lastName, username, email, password, passwordReapeat } =
+    const { firstName, lastName, username, phone, email, twitter, linkedin, facebook, github } =
       Object.fromEntries(data);
     const name = firstName + lastName;
-    console.log(
-      firstName,
-      lastName,
-      username,
-      email,
-      password,
-      passwordReapeat
-    );
-    // if (password !== passwordReapeat) {
-    //   toast.error("Passwords do not match");
-    // } else {
-    //   try {
-    //     const res = await updateProfile({
-    //       _id: userInfo._id,
-    //       name,
-    //       email,
-    //       password
-    //     }).unwrap();
-    //     dispatch(setCredentials({ ...res }));
-    //     toast.success('Profile updated')
-    //   } catch (err) {
-    //     toast.error(err?.data?.message || err.error)
-    //   }
-    // }
+      try {
+        const res = await updateProfile({
+          _id: userInfo._id,
+          name,
+          email,
+          password
+        }).unwrap();
+        dispatch(setCredentials({ ...res }));
+        toast.success('Profile updated')
+      } catch (err) {
+        toast.error(err?.data?.message || err.error)
+      }
   };
   return (
     <div className="info-settings">
@@ -78,7 +55,12 @@ const InfoSettings = () => {
         <div className="description-setting">
           <span>Username: old_username</span>
         </div>
-        <div className="controls-setting">
+        <Box
+          component="form"
+          onSubmit={handleSubmit}
+          noValidate
+          className="controls-setting"
+        >
           <Grid container spacing={1}>
             <Grid item xs={12}>
               <TextField
@@ -88,20 +70,24 @@ const InfoSettings = () => {
                 fullWidth
                 id="username"
                 label="Enter new username"
-                autoFocus
               />
             </Grid>
           </Grid>
-          <Button variant="primary" size="sm">
+          <Button variant="primary" size="sm" type="submit">
             Save changes
           </Button>
-        </div>
+        </Box>
       </div>
       <div className="text-settings">
         <div className="description-setting">
           <span>Name: old name</span>
         </div>
-        <div className="controls-setting">
+        <Box
+          component="form"
+          onSubmit={handleSubmit}
+          noValidate
+          className="controls-setting"
+        >
           <Grid container spacing={1}>
             <Grid item xs={12} sm={6}>
               <TextField
@@ -111,7 +97,6 @@ const InfoSettings = () => {
                 fullWidth
                 id="firstName"
                 label="First Name"
-                autoFocus
               />
             </Grid>
             <Grid item xs={12} sm={6}>
@@ -125,16 +110,21 @@ const InfoSettings = () => {
               />
             </Grid>
           </Grid>
-          <Button variant="primary" size="sm">
+          <Button variant="primary" size="sm" type="submit">
             Save changes
           </Button>
-        </div>
+        </Box>
       </div>
       <div className="text-settings">
         <div className="description-setting">
           <span>Public Phone:</span>
         </div>
-        <div className="controls-setting">
+        <Box
+          component="form"
+          onSubmit={handleSubmit}
+          noValidate
+          className="controls-setting"
+        >
           <TextField
             fullWidth
             required
@@ -143,16 +133,21 @@ const InfoSettings = () => {
             name="phone"
             autoComplete="phone"
           />
-          <Button variant="primary" size="sm">
+          <Button variant="primary" size="sm" type="submit">
             Save changes
           </Button>
-        </div>
+        </Box>
       </div>
       <div className="text-settings">
         <div className="description-setting">
           <span>Public Email:</span>
         </div>
-        <div className="controls-setting">
+        <Box
+          component="form"
+          onSubmit={handleSubmit}
+          noValidate
+          className="controls-setting"
+        >
           <TextField
             required
             fullWidth
@@ -161,16 +156,21 @@ const InfoSettings = () => {
             name="email"
             autoComplete="email"
           />
-          <Button variant="primary" size="sm">
+          <Button variant="primary" size="sm" type="submit">
             Save changes
           </Button>
-        </div>
+        </Box>
       </div>
       <div className="text-settings">
         <div className="description-setting">
           <span>Outer Links:</span>
         </div>
-        <div className="controls-setting">
+        <Box
+          component="form"
+          onSubmit={handleSubmit}
+          noValidate
+          className="controls-setting"
+        >
           <Grid container spacing={1}>
             <Grid item xs={12} sm={6}>
               <TextField
@@ -213,10 +213,10 @@ const InfoSettings = () => {
               />
             </Grid>
           </Grid>
-          <Button variant="primary" size="sm" onClick={handleSubmit}>
+          <Button variant="primary" size="sm" type="submit">
             Save changes
           </Button>
-        </div>
+        </Box>
       </div>
     </div>
   );
