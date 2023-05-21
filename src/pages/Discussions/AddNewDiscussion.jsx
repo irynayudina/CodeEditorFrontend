@@ -1,34 +1,72 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Form, Button, Col } from "react-bootstrap";
+import axios from 'axios'
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
+import Loader from "../../elements/Loader";
 
 const CreateDiscussionForm = () => {
-  // State for form input values
-  const [topic, setTopic] = useState("");
-  const [name, setName] = useState("");
-  const [description, setDescription] = useState("");
+  const navigate = useNavigate();
+  const [discussionData, setDiscussionData] = useState();
+  const [isLoading, setIsLoading] = useState(false)
+  const [topic, setTopic] = useState("Custom");
+  const [title, setTitle] = useState("");
+  const [text, setText] = useState("");
   const [tags, setTags] = useState([]);
 
-  // Options for topic select input
+  useEffect(() => {
+    if (!tags.includes(topic)) {
+      tags.shift();
+      setTags([topic, ...tags]);
+    }
+  }, [topic])
+
+  useEffect(() => {
+    if (discussionData) {
+      navigate("/discussion", { state: discussionData });
+    }
+  }, [navigate, discussionData]);
+
   const topicOptions = [
-    { value: "option1", label: "Option 1" },
-    { value: "option2", label: "Option 2" },
-    { value: "option3", label: "Option 3" },
+    { value: "Algorithms", label: "Algorithms" },
+    { value: "Web", label: "Web" },
+    { value: "Custom", label: "Custom" },
   ];
 
-  // Function to handle tag input change
-  const handleTagInputChange = (e) => {
-    // Load dynamic tags here based on user input
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      setIsLoading(true);
+      const discussion = await axios.post("/api/discussions", {
+        topic: topic,
+        title: title,
+        text: text,
+        tags: tags,
+      });
+      if (discussion?.data) {
+        setDiscussionData(discussion.data);
+      }
+    } catch (err) {
+      toast.error(err?.response?.data?.message || err.error);
+    }
+    setIsLoading(false);
   };
 
-  // Function to handle form submission
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // Submit form data here
+  const handleKeyDown = (e) => {
+    let v = e.target.value;
+    if (e.key === "Enter") {
+      let v = e.target.value.trim(); 
+      if (v && !tags.includes(v)) {
+        setTags([...tags, v]);
+      }
+      e.target.value = ""; 
+    }
   };
 
   return (
     <div>
       <h5>Create a new discussion</h5>
+      {isLoading && <Loader />}
       <Form onSubmit={handleSubmit} className="form-discussion-create">
         <Form.Group controlId="formTopic">
           <Form.Label>Select Topic</Form.Label>
@@ -37,7 +75,6 @@ const CreateDiscussionForm = () => {
             value={topic}
             onChange={(e) => setTopic(e.target.value)}
           >
-            <option value="">Select Topic</option>
             {topicOptions.map((option) => (
               <option key={option.value} value={option.value}>
                 {option.label}
@@ -47,40 +84,39 @@ const CreateDiscussionForm = () => {
         </Form.Group>
 
         <Form.Group controlId="formName">
-          <Form.Label>Name</Form.Label>
+          <Form.Label>Title</Form.Label>
           <Form.Control
             type="text"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
           />
         </Form.Group>
 
         <Form.Group controlId="formDescription">
-          <Form.Label>Description</Form.Label>
+          <Form.Label>Text</Form.Label>
           <Form.Control
             as="textarea"
             rows={3}
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
+            value={text}
+            onChange={(e) => setText(e.target.value)}
           />
         </Form.Group>
 
         <Form.Group controlId="formTags">
           <Form.Label>Tags</Form.Label>
           <Col className="horizontal-tags">
-            <Form.Check type="checkbox" label="Tag 1" />
-            <Form.Check type="checkbox" label="Tag 2" />
-            <Form.Check type="checkbox" label="Tag 3" />
-            {/* Dynamically loaded tags based on user input */}
+            {tags.map((t, i) => (
+              <Form.Check type="checkbox" label={t} key={i} />
+            ))}
           </Col>
           <Form.Control
             type="text"
             placeholder="Enter tag name"
-            onChange={handleTagInputChange}
+            onKeyDown={handleKeyDown}
           />
         </Form.Group>
 
-        <Button variant="primary" type="submit">
+        <Button variant="primary" disabled={isLoading} onClick={handleSubmit}>
           Create Discussion
         </Button>
       </Form>

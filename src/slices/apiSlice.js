@@ -4,10 +4,6 @@ const baseQuery = fetchBaseQuery({
     baseUrl: ''
 })
 
-// const baseQuery = fetchBaseQuery({
-//   baseUrl: "http://localhost:8080",
-// });
-
 export const apiSlice = createApi({
     baseQuery,
     tagTypes: ['User'],
