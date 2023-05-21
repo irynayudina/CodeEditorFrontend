@@ -12,7 +12,18 @@ import {
   ButtonGroup,
 } from "react-bootstrap";
 
+import { toast } from "react-toastify";
+import { setCredentials } from "../../slices/authSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { useUpdateUserMutation } from "../../slices/usersApiSlice";
+
+
 const CpropImageForm = () => {
+  const dispatch = useDispatch();
+
+  const { userInfo } = useSelector((state) => state.auth);
+  const [updateProfile, { isLoading }] = useUpdateUserMutation();
+
   const [image, setImage] = useState("");
   const [currentPage, setCurrentPage] = useState("choose-img");
   const [imgAfterCrop, setImgAfterCrop] = useState("");
@@ -59,6 +70,21 @@ const CpropImageForm = () => {
     setImage("");
   };
 
+  const handleSave = async () => {
+    // setCurrentPage("choose-img");
+    console.log(imgAfterCrop)   
+    try {
+        const res = await updateProfile({
+          _id: userInfo._id,
+          pic: imgAfterCrop,
+        }).unwrap();
+        dispatch(setCredentials({ ...res }));
+        toast.success('Profile updated')
+      } catch (err) {
+        toast.error(err?.data?.message || err.error)
+      }
+  } 
+
   return (
     <div className="container">
       {currentPage === "choose-img" ? (
@@ -101,10 +127,7 @@ const CpropImageForm = () => {
             </Button>
             <Button
               variant="secondary"
-              onClick={() => {
-                setCurrentPage("choose-img");
-                setImage("");
-              }}
+              onClick={handleSave}
             >
               Save
             </Button>

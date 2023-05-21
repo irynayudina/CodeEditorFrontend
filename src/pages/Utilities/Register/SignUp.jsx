@@ -58,21 +58,13 @@ export default function SignUp() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    const { firstName, lastName, username, email, password, passwordReapeat } = Object.fromEntries(data);
-    const name = firstName + lastName;
-    console.log(
-      firstName,
-      lastName,
-      username,
-      email,
-      password,
-      passwordReapeat
-    );
+    const { firstName, lastName, username, email, phone, password, passwordReapeat } = Object.fromEntries(data);
+    const name = firstName + " " + lastName;
     if (password !== passwordReapeat) {
       toast.error('Passwords do not match')
     } else {
       try {
-        const res = await register({ name, email, password }).unwrap();
+        const res = await register({ name, email, password, phone, username }).unwrap();
         dispatch(setCredentials({ ...res }))
         navigate('/')
       } catch (err) {

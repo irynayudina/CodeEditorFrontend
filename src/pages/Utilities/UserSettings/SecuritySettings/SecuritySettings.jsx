@@ -22,20 +22,23 @@ const SecuritySettings = () => {
   const handleSubmit = async (event) => { 
     event.preventDefault(); 
     const data = new FormData(event.currentTarget);
-    const { loginPhone, loginEmail, newPassword, repeatPassword } = Object.fromEntries(data);
-    console.log(loginPhone, loginEmail, newPassword, repeatPassword);
-    // try {
-    //   const res = await updateProfile({
-    //     _id: userInfo._id,
-    //     name,
-    //     email,
-    //     password,
-    //   }).unwrap();
-    //   dispatch(setCredentials({ ...res }));
-    //   toast.success("Profile updated");
-    // } catch (err) {
-    //   toast.error(err?.data?.message || err.error);
-    // }
+    const { phone, email, newPassword, repeatPassword } = Object.fromEntries(data);
+    if (repeatPassword !== newPassword) {
+      toast.error('Passwords don\'t match')
+    } else {
+      try {
+        const res = await updateProfile({
+          _id: userInfo._id,
+          email,
+          phone,
+          password: newPassword,
+        }).unwrap();
+        dispatch(setCredentials({ ...res }));
+        toast.success("Profile updated");
+      } catch (err) {
+        toast.error(err?.data?.message || err.error);
+      }
+    }
   }
   return (
     <div className="security-settings">
@@ -52,10 +55,10 @@ const SecuritySettings = () => {
           <TextField
             fullWidth
             required
-            id="loginPhone"
+            id="phone"
             label="Enter new login phone"
-            name="loginPhone"
-            autoComplete="loginPhone"
+            name="phone"
+            autoComplete="phone"
           />
           <Button variant="primary" size="sm" type="submit">
             Save changes
@@ -75,10 +78,10 @@ const SecuritySettings = () => {
           <TextField
             required
             fullWidth
-            id="loginEmail"
+            id="email"
             label="Enter new login email"
-            name="loginEmail"
-            autoComplete="loginEmail"
+            name="email"
+            autoComplete="email"
           />
           <Button variant="primary" size="sm" type="submit">
             Save changes

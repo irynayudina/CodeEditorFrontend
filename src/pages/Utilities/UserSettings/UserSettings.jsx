@@ -18,14 +18,14 @@ const UserSettings = () => {
           >
             Information
           </div>
-          <div
+          {/* <div
             className={`subpage-link ${
               activeSubsetting == "privacy" ? "active-subpage" : ""
             }`}
             onClick={() => setActiveSubsetting("privacy")}
           >
             Privacy
-          </div>
+          </div> */}
           <div
             className={`subpage-link ${
               activeSubsetting == "security" ? "active-subpage" : ""
@@ -37,7 +37,7 @@ const UserSettings = () => {
         </div>
         <div className="display-sidepage">
           {activeSubsetting == 'info' ? <InfoSettings /> : 
-            activeSubsetting == 'privacy' ? <PrivacySettings /> :
+            // activeSubsetting == 'privacy' ? <PrivacySettings /> :
             <SecuritySettings />
           }
         </div>

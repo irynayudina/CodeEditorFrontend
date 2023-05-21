@@ -19,7 +19,7 @@ const PrivacySettings = () => {
   const { userInfo } = useSelector((state) => state.auth);
   const [updateProfile, { isLoading }] = useUpdateUserMutation();
 
-  const [chartsPermission, setChartsPermission] = React.useState("all");
+  const [chartsPermission, setChartsPermission] = React.useState();
   const [linksPermission, setLinksPermission] = React.useState("all");
   const [contactPermission, setContactPermission] = React.useState("all");
 

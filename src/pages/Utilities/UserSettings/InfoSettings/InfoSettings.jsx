@@ -14,32 +14,40 @@ import { useDispatch, useSelector } from "react-redux";
 import { useUpdateUserMutation } from "../../../../slices/usersApiSlice";
 
 const InfoSettings = () => {
-
-  const [email, setEmail] = useState('')
-  const [name, setName] = useState('')
-  const [password, setPassword] = useState('')
-  const [confirmPassword, setConfirmPassword] = useState("");
   
   const dispatch = useDispatch();
   
   const { userInfo } = useSelector((state) => state.auth);
   const [updateProfile, {isLoading}] = useUpdateUserMutation();
-  useEffect(() => {
-    setName(userInfo.name);
-  }, [userInfo.setName]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    const { firstName, lastName, username, phone, email, twitter, linkedin, facebook, github } =
-      Object.fromEntries(data);
-    const name = firstName + lastName;
+    const {
+      firstName,
+      lastName,
+      username,
+      publicPhone,
+      publicEmail,
+      twitter,
+      linkedin,
+      facebook,
+      github,
+    } = Object.fromEntries(data);
+    const name = (firstName && lastName ) ? firstName + " " + lastName : null;
       try {
         const res = await updateProfile({
           _id: userInfo._id,
           name,
-          email,
-          password
+          publicEmail,
+          username,
+          publicPhone,
+          socialMedia: {
+            twitter,
+            linkedin,
+            facebook,
+            github,
+          },
         }).unwrap();
         dispatch(setCredentials({ ...res }));
         toast.success('Profile updated')
@@ -53,7 +61,7 @@ const InfoSettings = () => {
       <div className="text-center">{isLoading && <Loader />}</div>
       <div className="text-settings">
         <div className="description-setting">
-          <span>Username: old_username</span>
+          <span>Username: {userInfo.username}</span>
         </div>
         <Box
           component="form"
@@ -80,7 +88,7 @@ const InfoSettings = () => {
       </div>
       <div className="text-settings">
         <div className="description-setting">
-          <span>Name: old name</span>
+          <span>Name: {userInfo.name}</span>
         </div>
         <Box
           component="form"
@@ -117,7 +125,7 @@ const InfoSettings = () => {
       </div>
       <div className="text-settings">
         <div className="description-setting">
-          <span>Public Phone:</span>
+          <span>Public Phone: {userInfo.publicPhone}</span>
         </div>
         <Box
           component="form"
@@ -128,10 +136,10 @@ const InfoSettings = () => {
           <TextField
             fullWidth
             required
-            id="phone"
+            id="publicPhone"
             label="Enter new public phone"
-            name="phone"
-            autoComplete="phone"
+            name="publicPhone"
+            autoComplete="publicPhone"
           />
           <Button variant="primary" size="sm" type="submit">
             Save changes
@@ -140,7 +148,7 @@ const InfoSettings = () => {
       </div>
       <div className="text-settings">
         <div className="description-setting">
-          <span>Public Email:</span>
+          <span>Public Email: </span>
         </div>
         <Box
           component="form"
@@ -151,9 +159,10 @@ const InfoSettings = () => {
           <TextField
             required
             fullWidth
-            id="email"
+            id="publicEmail"
             label="Enter new public email"
-            name="email"
+            name="publicEmail"
+            defaultValue={userInfo.publicEmail}
             autoComplete="email"
           />
           <Button variant="primary" size="sm" type="submit">
@@ -163,7 +172,7 @@ const InfoSettings = () => {
       </div>
       <div className="text-settings">
         <div className="description-setting">
-          <span>Outer Links:</span>
+          <span>Outer Links: </span>
         </div>
         <Box
           component="form"
@@ -176,6 +185,7 @@ const InfoSettings = () => {
               <TextField
                 autoComplete="linkedin"
                 name="linkedin"
+                defaultValue={userInfo.socialMedia.linkedin}
                 required
                 fullWidth
                 id="linkedin"
@@ -186,6 +196,7 @@ const InfoSettings = () => {
               <TextField
                 autoComplete="github"
                 name="github"
+                defaultValue={userInfo.socialMedia.github}
                 required
                 fullWidth
                 id="github"
@@ -196,6 +207,7 @@ const InfoSettings = () => {
               <TextField
                 autoComplete="facebook"
                 name="facebook"
+                defaultValue={userInfo.socialMedia.facebook}
                 required
                 fullWidth
                 id="facebook"
@@ -206,6 +218,7 @@ const InfoSettings = () => {
               <TextField
                 autoComplete="twitter"
                 name="twitter"
+                defaultValue={userInfo.socialMedia.twitter}
                 required
                 fullWidth
                 id="twitter"
