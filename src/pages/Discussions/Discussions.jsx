@@ -1,50 +1,62 @@
 import React, {useState} from 'react'
-import { Container, Row, Col, Form, Badge } from "react-bootstrap";
+import { Form, Badge } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import './Discussions.scss'
 import { Button } from "react-bootstrap";
 import { BsFillChatLeftFill, BsHandThumbsUpFill } from "react-icons/bs";
 import PopUp from '../../elements/PopUp/PopUp';
 import AddNewDiscussion from './AddNewDiscussion'
+  import axios from "axios";
+  import { toast } from "react-toastify";
 const Discussions = (props) => {
   const [closePopup, setClosePopup] = useState();
-  const discussions = [
-    {
-      name: "name1",
-      description: "desc1",
-      createdAt: "18.04.2023",
-      author: "Code-Network",
-      topic: "Algorithms",
-    },
-    {
-      name: "name2",
-      description: "desc2",
-      createdAt: "18.04.2023",
-      author: "Code-Network",
-      topic: "Web",
-    },
-    {
-      name: "name3",
-      description: "desc3",
-      createdAt: "18.04.2023",
-      author: "Code-Network",
-      topic: "Custom",
-    },
-    {
-      name: "name4",
-      description: "desc4",
-      createdAt: "18.04.2023",
-      author: "Code-Network",
-      topic: "Custom",
-      tags: ['hashtag', 'another'],
-    },
-  ];
+  // const discussions = [
+  //   {
+  //     name: "name1",
+  //     description: "desc1",
+  //     createdAt: "18.04.2023",
+  //     author: "Code-Network",
+  //     topic: "Algorithms",
+  //   },
+  //   {
+  //     name: "name2",
+  //     description: "desc2",
+  //     createdAt: "18.04.2023",
+  //     author: "Code-Network",
+  //     topic: "Web",
+  //   },
+  //   {
+  //     name: "name3",
+  //     description: "desc3",
+  //     createdAt: "18.04.2023",
+  //     author: "Code-Network",
+  //     topic: "Custom",
+  //   },
+  //   {
+  //     name: "name4",
+  //     description: "desc4",
+  //     createdAt: "18.04.2023",
+  //     author: "Code-Network",
+  //     topic: "Custom",
+  //     tags: ['hashtag', 'another'],
+  //   },
+  // ];
   const [selectedDiscussionTopic, setSelectedDiscussionTopic] = useState("0");
   const [sortDiscussions, setSortDiscussions] = useState(0)
   const [searchText, setSearchText] = useState("");
   const [filteredDiscussions, setFilteredDiscussions] = useState([]);
-
-
+  const [discussions, setDiscussions] = useState([]);
+  const handleDiscussionsLoad = async () => {
+    try {
+      const discussions = await axios.get("/api/discussions", {
+      });
+      if (discussions?.data) {
+        setDiscussions(discussions.data);
+      }
+    } catch (err) {
+      toast.error(err?.response?.data?.message || err.error);
+    }
+  };
   // Filter the discussions based on the selected topic and search text
   const filterDiscussions = () => {
     let filtered = discussions;

@@ -34,6 +34,8 @@ const CreateDiscussionForm = () => {
   ];
 
   const handleSubmit = async (e) => {
+    // Find people to collaborate with on projects
+    //  Leave a comment to be noticed
     e.preventDefault();
     try {
       setIsLoading(true);
@@ -69,7 +71,7 @@ const CreateDiscussionForm = () => {
       {isLoading && <Loader />}
       <Form onSubmit={handleSubmit} className="form-discussion-create">
         <Form.Group controlId="formTopic">
-          <Form.Label>Select Topic</Form.Label>
+          <Form.Label>Select Topic *</Form.Label>
           <Form.Control
             as="select"
             value={topic}
@@ -84,17 +86,19 @@ const CreateDiscussionForm = () => {
         </Form.Group>
 
         <Form.Group controlId="formName">
-          <Form.Label>Title</Form.Label>
+          <Form.Label>Title*</Form.Label>
           <Form.Control
             type="text"
             value={title}
+            required
             onChange={(e) => setTitle(e.target.value)}
           />
         </Form.Group>
 
         <Form.Group controlId="formDescription">
-          <Form.Label>Text</Form.Label>
+          <Form.Label>Text *</Form.Label>
           <Form.Control
+            required
             as="textarea"
             rows={3}
             value={text}
