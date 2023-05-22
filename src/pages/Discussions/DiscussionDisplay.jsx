@@ -18,7 +18,8 @@ const DiscussionDisplay = ({ discussion }) => {
     
   return (
     <Link
-      to={{ pathname: "/discussion", state:{discussion}}}
+      to={"/discussion"}
+      state={{ ...discussion }}
       key={discussion?._id}
       className="text-decoration-none black-link"
     >
@@ -26,7 +27,11 @@ const DiscussionDisplay = ({ discussion }) => {
         <div className="top-section">
           <h5>{discussion.title}</h5>
           <div className="tags">
-            <Badge bg="secondary">{discussion.topic}</Badge>
+            <h5>
+              <Badge bg="primary" className="t">
+                {discussion.topic}
+              </Badge>
+            </h5>
             {discussion.tags?.map((tag, index) => (
               <Badge bg="secondary" key={index}>
                 {tag}
