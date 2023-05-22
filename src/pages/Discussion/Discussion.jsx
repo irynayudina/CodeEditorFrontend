@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./Discussion.scss";
-import { Card, Badge, Button, ListGroup } from "react-bootstrap";
+import { Card, Badge, Button} from "react-bootstrap";
 import DiscussionSection from "./DiscussionSection";
 import {
   BsFillHandThumbsUpFill,
@@ -10,8 +10,6 @@ import ReplyDiscussion from "./ReplyDiscussion";
 import { useLocation } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
-import Loader from "../../elements/Loader";
 
 const Discussion = ({ discussionId }) => {
   let dataExample = {
@@ -112,6 +110,13 @@ const Discussion = ({ discussionId }) => {
         discussionID: discussionId,
       });
       if (discussion?.data) {
+        const date = new Date(discussion.data.createdAt);
+        const formattedDate = date.toLocaleDateString("en-US", {
+          month: "long",
+          day: "numeric",
+          year: "numeric",
+        });
+        discussion.data.createdAt = formattedDate;
         setData(discussion.data);
       }
     } catch (err) {
@@ -120,21 +125,20 @@ const Discussion = ({ discussionId }) => {
   };
   
   useEffect(() => {
+    console.log(state)
     if (!state) {
       handleDiscussionLoad();
     } else {
+      const date = new Date(state.createdAt);
+      const formattedDate = date.toLocaleDateString("en-US", {
+        month: "long",
+        day: "numeric",
+        year: "numeric",
+      });
+      state.createdAt = formattedDate;
       setData(state);
     }
-    const date = new Date(data.createdAt);
-    const formattedDate = date.toLocaleDateString("en-US", {
-      month: "long",
-      day: "numeric",
-      year: "numeric",
-    });
-    const dataCopy = { ...data };
-    dataCopy.createdAt = formattedDate;
-    setData(dataCopy);
-  }, [location, state, discussionId]);
+  }, [location, state, state?.createdAt, discussionId]);
 
   const [expandedComments, setExpandedComments] = useState(true);
   const [showReplyFormDiscussion, setShowReplyFormDiscussion] = useState(false);

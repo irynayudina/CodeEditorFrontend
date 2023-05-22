@@ -1,6 +1,10 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Loader from "../Loader";
+import { ListGroup } from "react-bootstrap";
+import useInfiniteScroll from "react-infinite-scroll-hook";
+import "./List.scss";
+import DiscussionDisplay from "../../pages/Discussions/DiscussionDisplay";
 function useLoadItems() {
   const [loading, setLoading] = useState(false);
   const [items, setItems] = useState([]);
@@ -12,10 +16,16 @@ function useLoadItems() {
     if (!loading && hasNextPage) {
       setLoading(true);
       try {
-        const response = await axios.get(`/api/items?page=${page}`);
-        setItems((prevItems) => [...prevItems, ...response.data]);
-        setPage((prevPage) => prevPage + 1);
-        setHasNextPage(response.data.length > 0);
+        const response = await axios.get(`/api/discussions/all?page=${page}`);
+        console.log(response);
+        setItems((prevItems) => [...prevItems, ...response.data.discussions]);
+        setPage((prevPage) => {
+          const nextPage = prevPage + 1;
+          setHasNextPage(nextPage <= response.data.totalPages);
+          return nextPage;
+        });
+        console.log(page);
+        console.log(hasNextPage);
       } catch (error) {
         setError(error.message);
       } finally {
@@ -25,16 +35,28 @@ function useLoadItems() {
   };
 
   useEffect(() => {
-    loadMore();
+    onceFn();
   }, []);
+  var once = function (fn) {
+    let counter = 0;
+    return function (...args) {
+      counter += 1;
+      if (counter === 1) {
+        return fn(...args);
+      } else {
+        return undefined;
+      }
+    };
+  };
+  let onceFn = once(loadMore);
 
   return { loading, items, hasNextPage, error, loadMore };
 }
 
-function InfiniteListWithVerticalScroll() {
+export default function InfiniteListWithVerticalScroll() {
   const { loading, items, hasNextPage, error, loadMore } = useLoadItems();
 
-  const [sentryRef, { rootRef }] = useInfiniteScroll({
+  const [sentryRef] = useInfiniteScroll({
     loading,
     hasNextPage,
     onLoadMore: loadMore,
@@ -43,20 +65,15 @@ function InfiniteListWithVerticalScroll() {
   });
 
   return (
-    <ListContainer
-      // This where we set our scrollable root component.
-      ref={rootRef}
-    >
-      <List>
-        {items.map((item) => (
-          <ListItem key={item.key}>{item.value}</ListItem>
-        ))}
-        {(loading || hasNextPage) && (
-          <ListItem ref={sentryRef}>
-            <Loader />
-          </ListItem>
-        )}
-      </List>
-    </ListContainer>
+    <ListGroup>
+      {items.map((item) => (
+          <DiscussionDisplay key={item._id} discussion={item}/>
+      ))}
+      {(loading || hasNextPage) && (
+        <ListGroup.Item ref={sentryRef}>
+          <Loader />
+        </ListGroup.Item>
+      )}
+    </ListGroup>
   );
 }

@@ -33,7 +33,19 @@
             }
             .response-statistics{
                 display: flex;
-                gap: 0.5rem;
+                gap: 1rem;
+                flex-wrap: wrap;
+                // .discussion-likes {
+                //     display: flex;
+                //     align-items: baseline;
+                //     gap: 0.5rem;
+                //     div{
+                //         display: flex;
+                //         align-items: center;
+                //         // gap: 0.5rem;
+                //     }
+                // }
+                // .discussion-answers{}
             }
         }
         .metadata-discussions{

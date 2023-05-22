@@ -3,52 +3,53 @@ import { Form, Badge } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import './Discussions.scss'
 import { Button } from "react-bootstrap";
-import { BsFillChatLeftFill, BsHandThumbsUpFill } from "react-icons/bs";
 import PopUp from '../../elements/PopUp/PopUp';
 import AddNewDiscussion from './AddNewDiscussion'
   import axios from "axios";
-  import { toast } from "react-toastify";
+import { toast } from "react-toastify";
+import InfiniteListWithVerticalScroll from '../../elements/InfiniteLoader/InfiniteListWithVerticalScroll';
+import DiscussionDisplay from './DiscussionDisplay';
 const Discussions = (props) => {
   const [closePopup, setClosePopup] = useState();
-  // const discussions = [
-  //   {
-  //     name: "name1",
-  //     description: "desc1",
-  //     createdAt: "18.04.2023",
-  //     author: "Code-Network",
-  //     topic: "Algorithms",
-  //   },
-  //   {
-  //     name: "name2",
-  //     description: "desc2",
-  //     createdAt: "18.04.2023",
-  //     author: "Code-Network",
-  //     topic: "Web",
-  //   },
-  //   {
-  //     name: "name3",
-  //     description: "desc3",
-  //     createdAt: "18.04.2023",
-  //     author: "Code-Network",
-  //     topic: "Custom",
-  //   },
-  //   {
-  //     name: "name4",
-  //     description: "desc4",
-  //     createdAt: "18.04.2023",
-  //     author: "Code-Network",
-  //     topic: "Custom",
-  //     tags: ['hashtag', 'another'],
-  //   },
-  // ];
+  const discussionsExample = [
+    {
+      title: "name1",
+      text: "desc1",
+      createdAt: "18.04.2023",
+      author: { name: "Code-Network" },
+      topic: "Algorithms",
+    },
+    {
+      title: "name2",
+      text: "desc2",
+      createdAt: "18.04.2023",
+      author: { name: "Code-Network" },
+      topic: "Web",
+    },
+    {
+      title: "name3",
+      text: "desc3",
+      createdAt: "18.04.2023",
+      author: { name: "Code-Network" },
+      topic: "Custom",
+    },
+    {
+      title: "name4",
+      text: "desc4",
+      createdAt: "18.04.2023",
+      author: { name: "Code-Network" },
+      topic: "Custom",
+      tags: ["hashtag", "another"],
+    },
+  ];
   const [selectedDiscussionTopic, setSelectedDiscussionTopic] = useState("0");
   const [sortDiscussions, setSortDiscussions] = useState(0)
   const [searchText, setSearchText] = useState("");
   const [filteredDiscussions, setFilteredDiscussions] = useState([]);
-  const [discussions, setDiscussions] = useState([]);
+  const [discussions, setDiscussions] = useState(discussionsExample);
   const handleDiscussionsLoad = async () => {
     try {
-      const discussions = await axios.get("/api/discussions", {
+      const discussions = await axios.get("/api/discussions/all", {
       });
       if (discussions?.data) {
         setDiscussions(discussions.data);
@@ -86,6 +87,7 @@ const Discussions = (props) => {
 
   return (
     <div className="discussions">
+      <InfiniteListWithVerticalScroll />
       <div className="discussions-topsection">
         <div className="select-discussion-topic">
           <Form.Select
@@ -124,7 +126,7 @@ const Discussions = (props) => {
         </div>
         <div>
           <PopUp className={closePopup}>
-            <button className="btn btn-primary" onClick={() => {}}>
+            <button className="btn btn-primary" >
               New Discussion
             </button>
             <div className="add-new-discussion-form">
@@ -134,37 +136,8 @@ const Discussions = (props) => {
         </div>
       </div>
       <div className="filtered-discussions">
-        {filteredDiscussions.map((discussion, index) => (
-          <Link to="/discussion" key={index} className="text-decoration-none black-link">
-            <div key={index} className="discussion-item">
-              <div className="top-section">
-                <h5>{discussion.name}</h5>
-                <div className="tags">
-                  <Badge bg="secondary">{discussion.topic}</Badge>
-                  {discussion.tags?.map((tag, index) => (
-                    <Badge bg="secondary" key={index}>
-                      {tag}
-                    </Badge>
-                  ))}
-                </div>
-              </div>
-              <p>{discussion.description}</p>
-              <div className="down-section">
-                <div className="response-statistics">
-                  <div className="discussion-likes">
-                    Likes <BsHandThumbsUpFill />{" "}
-                  </div>
-                  <div className="discussion-answers">
-                    Answers <BsFillChatLeftFill />{" "}
-                  </div>
-                </div>
-                <div className="metadata-discussions text-secondary">
-                  <p>{discussion.createdAt}</p>
-                  <p>{discussion.author}</p>
-                </div>
-              </div>
-            </div>
-          </Link>
+        {discussionsExample.map((discussion, index) => (
+          <DiscussionDisplay discussion={discussion} key={index} />
         ))}
       </div>
     </div>
