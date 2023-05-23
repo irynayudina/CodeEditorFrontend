@@ -28,6 +28,7 @@ const DiscussionSection = ({ comment, i }) => {
       } catch (err) {
         toast.error(err?.response?.data?.message || err.error);
       } finally {
+        console.log(c)
       }
     };
 

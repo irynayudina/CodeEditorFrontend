@@ -52,6 +52,7 @@ const Discussion = ({ discussionId }) => {
         updatedData.comments = [commentNew._id, ...prevData.comments];
         return updatedData;
       });
+      setExpandedComments(true);
     }
   };
   
