@@ -15,6 +15,7 @@ const ReplyDiscussion = ({ discussionId, handleReply }) => {
       setIsLoading(true);
       const comment = await axios.post("/api/comments", {
         text: commentText,
+        parentDiscussion: discussionId,
       });
       if (comment?.data) {
         // setCommentNew(comment.data);
