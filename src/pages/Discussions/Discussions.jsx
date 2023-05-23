@@ -53,7 +53,7 @@ const Discussions = (props) => {
       tags: queryTextSringForArray,
       sortBy: sortDiscussions,
     });
-    console.log(sortDiscussions);
+    // console.log(sortDiscussions);
   };
   // Update the filtered discussions whenever the selected topic or search text changes
   React.useEffect(() => {

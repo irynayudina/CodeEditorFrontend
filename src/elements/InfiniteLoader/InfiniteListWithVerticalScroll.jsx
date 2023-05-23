@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import Loader from "../Loader";
 import { ListGroup } from "react-bootstrap";
@@ -11,6 +11,8 @@ function useLoadItems(filerObj) {
   const [hasNextPage, setHasNextPage] = useState(true);
   const [error, setError] = useState(null);
   const [page, setPage] = useState(1);
+  const [resetCompleted, setResetCompleted] = useState(false);
+
   let filterQuery = filerObj.topic ? `&topic=${filerObj.topic}` : "";
   if (filerObj.title) {
     filterQuery += `&title=${filerObj.title}`;
@@ -25,7 +27,9 @@ function useLoadItems(filerObj) {
     if (!loading && hasNextPage) {
       setLoading(true);
       try {
-        const response = await axios.get(`/api/discussions/all?page=${page}${filterQuery}`);
+        const response = await axios.get(
+          `/api/discussions/all?page=${page}${filterQuery}`
+        );
         setItems((prevItems) => {
           // Filter out duplicate items
           const uniqueItems = response.data.discussions.filter((item) => {
@@ -46,7 +50,7 @@ function useLoadItems(filerObj) {
         setLoading(false);
       }
     }
-    console.log(page + " inside loadmore")
+    console.log(page + " inside loadmore");
   };
 
   const statesReset = () => {
@@ -54,16 +58,28 @@ function useLoadItems(filerObj) {
     setHasNextPage(true);
     setLoading(false);
     setItems([]);
+    setResetCompleted(true);//--
   };
+  // useEffect(() => {
+  //   if (filterQuery != "") {
+  //     statesReset();
+  //     loadMore();
+  //     console.log(page + " useEffect");
+  //   }
+  // }, [filerObj, filterQuery]);
   useEffect(() => {
-    if (filterQuery != "") {
+    if (filterQuery !== "") {
+      setResetCompleted(false);
       statesReset();
-      loadMore();
-      console.log(filterQuery);
-      console.log(page)
+      console.log(page + " useEffect");
     }
   }, [filerObj, filterQuery]);
 
+  useEffect(() => {
+    if (resetCompleted) {
+      loadMore();
+    }
+  }, [resetCompleted]);
 
   return { loading, items, hasNextPage, error, loadMore };
 }
