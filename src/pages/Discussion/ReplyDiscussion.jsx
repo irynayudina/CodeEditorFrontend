@@ -1,22 +1,38 @@
-import React, { useState } from 'react';
-import { Form, Button } from 'react-bootstrap';
+import React, { useState } from "react";
+import { Form, Button } from "react-bootstrap";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import Loader from "../../elements/Loader";
 
-const ReplyDiscussion = () => {
-    const [commentText, setCommentText] = useState("");
+const ReplyDiscussion = ({ discussionId, handleReply }) => {
+  const [commentText, setCommentText] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
-    const handleSubmit = (e) => {
-      e.preventDefault();
-      // Send the comment to the server or perform any desired action
-      console.log("Comment:", commentText);
-      // Reset the input field
-      setCommentText("");
-    };
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      setIsLoading(true);
+      const comment = await axios.post("/api/comments", {
+        text: commentText,
+      });
+      if (comment?.data) {
+        // setCommentNew(comment.data);
+        const commentTo = await axios.post("/api/discussions/comments", {
+          discussionId,
+          commentId: comment.data?._id,
+        });
+        handleReply(comment.data);
+      }
+    } catch (err) {
+      toast.error(err?.response?.data?.message || err.error);
+    } finally {
+      setIsLoading(false);
+    }
+    setCommentText("");
+  };
   return (
-    <div className='reply-form'>
+    <div className="reply-form">
       <Form onSubmit={handleSubmit}>
         <Form.Group controlId="commentText">
           <Form.Control
@@ -27,12 +43,13 @@ const ReplyDiscussion = () => {
             onChange={(e) => setCommentText(e.target.value)}
           />
         </Form.Group>
-        <Button variant="primary" type="submit" size='md'>
+        {isLoading && <Loader />}
+        <Button variant="primary" type="submit" disabled={isLoading} size="md">
           Reply
         </Button>
       </Form>
     </div>
   );
-}
+};
 
 export default ReplyDiscussion;

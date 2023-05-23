@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./Discussion.scss";
 import { Card, Badge, Button} from "react-bootstrap";
-import DiscussionSection from "./DiscussionSection";
 import {
   BsFillHandThumbsUpFill,
   BsFillChatLeftFill,
@@ -10,104 +9,18 @@ import ReplyDiscussion from "./ReplyDiscussion";
 import { useLocation } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
+import MappingComments from "./MappingComments";
 
 const Discussion = ({ discussionId }) => {
-  let dataExample = {
-    title: "String Reversal",
-    author: { name: "John Smith" },
-    createdAt: "May 1, 2023",
-    text: "Given a string, write a function to reverse it. For example, the input string 'hello' should return 'olleh'.",
-    topic: "Challenge",
-    tags: ["reverse", "string manipulation"],
-    comments: [
-      {
-        author: "John",
-        date: "2022-03-15",
-        likes: 10,
-        text: "Reversing a string in JavaScript is easy. You can use the built-in `split`, `reverse`, and `join` methods like this: ",
-        answers: [
-          {
-            author: "Jane",
-            date: "2022-03-16",
-            likes: 3,
-            text: "You can also use a `for` loop to iterate over the string characters and build a new reversed string.",
-          },
-          {
-            author: "Bob",
-            date: "2022-03-17",
-            likes: 3,
-            text: "Another option is to use the `reduce` method to create a new string by appending each character from the original string in reverse order.",
-          },
-          {
-            author: "Alice",
-            date: "2022-03-18",
-            likes: 3,
-            text: "Don't forget about the `substring` method, which can also be used to reverse a string in JavaScript.",
-          },
-        ],
-      },
-      {
-        author: "Sarah",
-        date: "2022-03-20",
-        likes: 6,
-        text: "In C++, you can reverse a string using the `reverse` method from the `algorithm` library like this: ",
-        answers: [
-          {
-            author: "Tom",
-            date: "2022-03-21",
-            text: "You can also use a `for` loop to swap characters in the string from the beginning and end, until you reach the middle.",
-          },
-          {
-            author: "Karen",
-            date: "2022-03-22",
-            likes: 2,
-            text: "Another option is to create a new string and copy the characters from the original string in reverse order using a `for` loop.",
-          },
-          {
-            author: "David",
-            date: "2022-03-23",
-            likes: 1,
-            text: "Don't forget about the `rbegin` and `rend` methods from the `std::string` class, which allow you to iterate over a string in reverse order.",
-          },
-        ],
-      },
-      {
-        author: "Mark",
-        date: "2022-03-25",
-        likes: 8,
-        text: "In C#, you can reverse a string using the `Reverse` method from the `System.Linq` namespace like this: ",
-        answers: [
-          {
-            author: "Lisa",
-            date: "2022-03-26",
-            likes: 0,
-            text: "You can also use a `for` loop to swap characters in the string from the beginning and end, until you reach the middle.",
-          },
-          {
-            author: "Mike",
-            date: "2022-03-27",
-            likes: 2,
-            text: "Another option is to create a new string and copy the characters from the original string in reverse order using a `for` loop.",
-          },
-          {
-            author: "Emily",
-            date: "2022-03-28",
-            likes: 1,
-            text: "Don't forget about the `Substring` method, which can also be used to reverse a string in C#.",
-          },
-        ],
-      },
-    ],
-    likes: 10,
-  };
-  const [data, setData] = useState(dataExample)
+  const [data, setData] = useState();
   const location = useLocation();
   const { state } = location;
+  const [commentsNew, setCommentsNew] = useState([]);
 
-  const handleDiscussionLoad = async () => {
+  const handleDiscussionLoad = async (discussionId) => {
     try {
-      const discussion = await axios.get("/api/discussions", {
-        discussionID: discussionId,
+      const discussion = await axios.get(`/api/discussions?discussionId=${discussionId}`, {
+        discussionId: discussionId,
       });
       if (discussion?.data) {
         const date = new Date(discussion.data.createdAt);
@@ -123,23 +36,38 @@ const Discussion = ({ discussionId }) => {
       toast.error(err?.response?.data?.message || err.error);
     }
   };
-  
+
   useEffect(() => {
-    console.log(state)
+    console.log(state);
     if (!state) {
-      handleDiscussionLoad();
+      handleDiscussionLoad(discussionId);
     } else {
-      const date = new Date(state.createdAt);
-      const formattedDate = date.toLocaleDateString("en-US", {
-        month: "long",
-        day: "numeric",
-        year: "numeric",
-      });
-      state.createdAt = formattedDate;
-      setData(state);
+      handleDiscussionLoad(state._id);
+      // const date = new Date(state.createdAt);
+      // const formattedDate = date.toLocaleDateString("en-US", {
+      //   month: "long",
+      //   day: "numeric",
+      //   year: "numeric",
+      // });
+      // state.createdAt = formattedDate;
+      // setData(state);
     }
   }, [location, state, state?.createdAt, discussionId]);
 
+  const handleReply = (commentNew) => {
+    if (commentNew) {
+      setData((prevData) => {
+        const updatedData = { ...prevData };
+        // updatedData.comments = [...prevData.comments, commentNew._id];
+        updatedData.comments = [commentNew._id, ...prevData.comments];
+        setCommentsNew([...commentsNew, commentNew._id]);
+        return updatedData;
+      });
+      // setCommentsNew(data.comments.reverse());
+    }
+    console.log(commentNew);
+  };
+  
   const [expandedComments, setExpandedComments] = useState(true);
   const [showReplyFormDiscussion, setShowReplyFormDiscussion] = useState(false);
   return (
@@ -172,7 +100,10 @@ const Discussion = ({ discussionId }) => {
               {" "}
               <BsFillHandThumbsUpFill /> {data?.likes}
             </div>
-            <div onClick={() => setExpandedComments(!expandedComments)}>
+            <div
+              onClick={() => setExpandedComments(!expandedComments)}
+              className="show-comments"
+            >
               <BsFillChatLeftFill /> {data?.comments?.length}
             </div>
             <div
@@ -185,11 +116,23 @@ const Discussion = ({ discussionId }) => {
           <Card.Subtitle className="d-flex align-items-center"></Card.Subtitle>
         </Card.Footer>
       </Card>
-      {showReplyFormDiscussion ? <ReplyDiscussion /> : ""}
+      {showReplyFormDiscussion ? (
+        <ReplyDiscussion discussionId={data?._id} handleReply={handleReply} />
+      ) : (
+        ""
+      )}
       <div className="comment-section">
-        {expandedComments
-          ? data?.comments?.map((c, i) => <DiscussionSection c={c} key={i} />)
-          : ""}
+        {/* {expandedComments && data?.comments && ( */}
+        {/* <> */}
+        {/* {commentsNew?.map((commentNew) => (
+              <DiscussionSection comment={commentNew} key={commentNew._id} />
+            ))} */}
+        {/* {data.comments.map((c, i) => (
+              <DiscussionSection comment={c} key={c._id} />
+            ))} */}
+        {/* </> */}
+        {/* )} */}
+        {expandedComments ? <MappingComments data={data} reload={commentsNew} /> : ""}
       </div>
     </div>
   );

@@ -1,7 +1,7 @@
 .discussion-page{
     padding: 1rem;
     background-color: whitesmoke;
-    .reply-button{
+    .reply-button, .show-comments{
         &:hover{
             cursor: pointer;
             color: #4285F4;

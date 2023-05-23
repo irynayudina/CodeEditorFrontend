@@ -6,6 +6,7 @@ import { Form, Badge } from "react-bootstrap";
 import { BsFillChatLeftFill, BsHandThumbsUpFill } from "react-icons/bs";
 
 const DiscussionDisplay = ({ discussion }) => {
+  console.log(discussion);
     useEffect(() => {
       const date = new Date(discussion.createdAt);
       const formattedDate = date.toLocaleDateString("en-US", {
@@ -46,7 +47,7 @@ const DiscussionDisplay = ({ discussion }) => {
               Likes <BsHandThumbsUpFill /> {discussion.likes || 0}
             </div>
             <div className="discussion-answers">
-              Answers <BsFillChatLeftFill /> {discussion.answers?.length || 0}
+              Answers <BsFillChatLeftFill /> {discussion.comments?.length || 0}
             </div>
           </div>
           <div className="metadata-discussions text-secondary">
