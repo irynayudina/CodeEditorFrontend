@@ -18,6 +18,9 @@ function useLoadItems(filerObj) {
   if (filerObj.tags) {
     filterQuery += `&tags=${filerObj.tags}`;
   }
+  if (filerObj.sortBy) {
+    filterQuery += `&sortBy=${filerObj.sortBy}`;
+  }
   const loadMore = async () => {
     if (!loading && hasNextPage) {
       setLoading(true);
@@ -43,37 +46,23 @@ function useLoadItems(filerObj) {
         setLoading(false);
       }
     }
+    console.log(page + " inside loadmore")
   };
 
-  var once = function (fn) {
-    let counter = 0;
-    return function (...args) {
-      counter += 1;
-      if (counter === 1) {
-        return fn(...args);
-      } else {
-        return undefined;
-      }
-    };
-  };
   const statesReset = () => {
     setPage(1);
     setHasNextPage(true);
     setLoading(false);
     setItems([]);
   };
-  let onceFn = once(loadMore);
-  let onceInit = once(statesReset);
-  const listReset = () => {
-    statesReset();
-    loadMore();
-  }
-  let onceRunList = once(listReset);
   useEffect(() => {
-    listReset();loadMore();
-    // onceRunList();
-    console.log(filterQuery);
-  }, [filerObj]);
+    if (filterQuery != "") {
+      statesReset();
+      loadMore();
+      console.log(filterQuery);
+      console.log(page)
+    }
+  }, [filerObj, filterQuery]);
 
 
   return { loading, items, hasNextPage, error, loadMore };

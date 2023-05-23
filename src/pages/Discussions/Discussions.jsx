@@ -39,8 +39,8 @@ const Discussions = (props) => {
       tags: ["hashtag", "another"],
     },
   ];
-  const [selectedDiscussionTopic, setSelectedDiscussionTopic] = useState("0");
-  const [sortDiscussions, setSortDiscussions] = useState(0);
+  const [selectedDiscussionTopic, setSelectedDiscussionTopic] = useState("");
+  const [sortDiscussions, setSortDiscussions] = useState('recent');
   const textInput = useRef()
   const [filerObj, setFilterObj] = useState({})
   // Filter the discussions based on the selected topic and search text
@@ -51,7 +51,9 @@ const Discussions = (props) => {
       topic: selectedDiscussionTopic,
       title: queryTextSringForArray,
       tags: queryTextSringForArray,
+      sortBy: sortDiscussions,
     });
+    console.log(sortDiscussions);
   };
   // Update the filtered discussions whenever the selected topic or search text changes
   React.useEffect(() => {
@@ -66,7 +68,7 @@ const Discussions = (props) => {
             value={selectedDiscussionTopic}
             onChange={(e) => setSelectedDiscussionTopic(e.target.value)}
           >
-            <option value="0">All</option>
+            <option value="all">All</option>
             <option value="Algorithms">Algorithms</option>
             <option value="Web">Web</option>
             <option value="Custom">Custom</option>
@@ -75,9 +77,8 @@ const Discussions = (props) => {
             value={sortDiscussions}
             onChange={(e) => setSortDiscussions(e.target.value)}
           >
-            <option value="0">Trending</option>
-            <option value="1">Recent</option>
-            <option value="2">Popular</option>
+            <option value="recent">Recent</option>
+            <option value="popular">Popular</option>
           </Form.Select>
         </div>
 
