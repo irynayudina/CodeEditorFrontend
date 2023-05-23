@@ -6,7 +6,6 @@ import { Form, Badge } from "react-bootstrap";
 import { BsFillChatLeftFill, BsHandThumbsUpFill } from "react-icons/bs";
 
 const DiscussionDisplay = ({ discussion }) => {
-  console.log(discussion);
     useEffect(() => {
       const date = new Date(discussion.createdAt);
       const formattedDate = date.toLocaleDateString("en-US", {

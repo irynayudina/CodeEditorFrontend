@@ -15,7 +15,6 @@ const Discussion = ({ discussionId }) => {
   const [data, setData] = useState();
   const location = useLocation();
   const { state } = location;
-  const [commentsNew, setCommentsNew] = useState([]);
 
   const handleDiscussionLoad = async (discussionId) => {
     try {
@@ -43,14 +42,6 @@ const Discussion = ({ discussionId }) => {
       handleDiscussionLoad(discussionId);
     } else {
       handleDiscussionLoad(state._id);
-      // const date = new Date(state.createdAt);
-      // const formattedDate = date.toLocaleDateString("en-US", {
-      //   month: "long",
-      //   day: "numeric",
-      //   year: "numeric",
-      // });
-      // state.createdAt = formattedDate;
-      // setData(state);
     }
   }, [location, state, state?.createdAt, discussionId]);
 
@@ -58,14 +49,10 @@ const Discussion = ({ discussionId }) => {
     if (commentNew) {
       setData((prevData) => {
         const updatedData = { ...prevData };
-        // updatedData.comments = [...prevData.comments, commentNew._id];
         updatedData.comments = [commentNew._id, ...prevData.comments];
-        setCommentsNew([...commentsNew, commentNew._id]);
         return updatedData;
       });
-      // setCommentsNew(data.comments.reverse());
     }
-    console.log(commentNew);
   };
   
   const [expandedComments, setExpandedComments] = useState(true);
@@ -122,17 +109,7 @@ const Discussion = ({ discussionId }) => {
         ""
       )}
       <div className="comment-section">
-        {/* {expandedComments && data?.comments && ( */}
-        {/* <> */}
-        {/* {commentsNew?.map((commentNew) => (
-              <DiscussionSection comment={commentNew} key={commentNew._id} />
-            ))} */}
-        {/* {data.comments.map((c, i) => (
-              <DiscussionSection comment={c} key={c._id} />
-            ))} */}
-        {/* </> */}
-        {/* )} */}
-        {expandedComments ? <MappingComments data={data} reload={commentsNew} /> : ""}
+        {expandedComments ? <MappingComments data={data} /> : ""}
       </div>
     </div>
   );

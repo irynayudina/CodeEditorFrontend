@@ -12,7 +12,6 @@ const DiscussionSection = ({ comment, i }) => {
   const [isLoading, setIsLoading] = useState(false);
   useEffect(() => {
     const loadComment = async () => {
-      console.log(comment);
       try {
         const commentData = await axios.get(
           `/api/comments/id?commentId=${comment}`
@@ -26,7 +25,6 @@ const DiscussionSection = ({ comment, i }) => {
         });
         resData.createdAt = formattedDate;
         setC(resData);
-        console.log(commentData);
       } catch (err) {
         toast.error(err?.response?.data?.message || err.error);
       } finally {
@@ -34,7 +32,7 @@ const DiscussionSection = ({ comment, i }) => {
     };
 
     loadComment();
-  }, []); // Empty dependency array ensures the function is called only once 
+  }, []);  
 
   const [showReply, setShowReply] = useState(false);
   return (

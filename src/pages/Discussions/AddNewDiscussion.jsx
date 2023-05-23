@@ -34,8 +34,6 @@ const CreateDiscussionForm = () => {
   ];
 
   const handleSubmit = async (e) => {
-    // Find people to collaborate with on projects
-    //  Leave a comment to be noticed
     e.preventDefault();
     try {
       setIsLoading(true);
