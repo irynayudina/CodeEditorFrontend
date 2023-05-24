@@ -1,12 +1,23 @@
 import React, {useState, useEffect} from 'react'
-import UserInfo from '../Userpage/UserInfo'
 import UserNav from '../Userpage/UserNav';
 import UserCharts from '../UserCharts/UserCharts';
 import UserProjects from '../UserProjects/UserProjects';
 import UserPeople from '../UserPeople/UserPeople';
 import UserDiscussions from '../UserDiscussions/UserDiscussions';
+import { useLocation } from "react-router-dom";
+import PublicUserInfo from './PublicUserInfo';
 import './PublicUserpage.scss';
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import axios from 'axios'
+
 const PublicUserpage = () => {
+  const { userInfo } = useSelector((state) => state.auth);
+  const [actingUser, setActingUser] = useState(userInfo);
+  const navigate = useNavigate();
+  const location = useLocation();
+  const { state } = location;
     const [subpage, setSubpage] = useState();
     const [pageContent, setPageContent] = useState();
     useEffect(() => {
@@ -25,11 +36,31 @@ const PublicUserpage = () => {
           break;
       }
     }, [subpage]);
+  useEffect(() => {
+    if (state?.userId == userInfo?._id) {
+      navigate("/user");
+    }
+  }, [state])
+  useEffect(() => {
+    const loadUserInfo = async () => {
+      try {
+        const userInfoResponse = await axios.get(
+          `/api/users/profile?userId=${userInfo?._id}`
+        );
+        console.log(userInfoResponse.data);
+        setActingUser(userInfoResponse.data);
+      } catch (err) {
+        toast.error(err?.response?.data?.message || err.error);
+      }
+    };
+    loadUserInfo();
+  }, []);
+  
   return (
     <div className="public-userpage">
       <div>
-        <UserInfo isPublic={true} />
-        <UserNav subpage={subpage} setSubpage={setSubpage} isPublic={true} />
+        <PublicUserInfo userId={state?.userId} me={actingUser} />
+        {/* <UserNav subpage={subpage} setSubpage={setSubpage} isPublic={true} /> */}
       </div>
       <div className="userpage-content">{pageContent}</div>
     </div>

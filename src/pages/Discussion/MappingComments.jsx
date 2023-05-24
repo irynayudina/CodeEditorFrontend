@@ -14,7 +14,7 @@ function useLoadItems(filerObj) {
   const [resetCompleted, setResetCompleted] = useState(false);
 
   const loadMore = async () => {
-    if (!loading && hasNextPage) {
+    if (!loading && hasNextPage && filerObj?._id) {
       setLoading(true);
       try {
         const response = await axios.get(
@@ -68,12 +68,7 @@ function useLoadItems(filerObj) {
 }
 
 const MappingComments = ({ data }) => {
-  useEffect(() => {
-    console.log(data);
-  }, [data])
-
   let { loading, items, hasNextPage, error, loadMore } = useLoadItems(data);
-
   const [sentryRef] = useInfiniteScroll({
     loading,
     hasNextPage,
@@ -82,15 +77,10 @@ const MappingComments = ({ data }) => {
     rootMargin: "0px 0px 400px 0px",
   });
 
-  
   return (
     <div>
-      {/* {data?.comments?.map((c, i) => (
-        <DiscussionSection comment={c} key={c} />
-      ))} */}
       <ListGroup>
         {items.map((item) => (
-          // <div key={item._id}>{item._id}</div>
           <DiscussionSection commentData={item} key={item._id} />
         ))}
         {(loading || hasNextPage) && (

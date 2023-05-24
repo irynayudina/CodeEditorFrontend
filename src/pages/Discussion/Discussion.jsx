@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./Discussion.scss";
-import { Card, Badge, Button} from "react-bootstrap";
+import { Link } from "react-router-dom";
+import { Card, Badge, Button } from "react-bootstrap";
 import {
   BsFillHandThumbsUpFill,
   BsFillChatLeftFill,
@@ -78,7 +79,15 @@ const Discussion = ({ discussionId }) => {
       <Card>
         <Card.Body>
           <Card.Subtitle className="mb-2 text-muted">
-            {data?.author?.name} • {data?.createdAt}
+            <Link
+              to={"/public/user"}
+              state={{ userId: data?.author?._id }}
+              key={data?.author?._id}
+              className="text-decoration-none black-link"
+            >
+              {data?.author?.name}
+            </Link>{" "}
+            • {data?.createdAt}
           </Card.Subtitle>
           <Card.Text>{data?.text}</Card.Text>
         </Card.Body>

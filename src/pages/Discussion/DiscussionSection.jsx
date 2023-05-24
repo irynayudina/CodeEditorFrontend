@@ -6,6 +6,7 @@ import {
 } from "react-icons/bs";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { Link } from "react-router-dom";
 import Loader from "../../elements/Loader";
 const DiscussionSection = ({ comment, commentData }) => {
   const [c, setC] = useState();
@@ -45,6 +46,7 @@ const DiscussionSection = ({ comment, commentData }) => {
     resData.createdAt = formattedDate;
     setC(resData);
     // setC(commentData);
+    console.log(commentData);
   }, [commentData]);
 
   const [showReply, setShowReply] = useState(false);
@@ -52,7 +54,14 @@ const DiscussionSection = ({ comment, commentData }) => {
     <div className="challenge-comment-container mb-3">
       {isLoading && <Loader />}
       <div className="top d-flex justify-content-between mb-1">
-        <div>{c?.author?.name}</div>
+        <Link
+          to={"/public/user"}
+          state={{ userId: c?.author?._id }}
+          key={c?.author?._id}
+          className="text-decoration-none black-link"
+        >
+          <div>{c?.author?.name}</div>
+        </Link>
         <div>{c?.createdAt}</div>
       </div>
       <div className="mb-1">{c?.text}</div>
