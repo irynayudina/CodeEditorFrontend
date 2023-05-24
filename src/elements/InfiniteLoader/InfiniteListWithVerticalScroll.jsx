@@ -60,13 +60,6 @@ function useLoadItems(filerObj) {
     setItems([]);
     setResetCompleted(true);//--
   };
-  // useEffect(() => {
-  //   if (filterQuery != "") {
-  //     statesReset();
-  //     loadMore();
-  //     console.log(page + " useEffect");
-  //   }
-  // }, [filerObj, filterQuery]);
   useEffect(() => {
     if (filterQuery !== "") {
       setResetCompleted(false);
