@@ -58,7 +58,7 @@ const LandingPage = () => {
             <p>Write and run your code using our powerful code editor.</p>
           </motion.div>
         </Col>
-        <Col md={3}>
+        {/* <Col md={3}>
           <motion.div
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
@@ -69,7 +69,7 @@ const LandingPage = () => {
             <h3>Challenges</h3>
             <p>Take on coding challenges to sharpen your skills.</p>
           </motion.div>
-        </Col>
+        </Col> */}
         <Col md={3}>
           <motion.div
             initial={{ opacity: 0, y: 50 }}

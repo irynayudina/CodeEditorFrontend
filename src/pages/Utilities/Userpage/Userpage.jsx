@@ -26,6 +26,10 @@ const Userpage = () => {
       window.removeEventListener("resize", handleResize);
     };
   }, [elementRef]);
+  // useEffect(() => {
+  //   //
+  // }, [])
+  
   useEffect(() => {
     switch (subpage) {
       case "#projects":

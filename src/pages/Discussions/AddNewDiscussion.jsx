@@ -20,19 +20,17 @@ const CreateDiscussionForm = () => {
       setTags([topic, ...tags]);
     }
   }, [topic])
-
-  useEffect(() => {
-    if (discussionData) {
-      navigate("/discussion", { state: discussionData });
-    }
-  }, [navigate, discussionData]);
-
   const topicOptions = [
     { value: "Algorithms", label: "Algorithms" },
     { value: "Web", label: "Web" },
     { value: "Custom", label: "Custom" },
   ];
 
+  useEffect(() => {
+    if (discussionData) {
+      navigate("/discussion", { state: discussionData });
+    }
+  }, [navigate, discussionData]);
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {

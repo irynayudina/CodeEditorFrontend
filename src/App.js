@@ -19,6 +19,11 @@ import UserProjects from './pages/Utilities/UserProjects/UserProjects'
 import UserSettings from './pages/Utilities/UserSettings/UserSettings'
 import PublicUserpage from './pages/Utilities/PublicUserpage/PublicUserpage';
 import Challenge from './pages/Challenge/Challenge'
+import TextEditor from './TextEditor';
+
+import { Navigate } from "react-router-dom";
+import { v4 as uuidV4 } from "uuid"
+import CollabEditor from './pages/Collaboratory/CollabEditor';
 
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css'
@@ -59,6 +64,7 @@ function App() {
         <ToastContainer />
         <Routes>
           <Route path="/" exact="true" element={<Home />} />
+          <Route path="/texteditor" element={<TextEditor />} />
           <Route
             path="/editor"
             element={
@@ -80,8 +86,11 @@ function App() {
           />
           <Route
             path="/collaboratory"
-            element={<Collaboratory theme={theme} />}
+            // element={<Collaboratory theme={theme} />}
+            element={<Navigate to={`/documents/${uuidV4()}`} />}
           />
+          <Route path="/documents/:id" element={<CollabEditor />} />
+
           <Route path="/projects" element={<Projects theme={theme} />} />
 
           {/* Protected Routes */}

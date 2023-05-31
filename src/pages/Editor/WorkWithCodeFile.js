@@ -19,4 +19,4 @@ export const handleFileUpload = (event, setCode, setLangauge, languageExtensions
       setCode(fileContent);
     };
     reader.readAsText(file);
-  };
+};

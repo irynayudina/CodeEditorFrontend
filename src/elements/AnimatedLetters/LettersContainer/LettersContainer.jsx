@@ -46,10 +46,6 @@ const LettersContainer = (props) => {
             </div>
           );
         })}
-        {/*
-        <motion.span variants={letter}>
-            {emoji}
-        </motion.span> */}
       </motion.h3>
     </div>
   );

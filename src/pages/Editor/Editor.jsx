@@ -101,10 +101,14 @@ const Editor = (props) => {
     setVersions(languageVersions[lang]);
     setCode(sampleCodes[lang]);
     setResult(defaultResult);
-    setCmdargs("");
-    setUserinp("");
+    // setCmdargs("");
+    // setUserinp("");
     setErrorLines([]);
   };
+  useEffect(() => {
+    setVersions(languageVersions[language]);
+  }, [language])
+  
   const versionHandler = (e) => {
     setVersion(e.target.value);
   };
@@ -274,7 +278,6 @@ const Editor = (props) => {
   const highlightErrors = () => {
     const linesEditor = document.getElementsByClassName("cm-line");
     if (linesEditor?.length >= errorLines?.length) {
-      console.log(errorLines);
       errorLines.forEach((lineNumber) => {
         if (props.theme === "lighttheme" && linesEditor[lineNumber - 1]) {
           linesEditor[lineNumber - 1].classList.add("error-line");
@@ -326,6 +329,12 @@ const Editor = (props) => {
           setLangauge={setLangauge}
           languageExtensions={languageExtensions}
           handleFileUpload={handleFileUpload}
+
+          code={code}
+          language={language}
+          langVersion={version}
+          cmd={cmdargs}
+          params={userinp}
         />
       </div>
       <div className={`elem elem2 ${props.theme}`} id="CodeEditor">
@@ -366,7 +375,6 @@ const Editor = (props) => {
         />
         <Button
           variant={props.theme == "lighttheme" ? "primary" : "dark"}
-          // size={`${props.editorSize}`}
           className={`btn-editor-${props.editorSize}`}
           onClick={execute}
           style={{ marginBottom: "calc(1rem - 1px)" }}
@@ -374,7 +382,7 @@ const Editor = (props) => {
           Run
         </Button>
       </div>
-      <div className={`elem ${props.theme} ${resultSm}`} ref={resizeRef} >
+      <div className={`elem ${props.theme} ${resultSm}`} ref={resizeRef}>
         <Form.Label
           style={{
             float: "left",

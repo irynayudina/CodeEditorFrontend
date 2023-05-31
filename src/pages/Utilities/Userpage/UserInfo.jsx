@@ -40,13 +40,6 @@ const UserInfo = ({ isPublic }) => {
           <div>Following</div> <div>300</div>
         </div>
       </div>
-      {isPublic ? (
-        <Button size="sm" className="follow-btn">
-          Follow
-        </Button>
-      ) : (
-        ""
-      )}
       <hr />
       <div className="contacts">
         <div className="contact">
