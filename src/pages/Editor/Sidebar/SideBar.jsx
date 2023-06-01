@@ -41,11 +41,11 @@ const SideBar = (props) => {
   };
 
   const [fileSaveElement, setFileSaveElement] = useState("small");
-  const [sidebarCode, setSidebarCode] = useState("")
-  const [sidebarLanguage, setSidebarLanguage] = useState("")
-  const [sidebarCmd, setSidebarCmd] = useState("")
-  const [sidebarParam, setSidebarParam] = useState("")
-  const [sidebarLangVersion, setSidebarLangVersion] = useState("")
+  const [sidebarCode, setSidebarCode] = useState("");
+  const [sidebarLanguage, setSidebarLanguage] = useState("");
+  const [sidebarCmd, setSidebarCmd] = useState("");
+  const [sidebarParam, setSidebarParam] = useState("");
+  const [sidebarLangVersion, setSidebarLangVersion] = useState("");
   useEffect(() => {
     //setting
     setSidebarCode(props.code);
@@ -53,8 +53,15 @@ const SideBar = (props) => {
     setSidebarCmd(props.cmd);
     setSidebarParam(props.param);
     setSidebarLangVersion(props.langVersion);
-  }, [props, props.code, props.language, props.langVersion, props.cmd, props.params]);
-  
+  }, [
+    props,
+    props.code,
+    props.language,
+    props.langVersion,
+    props.cmd,
+    props.params,
+  ]);
+
   useEffect(() => {
     setFileSaveElement(
       <SaveFile
@@ -66,6 +73,7 @@ const SideBar = (props) => {
         params={sidebarParam}
         setFilename={setFilename}
         setNewProject={setNewProject}
+        projectId={props.projectId}
       />
     );
   }, [
@@ -75,8 +83,8 @@ const SideBar = (props) => {
     sidebarLangVersion,
     sidebarParam,
     filename,
-    newProject
-  ]);  
+    newProject,
+  ]);
 
   return (
     <div className={`side ${props.theme} ${props.editorSize}`}>

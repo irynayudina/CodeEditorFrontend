@@ -12,6 +12,7 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 
 import axios from "axios";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 const theme = createTheme();
 
@@ -20,10 +21,12 @@ const SaveFile = (props) => {
   //   code, language, langVersion, cmd, params, newProject;
   // }
   useEffect(() => {
-    console.log(props.code)
-  }, [props.code])
-  
+    console.log(props.code);
+  }, [props.code]);
+  const navigate = useNavigate();
+
   const [isLoading, setIsLoading] = useState(false);
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -42,15 +45,31 @@ const SaveFile = (props) => {
         console.log(project.data);
         props.setFilename(project.data.projectName);
         props.setNewProject(false);
+        // Navigate to the editor page with the project ID
+        navigate(`/editor/${project.data._id}`);
       }
     } catch (err) {
       toast.error(err?.response?.data?.message || err.error);
     }
     setIsLoading(false);
   };
-  const handleEdit = () => {
-    console.log("edited")
-  }
+  const handleEdit = async () => {
+    console.log(props.projectId)
+    try {
+      setIsLoading(true);
+      const project = await axios.post("/api/projects/id", {
+        projectId: props.projectId,
+        codeFile: props.code,
+        language: props.language,
+      });
+      if (project?.data) {
+        console.log(project.data);
+        toast.success("edited");
+      }
+    } catch (err) {
+      toast.error(err?.response?.data?.message || err.error);
+    }
+  };
   const [content, setContent] = useState(
     <div>
       <FaCopy className="me-3" />
@@ -110,11 +129,7 @@ const SaveFile = (props) => {
     }
   }, [props.newProject, props.code]);
 
-  return (
-    <>
-      {content}
-    </>
-  );
+  return <>{content}</>;
 };
 
 export default SaveFile;

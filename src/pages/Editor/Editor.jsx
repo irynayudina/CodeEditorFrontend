@@ -43,6 +43,8 @@ import { tokyoNight } from "@uiw/codemirror-theme-tokyo-night";
 import { vscodeDark } from "@uiw/codemirror-theme-vscode";
 import { xcodeLight, xcodeDark } from "@uiw/codemirror-theme-xcode";
 
+import { useParams } from "react-router-dom";
+
 const Editor = (props) => {
   const defaultResult = `<p class="text-muted">&lt;--------Output of your program goes here --------&gt;</p>`;
   const [code, setCode] = useState(sampleCodes.javascript);
@@ -309,6 +311,20 @@ const Editor = (props) => {
   const [resultSm, setResultSm] = useState('')
   const resizeRef = useRef(null);
 
+
+
+
+  //getting the file by id from url line
+  const { id: projectId } = useParams();
+  const [file, setFile] = useState(null);
+  useEffect(() => {
+    console.log(projectId);
+  }, [projectId]);
+  
+
+
+
+
   return (
     <ResizePannel
       id="pannelEditor"
@@ -329,12 +345,12 @@ const Editor = (props) => {
           setLangauge={setLangauge}
           languageExtensions={languageExtensions}
           handleFileUpload={handleFileUpload}
-
           code={code}
           language={language}
           langVersion={version}
           cmd={cmdargs}
           params={userinp}
+          projectId={projectId}
         />
       </div>
       <div className={`elem elem2 ${props.theme}`} id="CodeEditor">

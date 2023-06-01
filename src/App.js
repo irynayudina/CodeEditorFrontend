@@ -66,6 +66,15 @@ function App() {
           <Route path="/" exact="true" element={<Home />} />
           <Route path="/texteditor" element={<TextEditor />} />
           <Route
+            path="/editor/:id"
+            element={
+              <Editor
+                theme={theme}
+                editorSize={editorBreakpoint >= 814 ? "lg" : "sm"}
+              />
+            }
+          />
+          <Route
             path="/editor"
             element={
               <Editor
