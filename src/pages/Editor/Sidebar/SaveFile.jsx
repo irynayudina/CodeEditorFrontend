@@ -10,6 +10,9 @@ import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 
+import axios from "axios";
+import { toast } from "react-toastify";
+
 const theme = createTheme();
 
 const SaveFile = (props) => {
@@ -23,23 +26,27 @@ const SaveFile = (props) => {
   const [isLoading, setIsLoading] = useState(false);
   const handleSubmit = async (event) => {
     event.preventDefault();
-    setIsLoading(true);
     const data = new FormData(event.currentTarget);
     const name = data.get("project-name");
     console.log("name - " + name);
     console.log("code - " + props.code);
     console.log("language - " + props.language);
-    props.setFilename(name);
-    props.setNewProject(false);
-
-    // try {
-    //   const res = await login({ email, password }).unwrap();
-    //   dispatch(setCredentials({ ...res }));
-    //   navigate("/");
-    // } catch (err) {
-    //   toast.error(err?.data?.message || err.error);
-    // }
-    // setIsLoading(false);
+    try {
+      setIsLoading(true);
+      const project = await axios.post("/api/projects", {
+        projectName: name,
+        codeFile: props.code,
+        language: props.language,
+      });
+      if (project?.data) {
+        console.log(project.data);
+        props.setFilename(project.data.projectName);
+        props.setNewProject(false);
+      }
+    } catch (err) {
+      toast.error(err?.response?.data?.message || err.error);
+    }
+    setIsLoading(false);
   };
   const handleEdit = () => {
     console.log("edited")
@@ -105,7 +112,6 @@ const SaveFile = (props) => {
 
   return (
     <>
-      {props.newProject ? "hes" : "no"}
       {content}
     </>
   );

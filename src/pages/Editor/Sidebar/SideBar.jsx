@@ -76,12 +76,7 @@ const SideBar = (props) => {
     sidebarParam,
     filename,
     newProject
-  ]);
-
-  useEffect(() => {
-    console.log(filename);
-  }, [filename]);
-  
+  ]);  
 
   return (
     <div className={`side ${props.theme} ${props.editorSize}`}>
