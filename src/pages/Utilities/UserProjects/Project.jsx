@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import { Form, Badge } from "react-bootstrap";
 import { Button } from 'react-bootstrap';
 import { Link } from "react-router-dom";
@@ -11,7 +11,13 @@ import {
   BsClock,
 } from "react-icons/bs";
 import PopUp from "../../../elements/PopUp/PopUp";
+import { useNavigate } from "react-router-dom";
+
 const Project = ({ project, index, deleteProjectHandler }) => {
+  const navigate = useNavigate();
+
+  const [projectDate, setProjectDate] = useState(project.createdAt)
+  const [dateUpdateString, setDateUpdateString] = useState("1 minute ago")
   const [closePopup, setClosePopup] = useState()
     const handleProjectDelete = async () => {
       let deleteProject = window.confirm('Delete the project?');
@@ -36,10 +42,53 @@ const Project = ({ project, index, deleteProjectHandler }) => {
       "username collab 2",
       "3rd person",
     ]);
+  
+  useEffect(() => {
+    const date = new Date(project.createdAt);
+    const formattedDate = date.toLocaleDateString("en-US", {
+      month: "long",
+      day: "numeric",
+      year: "numeric",
+    });
+    setProjectDate(formattedDate);
+  }, [project]);
+
+  function calculateTimeDifference() {
+    const currentTime = new Date();
+    const lastTime = project.updatedAt || project.createdAt;
+    const updatedTime = new Date(lastTime);
+
+    const timeDifference = currentTime.getTime() - updatedTime.getTime();
+    const minutes = Math.floor(timeDifference / (1000 * 60));
+    const hours = Math.floor(timeDifference / (1000 * 60 * 60));
+    const days = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+
+    if (minutes < 60) {
+      return minutes + " minutes ago";
+    } else if (hours < 24) {
+      return hours + " hours ago";
+    } else if (days < 7) {
+      return days + " days ago";
+    } else {
+      return updatedTime.toLocaleDateString("en-US", {
+        month: "long",
+        day: "numeric",
+        year: "numeric",
+      });
+    }
+  }
+
+  useEffect(() => {
+    const updDate = calculateTimeDifference();
+    setDateUpdateString(updDate);
+  }, [project]);
+  
+
+  
   return (
     <PopUp className={closePopup}>
       <div className="project-item" key={index}>
-        <h6 className="project-name">{project.name + index}</h6>
+        <h6 className="project-name">{project.projectName}</h6>
         <div className="project-language">
           <Badge bg="secondary">{project.language}</Badge>
         </div>
@@ -48,7 +97,7 @@ const Project = ({ project, index, deleteProjectHandler }) => {
             <BsFillHandThumbsUpFill /> {project.likes}
           </div>
           <div className="text-muted">
-            <BsClock /> 1 minute ago
+            <BsClock /> {dateUpdateString}
           </div>
         </div>
       </div>
@@ -56,18 +105,20 @@ const Project = ({ project, index, deleteProjectHandler }) => {
       <div className="actions">
         <div className="settings-project">
           <BsFillGearFill />{" "}
-          <span className="fw-bold">{project.name + index}</span>
+          <span className="fw-bold">{project.projectName}</span>
         </div>
         <div className="tags">
           <Badge bg="secondary">{project.language}</Badge>
-          <div className="dateCreated">created {project.createdAt}</div>
+          <div className="dateCreated">
+            <strong>created</strong> {projectDate}
+          </div>
         </div>
         <div className="numbers">
           <div className="likes">
             <BsFillHandThumbsUpFill /> {project.likes}
           </div>
           <div className="text-muted">
-            <BsClock /> 1 minute ago
+            <BsClock /> {dateUpdateString}
           </div>
         </div>
         <div className="collaborators">
@@ -85,14 +136,14 @@ const Project = ({ project, index, deleteProjectHandler }) => {
             </div>
           ))}
         </div>
-        <Form.Check type="switch" label="make public/private" />
+        <Form.Check type="switch" label="make public" />
         <div className="rename ">
           <BsPencilSquare />{" "}
           <Form.Control type="text" size="sm" placeholder="Rename" />
         </div>
         <div className="bottom-options">
           <div>
-            <Link to="/editor">
+            <Link to={`/editor/${project._id}`}>
               <Button variant="outline-primary" size="sm">
                 <BsCodeSlash /> Edit code
               </Button>
