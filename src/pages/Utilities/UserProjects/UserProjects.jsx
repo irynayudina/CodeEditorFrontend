@@ -5,11 +5,14 @@ import Project from './Project';
 import axios from "axios";
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
+
 
 
 const UserProjects = (props) => {
   const { userInfo } = useSelector((state) => state.auth);
-  const userId = userInfo._id
+  const { id: viewedUserId } = useParams();
+  const userId = viewedUserId || userInfo._id
   const [projects, setProjects] = useState([
     {
       name: "project1",

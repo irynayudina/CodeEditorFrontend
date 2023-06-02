@@ -1,10 +1,13 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import './Projects.scss'
 import { Container, Row, Col, Form, Badge } from "react-bootstrap";
 import { languages } from '../Editor/Syntax/EditorData.ts';
 import { Button } from "react-bootstrap";
 import Topic from '../Challenges/Topics/Topic';
 import Project from '../Project/Project'
+import axios from 'axios';
+import { toast } from "react-toastify";
+
 
 const Projects = () => {
    const [projects, setProjects] = useState([
@@ -115,6 +118,22 @@ const Projects = () => {
      },
    ]);
   const [sortProjects, setSortProjects] = useState('0')
+  const getProjectsData = async () => {
+    try {
+      const projectData = await axios.get(`/api/projects`);
+      if (projectData?.data) {
+        setProjects(projectData?.data?.projects);
+        console.log(projectData.data.projects);
+        toast.success("got projects");
+      }
+    } catch (err) {
+      toast.error(err?.response?.data?.message || err.error);
+    }
+  };
+  useEffect(() => {
+    getProjectsData();
+  }, [])
+  
 
   return (
     <div className="projects-container">

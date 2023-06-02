@@ -111,7 +111,7 @@ const SideBar = (props) => {
               <FaFileCode className="me-3" />
               <span>Editor ({filename})</span>
             </Dropdown.Item> */}
-            {!props.newProject ? props.children : ""}
+            {props.projectId ? props.children : ""}
             <Dropdown.Divider />
             <Dropdown.Item href="#11" onClick={handleSaveClick}>
               {fileSaveElement}
@@ -218,7 +218,7 @@ const SideBar = (props) => {
             <span>Hide the Sidebar</span>
           </Button>
           <Nav className={`list-group list-group-flush ${visibleSidebar}`}>
-            {!props.newProject ? props.children : ""}
+            {props.projectId ? props.children : ""}
             <Nav.Link
               href="#11"
               className="list-group-item list-group-item-action py-2 ripple"
