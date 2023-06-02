@@ -120,7 +120,7 @@ function App() {
           </Route>
           <Route path="/forgot-password" element={<ResetPassword />} />
           <Route
-            path="/public/user"
+            path="/public/user/:id"
             element={<PublicUserpage theme={theme} />}
           />
           <Route path="/login" element={<SignIn theme={theme} />} />

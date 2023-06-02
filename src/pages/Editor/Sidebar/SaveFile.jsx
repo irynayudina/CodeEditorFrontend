@@ -20,9 +20,9 @@ const SaveFile = (props) => {
   // {
   //   code, language, langVersion, cmd, params, newProject;
   // }
-  useEffect(() => {
-    console.log(props.code);
-  }, [props.code]);
+  // useEffect(() => {
+  //   console.log(props.code);
+  // }, [props.code]);
   const navigate = useNavigate();
 
   const [isLoading, setIsLoading] = useState(false);

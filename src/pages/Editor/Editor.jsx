@@ -44,6 +44,10 @@ import { vscodeDark } from "@uiw/codemirror-theme-vscode";
 import { xcodeLight, xcodeDark } from "@uiw/codemirror-theme-xcode";
 
 import { useParams } from "react-router-dom";
+import { toast } from "react-toastify";
+import { calculateTimeDifference } from '../../elements/UpdateTimeCalculate'
+import { Link } from "react-router-dom";
+
 
 const Editor = (props) => {
   const defaultResult = `<p class="text-muted">&lt;--------Output of your program goes here --------&gt;</p>`;
@@ -315,10 +319,41 @@ const Editor = (props) => {
 
 
   //getting the file by id from url line
+  const [projectInfo, setProjectInfo] = useState()
+  const getProjectData = async () => {
+    try {
+      const projectData = await axios.get(`/api/projects/id?id=${projectId}`);
+      if (projectData?.data) {
+        console.log(projectData.data);
+        toast.success("got project");
+        // setProjects(projectData.data);
+        setCode(projectData.data?.codeFile);
+        setLangauge(projectData.data.language)
+        const temp = projectData.data;
+        const updDate = calculateTimeDifference(temp.updatedAt);
+        temp.updatedAt = updDate;
+        const createdDate = new Date(temp.createdAt);
+        const formattedDate = createdDate.toLocaleDateString("en-US", {
+          month: "long",
+          day: "numeric",
+          year: "numeric",
+        });
+        temp.createdAt = formattedDate;
+        setProjectInfo(temp);
+      }
+    } catch (err) {
+      toast.error(err?.response?.data?.message || err.error);
+    }
+  }
   const { id: projectId } = useParams();
-  const [file, setFile] = useState(null);
   useEffect(() => {
-    console.log(projectId);
+    if (projectId) {
+     console.log(projectId);
+     getProjectData(); 
+    }
+    // code name and language from project
+    // as well as info section such as authorName as a link crreatedat updatedat name likes
+    
   }, [projectId]);
   
 
@@ -351,7 +386,25 @@ const Editor = (props) => {
           cmd={cmdargs}
           params={userinp}
           projectId={projectId}
-        />
+        >
+          <div className="project-info-secion">
+            <div>
+              <div className="name">{projectInfo?.projectName}</div>
+              <Link
+                to={`/public/user/${projectInfo?.author?._id}#projects`}
+                // state={{ userId: data?.author?._id }}
+                // key={data?.author?._id}
+                className="text-decoration-none black-link"
+              >
+                <div className="author">{projectInfo?.author?.name}</div>
+              </Link>{" "}
+            </div>
+            <div>
+              <div className="created text-muted">{projectInfo?.createdAt}</div>
+              <div className="updated text-muted">{projectInfo?.updatedAt}</div>
+            </div>
+          </div>
+        </SideBar>
       </div>
       <div className={`elem elem2 ${props.theme}`} id="CodeEditor">
         <Form.Select
