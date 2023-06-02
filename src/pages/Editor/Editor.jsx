@@ -47,6 +47,8 @@ import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import { calculateTimeDifference } from '../../elements/UpdateTimeCalculate'
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
+
 
 
 const Editor = (props) => {
@@ -346,15 +348,21 @@ const Editor = (props) => {
     }
   }
   const { id: projectId } = useParams();
+  const [newProject, setNewProject] = useState(true);
+  const { userInfo } = useSelector((state) => state.auth);
   useEffect(() => {
     if (projectId) {
      console.log(projectId);
-     getProjectData(); 
+      getProjectData(); 
     }
-    // code name and language from project
-    // as well as info section such as authorName as a link crreatedat updatedat name likes
-    
   }, [projectId]);
+  useEffect(() => {
+    if (projectInfo) {
+      if (projectInfo?.author?._id === userInfo?._id) {
+        setNewProject(false);
+      }
+    }
+  }, [projectInfo])
   
 
 
@@ -386,6 +394,8 @@ const Editor = (props) => {
           cmd={cmdargs}
           params={userinp}
           projectId={projectId}
+          newProject={newProject}
+          setNewProject={setNewProject}
         >
           <div className="project-info-secion">
             <div>

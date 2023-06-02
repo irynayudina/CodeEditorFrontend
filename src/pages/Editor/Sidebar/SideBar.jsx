@@ -24,7 +24,6 @@ const SideBar = (props) => {
   const [visibleDropdown, setVisibleDropdown] = useState("hiddenDropdown");
   const [visibleSidebar, setVisibleSidebar] = useState("");
   const [themesPick, setThemesPick] = useState("");
-  const [newProject, setNewProject] = useState(true);
   const showSidebar = () => {
     setVisibleDropdown("hiddenDropdown");
     setVisibleSidebar("");
@@ -65,14 +64,14 @@ const SideBar = (props) => {
   useEffect(() => {
     setFileSaveElement(
       <SaveFile
-        newProject={newProject}
+        newProject={props.newProject}
         code={sidebarCode}
         language={sidebarLanguage}
         langVersion={sidebarLangVersion}
         cmd={sidebarCmd}
         params={sidebarParam}
         setFilename={setFilename}
-        setNewProject={setNewProject}
+        setNewProject={props.setNewProject}
         projectId={props.projectId}
       />
     );
@@ -83,7 +82,7 @@ const SideBar = (props) => {
     sidebarLangVersion,
     sidebarParam,
     filename,
-    newProject,
+    props.newProject,
   ]);
 
   return (
