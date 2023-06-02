@@ -19,6 +19,8 @@ import {
 
 import SaveFile from "./SaveFile";
 import ThemesHandler from "./ThemesHandler";
+import { Link } from "react-router-dom";
+
 
 const SideBar = (props) => {
   const [visibleDropdown, setVisibleDropdown] = useState("hiddenDropdown");
@@ -105,11 +107,11 @@ const SideBar = (props) => {
             <p className="sidebar-dropdown-name">File menu</p>
           </Dropdown.Toggle>
           <Dropdown.Menu>
-            <Dropdown.Item href="#1">
+            {/* <Dropdown.Item href="#1">
               <FaFileCode className="me-3" />
               <span>Editor ({filename})</span>
-            </Dropdown.Item>
-            {props.children}
+            </Dropdown.Item> */}
+            {!props.newProject ? props.children : ""}
             <Dropdown.Divider />
             <Dropdown.Item href="#11" onClick={handleSaveClick}>
               {fileSaveElement}
@@ -141,26 +143,39 @@ const SideBar = (props) => {
               </span>
             </Dropdown.Item>
             <Dropdown.Item href="#8">
-              <FaFolderOpen className="me-3" />
-              <span>Open from project</span>
+              <Link
+                to={`/user#projects`}
+                // state={{ userId: data?.author?._id }}
+                // key={data?.author?._id}
+                className="text-decoration-none black-link"
+              >
+                <FaFolderOpen className="me-3" />
+                <span>Open from project</span>
+              </Link>{" "}
             </Dropdown.Item>
-            <Dropdown.Item href="#10">
-              <FaUsers className="me-3" />
-              <span>Collaboration mode</span>
-            </Dropdown.Item>
-            <Dropdown.Divider />
-            <Dropdown.Item href="#12">
-              <FaLockOpen className="me-3" />
-              <span>Make public</span>
-            </Dropdown.Item>
-            <Dropdown.Item href="#13">
-              <FaEdit className="me-3" />
-              <span>Rename</span>
-            </Dropdown.Item>
-            <Dropdown.Item href="#14">
-              <FaTrashAlt className="me-3" />
-              <span>Delete</span>
-            </Dropdown.Item>
+            {!props.newProject ? (
+              <>
+                <Dropdown.Item href="#10">
+                  <FaUsers className="me-3" />
+                  <span>Collaboration mode</span>
+                </Dropdown.Item>
+                <Dropdown.Divider />
+                <Dropdown.Item href="#12">
+                  <FaLockOpen className="me-3" />
+                  <span>Make public</span>
+                </Dropdown.Item>
+                <Dropdown.Item href="#13">
+                  <FaEdit className="me-3" />
+                  <span>Rename</span>
+                </Dropdown.Item>
+                <Dropdown.Item href="#14">
+                  <FaTrashAlt className="me-3" />
+                  <span>Delete</span>
+                </Dropdown.Item>
+              </>
+            ) : (
+              ""
+            )}
             <Dropdown.Item>
               <Dropdown
                 className={`list-group list-group-flush `}
@@ -203,16 +218,7 @@ const SideBar = (props) => {
             <span>Hide the Sidebar</span>
           </Button>
           <Nav className={`list-group list-group-flush ${visibleSidebar}`}>
-            <Nav.Link
-              href="#1"
-              exact
-              className="list-group-item list-group-item-action py-2 ripple active"
-              aria-current="true"
-            >
-              <FaFileCode className="me-3" />
-              <span>Editor ({filename})</span>
-            </Nav.Link>
-            {props.children}
+            {!props.newProject ? props.children : ""}
             <Nav.Link
               href="#11"
               className="list-group-item list-group-item-action py-2 ripple"
@@ -253,37 +259,50 @@ const SideBar = (props) => {
               href="#8"
               className="list-group-item list-group-item-action py-2 ripple"
             >
-              <FaFolderOpen className="me-3" />
-              <span>Open from project</span>
+              <Link
+                to={`/user#projects`}
+                // state={{ userId: data?.author?._id }}
+                // key={data?.author?._id}
+                className="text-decoration-none black-link"
+              >
+                <FaFolderOpen className="me-3" />
+                <span>Open from project</span>
+              </Link>{" "}
             </Nav.Link>
-            <Nav.Link
-              href="#10"
-              className="list-group-item list-group-item-action py-2 ripple"
-            >
-              <FaUsers className="me-3" />
-              <span>Collaboration mode</span>
-            </Nav.Link>
-            <Nav.Link
-              href="#12"
-              className="list-group-item list-group-item-action py-2 ripple"
-            >
-              <FaLockOpen className="me-3" />
-              <span>Make public</span>
-            </Nav.Link>
-            <Nav.Link
-              href="#13"
-              className="list-group-item list-group-item-action py-2 ripple"
-            >
-              <FaEdit className="me-3" />
-              <span>Rename</span>
-            </Nav.Link>
-            <Nav.Link
-              href="#14"
-              className="list-group-item list-group-item-action py-2 ripple"
-            >
-              <FaTrashAlt className="me-3" />
-              <span>Delete</span>
-            </Nav.Link>
+            {!props.newProject ? (
+              <>
+                <Nav.Link
+                  href="#10"
+                  className="list-group-item list-group-item-action py-2 ripple"
+                >
+                  <FaUsers className="me-3" />
+                  <span>Collaboration mode</span>
+                </Nav.Link>
+                <Nav.Link
+                  href="#12"
+                  className="list-group-item list-group-item-action py-2 ripple"
+                >
+                  <FaLockOpen className="me-3" />
+                  <span>Make public</span>
+                </Nav.Link>
+                <Nav.Link
+                  href="#13"
+                  className="list-group-item list-group-item-action py-2 ripple"
+                >
+                  <FaEdit className="me-3" />
+                  <span>Rename</span>
+                </Nav.Link>
+                <Nav.Link
+                  href="#14"
+                  className="list-group-item list-group-item-action py-2 ripple"
+                >
+                  <FaTrashAlt className="me-3" />
+                  <span>Delete</span>
+                </Nav.Link>
+              </>
+            ) : (
+              ""
+            )}
             <Dropdown className={`list-group list-group-flush `} drop="end">
               <Dropdown.Toggle
                 className={`${
