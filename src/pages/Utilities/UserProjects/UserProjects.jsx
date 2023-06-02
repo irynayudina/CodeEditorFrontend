@@ -7,7 +7,54 @@ import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 
+import Loader from '../../../elements/Loader';
+import { ListGroup } from "react-bootstrap";
+import useInfiniteScroll from "react-infinite-scroll-hook";
 
+function useLoadItems(userId) {
+  const [loading, setLoading] = useState(false);
+  const [items, setItems] = useState([]);
+  const [hasNextPage, setHasNextPage] = useState(true);
+  const [error, setError] = useState(null);
+  const [page, setPage] = useState(1);
+  const [resetCompleted, setResetCompleted] = useState(false);
+  const loadMore = async () => {
+    if (!loading && hasNextPage) {
+      setLoading(true);
+      try {
+        const response = await axios.get(
+          `/api/projects?page=${page}&authorId=${userId}`
+        );
+        setItems((prevItems) => {
+          // Filter out duplicate items
+          const uniqueItems = response.data.projects.filter((item) => {
+            // Check if the item's _id is not present in any of the previous items
+            return !prevItems.some((prevItem) => prevItem._id === item._id);
+          });
+          // Concatenate the unique items with the previous items
+          return [...prevItems, ...uniqueItems];
+        });
+        setPage((prevPage) => {
+          const nextPage = prevPage + 1;
+          setHasNextPage(nextPage <= response.data.totalPages);
+          return nextPage;
+        });
+      } catch (error) {
+        setError(error.message);
+      } finally {
+        setLoading(false);
+      }
+    }
+    console.log(page + " inside loadmore");
+  };
+  useEffect(() => {
+    if (resetCompleted) {
+      loadMore();
+    }
+  }, [resetCompleted]);
+
+  return { loading, items, hasNextPage, error, loadMore };
+}
 
 const UserProjects = (props) => {
   const { userInfo } = useSelector((state) => state.auth);
@@ -127,21 +174,36 @@ const UserProjects = (props) => {
     setProjects(newList);
     console.log(projects)
   }
-  const loadProjectsList = async () => {
-    try {
-      const projects = await axios.get(`/api/projects?authorId=${userId}`);
-      if (projects?.data) {
-        console.log(projects.data);
-        toast.success("got projects");
-        setProjects(projects.data.projects);
-      }
-    } catch (err) {
-      toast.error(err?.response?.data?.message || err.error);
-    }
-  }
+
+  // const loadProjectsList = async () => {
+  //   try {
+  //     const projects = await axios.get(`/api/projects?authorId=${userId}`);
+  //     if (projects?.data) {
+  //       console.log(projects.data);
+  //       toast.success("got projects");
+  //       setProjects(projects.data.projects);
+  //     }
+  //   } catch (err) {
+  //     toast.error(err?.response?.data?.message || err.error);
+  //   }
+  // }
+  // useEffect(() => {
+  //   loadProjectsList();
+  // }, []);
+  
+  let { loading, items, hasNextPage, error, loadMore } = useLoadItems(userId);
+  const [sentryRef] = useInfiniteScroll({
+    loading,
+    hasNextPage,
+    onLoadMore: loadMore,
+    disabled: !!error,
+    rootMargin: "0px 0px 400px 0px",
+  });
+
   useEffect(() => {
-    loadProjectsList();
-    }, []);
+    setProjects(items);
+  }, [items]);
+
   return (
     <div className="projects-container">
       <h5 className="title-projects">Created projects & Collaborations</h5>
@@ -160,9 +222,21 @@ const UserProjects = (props) => {
       </div>
       <div className="projects-display">
         {projects.map((project, i) => (
-          <Project project={project} index={i} key={i} deleteProjectHandler={deleteProjectHandler} />
+          <Project
+            project={project}
+            index={i}
+            key={i}
+            deleteProjectHandler={deleteProjectHandler}
+          />
         ))}
       </div>
+      {(loading || hasNextPage) && (
+        <ListGroup className="loader-container-list-item">
+          <ListGroup.Item ref={sentryRef}>
+            <Loader />
+          </ListGroup.Item>
+        </ListGroup>
+      )}
     </div>
   );
 }
