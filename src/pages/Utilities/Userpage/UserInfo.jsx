@@ -1,10 +1,8 @@
 import React from 'react'
 import {
   BsTrophyFill,
-  BsFillHandThumbsUpFill,
   BsBarChartLineFill,
 } from "react-icons/bs";
-import { Button } from 'react-bootstrap'
 import { useSelector } from "react-redux";
 
 const UserInfo = ({ isPublic }) => {
@@ -25,19 +23,19 @@ const UserInfo = ({ isPublic }) => {
       <div className="ratings">
         <div className="rating">
           <BsTrophyFill className="type" />
-          <div>20</div>
+          <div>{userInfo?.followers?.length}</div>
         </div>
         <div className="rating">
           <BsBarChartLineFill className="amount" />
-          <div>30</div>
+          <div>{userInfo?.following?.length}</div>
         </div>
       </div>
       <div className="social">
         <div className="social-item">
-          <div>Followers</div> <div>33333</div>
+          <div>Followers</div>
         </div>
         <div className="social-item">
-          <div>Following</div> <div>300</div>
+          <div>Following</div>
         </div>
       </div>
       <hr />
