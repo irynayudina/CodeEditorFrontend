@@ -60,6 +60,7 @@ const UserProjects = (props) => {
   const { userInfo } = useSelector((state) => state.auth);
   const { id: viewedUserId } = useParams();
   const userId = viewedUserId || userInfo._id
+  const [fromPublicPage, setFromPublicPage] = useState(viewedUserId);
   const [projects, setProjects] = useState([
     {
       name: "project1",
@@ -227,6 +228,7 @@ const UserProjects = (props) => {
             index={i}
             key={i}
             deleteProjectHandler={deleteProjectHandler}
+            fromPublicPage={fromPublicPage}
           />
         ))}
       </div>

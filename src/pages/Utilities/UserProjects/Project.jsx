@@ -11,10 +11,8 @@ import {
   BsClock,
 } from "react-icons/bs";
 import PopUp from "../../../elements/PopUp/PopUp";
-import { useNavigate } from "react-router-dom";
 
-const Project = ({ project, index, deleteProjectHandler }) => {
-  const navigate = useNavigate();
+const Project = ({ project, index, deleteProjectHandler, fromPublicPage }) => {
 
   const [projectDate, setProjectDate] = useState(project.createdAt)
   const [dateUpdateString, setDateUpdateString] = useState("1 minute ago")
@@ -121,7 +119,7 @@ const Project = ({ project, index, deleteProjectHandler }) => {
             <BsClock /> {dateUpdateString}
           </div>
         </div>
-        <div className="collaborators">
+        {/* <div className="collaborators">
           Collaborations:
           {collaborators.map((person, i) => (
             <div key={i}>
@@ -135,21 +133,27 @@ const Project = ({ project, index, deleteProjectHandler }) => {
               </Button>
             </div>
           ))}
-        </div>
-        <Form.Check type="switch" label="make public" />
-        <div className="rename ">
-          <BsPencilSquare />{" "}
-          <Form.Control type="text" size="sm" placeholder="Rename" />
-        </div>
+        </div> */}
+        {!fromPublicPage ? (
+          <>
+            <Form.Check type="switch" label="make public" />
+            <div className="rename ">
+              <BsPencilSquare />{" "}
+              <Form.Control type="text" size="sm" placeholder="Rename" />
+            </div>
+          </>
+        ) : (
+          ""
+        )}
         <div className="bottom-options">
           <div>
             <Link to={`/editor/${project._id}`}>
               <Button variant="outline-primary" size="sm">
-                <BsCodeSlash /> Edit code
+                <BsCodeSlash /> {!fromPublicPage ? "Edit" : "View"} code
               </Button>
             </Link>
           </div>
-          <div>
+          {!fromPublicPage ? <div>
             <Button
               size="sm"
               variant="outline-danger"
@@ -157,7 +161,7 @@ const Project = ({ project, index, deleteProjectHandler }) => {
             >
               <BsFillTrashFill /> Delete
             </Button>
-          </div>
+          </div> : ""}
         </div>
       </div>
     </PopUp>
