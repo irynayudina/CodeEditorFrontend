@@ -80,7 +80,7 @@ const Discussion = ({ discussionId }) => {
         <Card.Body>
           <Card.Subtitle className="mb-2 text-muted">
             <Link
-              to={"/public/user"}
+              to={`/public/user/${data?.author?._id}`}
               state={{ userId: data?.author?._id }}
               key={data?.author?._id}
               className="text-decoration-none black-link"

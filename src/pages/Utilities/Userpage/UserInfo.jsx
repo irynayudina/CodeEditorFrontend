@@ -1,13 +1,27 @@
-import React from 'react'
+import React, { useState, useEffect } from "react";
 import {
   BsTrophyFill,
   BsBarChartLineFill,
 } from "react-icons/bs";
 import { useSelector } from "react-redux";
+import { toast } from "react-toastify";
+import axios from "axios";
 
 const UserInfo = ({ isPublic }) => {
   const { userInfo } = useSelector((state) => state.auth);
-  
+  const [mainUser, setMainUser] = useState(userInfo);
+  const loadInfoFollow = async () => {
+    try {
+      const userInfoResponse = await axios.get(`/api/users/followingFollowers`);
+      setMainUser(userInfoResponse.data);
+      console.log(userInfoResponse.data);
+    } catch (err) {
+      toast.error(err?.response?.data?.message || err.error);
+    }
+  };
+  useEffect(() => {
+    loadInfoFollow();
+  }, [userInfo]);
   return (
     <div className="userpage-header">
       <div
@@ -23,11 +37,11 @@ const UserInfo = ({ isPublic }) => {
       <div className="ratings">
         <div className="rating">
           <BsTrophyFill className="type" />
-          <div>{userInfo?.followers?.length}</div>
+          <div>{mainUser?.followers?.length}</div>
         </div>
         <div className="rating">
           <BsBarChartLineFill className="amount" />
-          <div>{userInfo?.following?.length}</div>
+          <div>{mainUser?.following?.length}</div>
         </div>
       </div>
       <div className="social">

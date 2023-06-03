@@ -55,7 +55,7 @@ const DiscussionSection = ({ comment, commentData }) => {
       {isLoading && <Loader />}
       <div className="top d-flex justify-content-between mb-1">
         <Link
-          to={"/public/user"}
+          to={`/public/user/${c?.author?._id}`}
           state={{ userId: c?.author?._id }}
           key={c?.author?._id}
           className="text-decoration-none black-link"

@@ -11,7 +11,22 @@ import {
 import { Button } from "react-bootstrap";
 
 const PublicUserInfo = ({ userId, me }) => {
-    const [mainUser, setMainUser] = useState(me);
+  const [mainUser, setMainUser] = useState(me);
+  const loadInfoFollow = async () => {
+    try {
+        const userInfoResponse = await axios.get(
+          `/api/users/followingFollowers`
+        );
+      setMainUser(userInfoResponse.data);
+      console.log(userInfoResponse.data);
+      } catch (err) {
+        toast.error(err?.response?.data?.message || err.error);
+      }
+  }
+  useEffect(() => {
+    loadInfoFollow();
+  }, [me, userId]);
+  
   const [userInfo, setUserInfo] = useState();
   useEffect(() => {
     const loadUserInfo = async () => {
@@ -25,7 +40,7 @@ const PublicUserInfo = ({ userId, me }) => {
       }
     };
     loadUserInfo();
-  }, [userId]);
+  }, [userId, me, mainUser]);
     
     const followUserHandler = async () => {
         if (userInfo?._id) {
@@ -103,6 +118,7 @@ const PublicUserInfo = ({ userId, me }) => {
           </div>
         </div>
         {mainUser?.following.includes(userInfo?._id) ? (
+          //handler for the state to update following list
           <Button
             size="sm"
             className="follow-btn"
