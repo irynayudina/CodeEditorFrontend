@@ -55,12 +55,12 @@ const NavBar = (props) => {
               >
                 Discussions
               </Nav.Link>
-              <Nav.Link
+              {/* <Nav.Link
                 href="/challenges"
                 className={activeTab == "/challenges" ? "active" : ""}
               >
                 Challenges
-              </Nav.Link>
+              </Nav.Link> */}
               <Nav.Link
                 href="/collaboratory"
                 className={activeTab == "/collaboratory" ? "active" : ""}
@@ -78,17 +78,8 @@ const NavBar = (props) => {
                   <NavDropdown.Item href="/user#projects">
                     My projects
                   </NavDropdown.Item>
-                  <NavDropdown.Item href="/user#notifications">
-                    Notifications
-                  </NavDropdown.Item>
                   <NavDropdown.Item href="/user#discussions">
                     Discussions
-                  </NavDropdown.Item>
-                  <NavDropdown.Item href="/user#challenges">
-                    Challenges
-                  </NavDropdown.Item>
-                  <NavDropdown.Item href="/user#charts">
-                    Charts
                   </NavDropdown.Item>
                   <NavDropdown.Item href="/user#people">
                     People

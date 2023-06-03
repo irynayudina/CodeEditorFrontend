@@ -13,6 +13,8 @@ import { toast } from "react-toastify";
 import axios from 'axios'
 import { useParams } from "react-router-dom";
 
+import PublicUserNav from './PublicUserNav';
+
 
 const PublicUserpage = () => {
   const { userInfo } = useSelector((state) => state.auth);
@@ -63,7 +65,7 @@ const PublicUserpage = () => {
     <div className="public-userpage">
       <div>
         <PublicUserInfo userId={userId} me={actingUser} />
-        {/* <UserNav subpage={subpage} setSubpage={setSubpage} isPublic={true} /> */}
+        <PublicUserNav subpage={subpage} setSubpage={setSubpage} isPublic={true} />
       </div>
       <div className="userpage-content">{pageContent}</div>
     </div>
