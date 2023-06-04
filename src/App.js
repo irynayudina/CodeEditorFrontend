@@ -84,7 +84,7 @@ function App() {
             }
           />
           <Route path="/discussions" element={<Discussions theme={theme} />} />
-          <Route path="/discussion" element={<Discussion theme={theme} />} />
+          <Route path="/discussion/:id" element={<Discussion theme={theme} />} />
           <Route
             path="/challenges"
             element={<Challenges theme={theme} breakpoint={breakpoint} />}

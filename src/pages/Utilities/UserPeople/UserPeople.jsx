@@ -15,7 +15,7 @@ const UserPeople = () => {
   const { id: viewedUserId } = useParams();
   const userId = viewedUserId || userInfo._id;
   const [fromPublicPage, setFromPublicPage] = useState(viewedUserId);
-  const peopleArray = [
+  const [peopleArray, setPeopleArray] = useState([
     { name: "person 11111111111111111111 222222222", role: ["follower"] },
     { name: "person 2", role: ["follower", "following"] },
     { name: "person3", role: ["follower"] },
@@ -23,7 +23,7 @@ const UserPeople = () => {
     { name: "person5", role: ["follower"] },
     { name: "person6", role: ["following"] },
     { name: "person7", role: ["follower"] },
-  ];
+  ])
   const [people, setPeople] = useState(peopleArray);
   const [filterParam, setFilter] = useState("0");
   const deletePersonHandler = (i) => {
@@ -36,7 +36,10 @@ const UserPeople = () => {
     let filtered = peopleArray;
 
     if (filterParam !== "0") {
-      filtered = filtered.filter((person) => person.role === filterParam);
+      filtered = filtered.filter(
+        (person) =>
+          person.role[0] === filterParam || person.role[1] === filterParam
+      );
     }
     setPeople(filtered);
   };
@@ -44,13 +47,11 @@ const UserPeople = () => {
     sortPeople();
   }, [filterParam]);
   const loadPeopleOfUSer = async () => {
-    //people followed by user - user's following
-    //people following user - user's followers
-    // /users/people?user_id=64675225f2c93ca7aae57562
     try {
       const responsePeople = await axios.get(
         `/api//users/people?user_id=${userId}`
       );
+      setPeopleArray(responsePeople?.data);
       setPeople(responsePeople?.data);
       // console.log(responsePeople?.data);
     } catch (error) {

@@ -11,11 +11,13 @@ import { useLocation } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
 import MappingComments from "./MappingComments";
+import { useParams } from "react-router-dom";
 
-const Discussion = ({ discussionId }) => {
+const Discussion = () => {
+  const { id: discussionId } = useParams();
   const [data, setData] = useState();
-  const location = useLocation();
-  const { state } = location;
+  // const location = useLocation();
+  // const { state } = location;
 
   const handleDiscussionLoad = async (discussionId) => {
     try {
@@ -38,13 +40,9 @@ const Discussion = ({ discussionId }) => {
   };
 
   useEffect(() => {
-    console.log(state);
-    if (!state) {
+   
       handleDiscussionLoad(discussionId);
-    } else {
-      handleDiscussionLoad(state._id);
-    }
-  }, [location, state, state?.createdAt, discussionId]);
+  }, [discussionId]);
 
   const handleReply = (commentNew) => {
     if (commentNew) {
@@ -81,7 +79,7 @@ const Discussion = ({ discussionId }) => {
           <Card.Subtitle className="mb-2 text-muted">
             <Link
               to={`/public/user/${data?.author?._id}`}
-              state={{ userId: data?.author?._id }}
+              // state={{ userId: data?.author?._id }}
               key={data?.author?._id}
               className="text-decoration-none black-link"
             >
