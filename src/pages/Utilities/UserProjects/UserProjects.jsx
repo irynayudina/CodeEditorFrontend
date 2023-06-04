@@ -51,6 +51,20 @@ function useLoadItems(userId, wasChanged) {
     }
     console.log(page + " inside loadmore");
   };
+
+const statesReset = () => {
+  setPage(1);
+  setHasNextPage(true);
+  setLoading(false);
+  setItems([]);
+  setResetCompleted(true); //--
+};
+useEffect(() => {
+  setResetCompleted(false);
+  statesReset();
+  console.log(page + " useEffect");
+}, [wasChanged]);
+
   useEffect(() => {
     if (resetCompleted) {
       loadMore();
@@ -179,12 +193,19 @@ const UserProjects = (props) => {
     },
   ]);
   const [sortProjects, setSortProjects] = useState("1");
-  const deleteProjectHandler = (i) => {
-    let newList = [...projects];
-    newList.splice(i, 1);
-    setProjects(newList);
-    console.log(projects)
-  }
+  const deleteProjectHandler = async (i, project_id) => {
+    try {
+      const projectUpdated = await axios.post("/api/projects/delete", {
+        projectId: project_id,
+      });
+      if (projectUpdated?.data) {
+        console.log(projectUpdated.data);
+        toast.success("project is deleted");
+      }
+    } catch (err) {
+      toast.error(err?.response?.data?.message || err.error);
+    }
+  };
 
   let { loading, items, hasNextPage, error, loadMore } = useLoadItems(userId, wasChanged);
   const [sentryRef] = useInfiniteScroll({

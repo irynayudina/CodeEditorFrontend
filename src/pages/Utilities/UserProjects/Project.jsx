@@ -19,6 +19,7 @@ const Project = ({
   index,
   deleteProjectHandler,
   fromPublicPage,
+  setChanged,
 }) => {
   const [projectDate, setProjectDate] = useState(project.createdAt);
   const [dateUpdateString, setDateUpdateString] = useState("1 minute ago");
@@ -27,7 +28,8 @@ const Project = ({
     let deleteProject = window.confirm("Delete the project?");
     if (deleteProject) {
       setClosePopup("closePopup");
-      deleteProjectHandler(index);
+      setChanged((prev) => !prev);
+      deleteProjectHandler(index, project._id);
     }
   };
 
@@ -76,7 +78,6 @@ const Project = ({
 
   const renameProjectHandler = async () => {
     console.log("renamed " + renameStr);
-    // setChanged((prev) => !prev);
     setRenamed(renameStr);
     console.log(project._id);
     try {
