@@ -21,6 +21,10 @@ import SaveFile from "./SaveFile";
 import ThemesHandler from "./ThemesHandler";
 import { Link } from "react-router-dom";
 
+import axios from "axios";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
+
 
 const SideBar = (props) => {
   const [visibleDropdown, setVisibleDropdown] = useState("hiddenDropdown");
@@ -47,6 +51,8 @@ const SideBar = (props) => {
   const [sidebarCmd, setSidebarCmd] = useState("");
   const [sidebarParam, setSidebarParam] = useState("");
   const [sidebarLangVersion, setSidebarLangVersion] = useState("");
+  const [wasChanged, setChanged] = useState(false);
+
   useEffect(() => {
     //setting
     setSidebarCode(props.code);
@@ -86,6 +92,43 @@ const SideBar = (props) => {
     filename,
     props.newProject,
   ]);
+
+  const navigate = useNavigate();
+  const deleteProjectHandler = async () => {
+    try {
+      const projectUpdated = await axios.post("/api/projects/delete", {
+        projectId: props.projectId,
+      });
+      if (projectUpdated?.data) {
+        console.log(projectUpdated.data);
+        toast.success("project is deleted");
+        setChanged(true);
+        navigate("/editor");
+        window.location.reload();
+      }
+    } catch (err) {
+      toast.error(err?.response?.data?.message || err.error);
+    }
+  };
+  const [renameStr, setRenameStr] = useState("");
+  const renameProjectHandler = async () => {
+    console.log("rrrr")
+    try {
+      const projectUpdated = await axios.post("/api/projects/id", {
+        projectId: props.projectId,
+        projectName: renameStr,
+      });
+      if (projectUpdated?.data) {
+        console.log(projectUpdated.data);
+        navigate(`/editor/${props.projectId}`);
+        toast.success("renamed");
+        window.location.reload();
+      }
+      console.log(projectUpdated);
+    } catch (err) {
+      toast.error(err?.response?.data?.message || err.error);
+    }
+  };
 
   return (
     <div className={`side ${props.theme} ${props.editorSize}`}>
@@ -153,22 +196,34 @@ const SideBar = (props) => {
                 <span>Open from project</span>
               </Link>{" "}
             </Dropdown.Item>
-            {!props.newProject ? (
+            {!props.newProject && !wasChanged ? (
               <>
                 <Dropdown.Item href="#10">
                   <FaUsers className="me-3" />
                   <span>Collaboration mode</span>
                 </Dropdown.Item>
                 <Dropdown.Divider />
-                <Dropdown.Item href="#12">
-                  <FaLockOpen className="me-3" />
-                  <span>Make public</span>
+                <Dropdown.Item
+                  href="#null"
+                  onKeyDown={(e) => e.stopPropagation()}
+                  onClick={(e) => e.stopPropagation()}
+                  onFocus={(e) => e.stopPropagation()}
+                  onMouseOver={(e) => e.stopPropagation()}
+                >
+                  <Button
+                    variant="outline-primary"
+                    size="sm"
+                    onClick={renameProjectHandler}
+                  >
+                    <FaEdit className="me-3" />
+                    <span>Rename</span>
+                  </Button>
+                  <Form.Control
+                    type="text"
+                    onChange={(e) => setRenameStr(e.target.value)}
+                  />
                 </Dropdown.Item>
-                <Dropdown.Item href="#13">
-                  <FaEdit className="me-3" />
-                  <span>Rename</span>
-                </Dropdown.Item>
-                <Dropdown.Item href="#14">
+                <Dropdown.Item href="#14" onClick={deleteProjectHandler}>
                   <FaTrashAlt className="me-3" />
                   <span>Delete</span>
                 </Dropdown.Item>
@@ -269,7 +324,7 @@ const SideBar = (props) => {
                 <span>Open from project</span>
               </Link>{" "}
             </Nav.Link>
-            {!props.newProject ? (
+            {!props.newProject && !wasChanged ? (
               <>
                 <Nav.Link
                   href="#10"
@@ -279,22 +334,31 @@ const SideBar = (props) => {
                   <span>Collaboration mode</span>
                 </Nav.Link>
                 <Nav.Link
-                  href="#12"
                   className="list-group-item list-group-item-action py-2 ripple"
+                  href="#null"
+                  onKeyDown={(e) => e.stopPropagation()}
+                  onClick={(e) => e.stopPropagation()}
+                  onFocus={(e) => e.stopPropagation()}
+                  onMouseOver={(e) => e.stopPropagation()}
                 >
-                  <FaLockOpen className="me-3" />
-                  <span>Make public</span>
-                </Nav.Link>
-                <Nav.Link
-                  href="#13"
-                  className="list-group-item list-group-item-action py-2 ripple"
-                >
-                  <FaEdit className="me-3" />
-                  <span>Rename</span>
+                  <Button
+                    variant="outline-primary"
+                    size="sm"
+                    onClick={renameProjectHandler}
+                  >
+                    <FaEdit className="me-3" />
+                    <span>Rename</span>
+                  </Button>
+                  <Form.Control
+                    type="text"
+                    onChange={(e) => setRenameStr(e.target.value)}
+                    // autoComplete="off"
+                  />
                 </Nav.Link>
                 <Nav.Link
                   href="#14"
                   className="list-group-item list-group-item-action py-2 ripple"
+                  onClick={deleteProjectHandler}
                 >
                   <FaTrashAlt className="me-3" />
                   <span>Delete</span>
