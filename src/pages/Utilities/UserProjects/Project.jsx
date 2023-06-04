@@ -11,36 +11,26 @@ import {
   BsClock,
 } from "react-icons/bs";
 import PopUp from "../../../elements/PopUp/PopUp";
+import axios from "axios";
+import { toast } from "react-toastify";
 
-const Project = ({ project, index, deleteProjectHandler, fromPublicPage }) => {
-
-  const [projectDate, setProjectDate] = useState(project.createdAt)
-  const [dateUpdateString, setDateUpdateString] = useState("1 minute ago")
-  const [closePopup, setClosePopup] = useState()
-    const handleProjectDelete = async () => {
-      let deleteProject = window.confirm('Delete the project?');
-      if (deleteProject) {
-        setClosePopup("closePopup");
-        deleteProjectHandler(index);
-      }
+const Project = ({
+  project,
+  index,
+  deleteProjectHandler,
+  fromPublicPage,
+}) => {
+  const [projectDate, setProjectDate] = useState(project.createdAt);
+  const [dateUpdateString, setDateUpdateString] = useState("1 minute ago");
+  const [closePopup, setClosePopup] = useState();
+  const handleProjectDelete = async () => {
+    let deleteProject = window.confirm("Delete the project?");
+    if (deleteProject) {
+      setClosePopup("closePopup");
+      deleteProjectHandler(index);
     }
-  const handleCollaboratorDelete = (i) => {
-      console.log(i)
-      let deleteCollab = window.confirm(
-        "Delete a person from collaboration list? He will no longer have an access to editing the project code"
-      );
-      if (deleteCollab) {
-        let newList = [...collaborators]; 
-        newList.splice(i, 1); 
-        setCollaborators(newList);
-      }
-    };
-    const [collaborators, setCollaborators] = useState([
-      "username 1",
-      "username collab 2",
-      "3rd person",
-    ]);
-  
+  };
+
   useEffect(() => {
     const date = new Date(project.createdAt);
     const formattedDate = date.toLocaleDateString("en-US", {
@@ -80,13 +70,33 @@ const Project = ({ project, index, deleteProjectHandler, fromPublicPage }) => {
     const updDate = calculateTimeDifference();
     setDateUpdateString(updDate);
   }, [project]);
-  
 
-  
+  const [renameStr, setRenameStr] = useState("");
+  const [renamed, setRenamed] = useState(false);
+
+  const renameProjectHandler = async () => {
+    console.log("renamed " + renameStr);
+    // setChanged((prev) => !prev);
+    setRenamed(renameStr);
+    console.log(project._id);
+    try {
+      const projectUpdated = await axios.post("/api/projects/id", {
+        projectId: project._id,
+        projectName: renameStr,
+      });
+      if (projectUpdated?.data) {
+        console.log(projectUpdated.data);
+        toast.success("edited");
+      }
+    } catch (err) {
+      toast.error(err?.response?.data?.message || err.error);
+    }
+  };
+
   return (
     <PopUp className={closePopup}>
       <div className="project-item" key={index}>
-        <h6 className="project-name">{project.projectName}</h6>
+        <h6 className="project-name">{renamed || project.projectName}</h6>
         <div className="project-language">
           <Badge bg="secondary">{project.language}</Badge>
         </div>
@@ -121,10 +131,20 @@ const Project = ({ project, index, deleteProjectHandler, fromPublicPage }) => {
         </div>
         {!fromPublicPage ? (
           <>
-            {/* <Form.Check type="switch" label="make public" /> */}
             <div className="rename ">
-              <BsPencilSquare />{" "}
-              <Form.Control type="text" size="sm" placeholder="Rename" />
+              <Button
+                variant="outline-secondary"
+                size="sm"
+                onClick={renameProjectHandler}
+              >
+                <BsPencilSquare />{" "}
+              </Button>
+              <Form.Control
+                type="text"
+                size="sm"
+                placeholder="Rename"
+                onChange={(e) => setRenameStr(e.target.value)}
+              />
             </div>
           </>
         ) : (
@@ -138,19 +158,23 @@ const Project = ({ project, index, deleteProjectHandler, fromPublicPage }) => {
               </Button>
             </Link>
           </div>
-          {!fromPublicPage ? <div>
-            <Button
-              size="sm"
-              variant="outline-danger"
-              onClick={handleProjectDelete}
-            >
-              <BsFillTrashFill /> Delete
-            </Button>
-          </div> : ""}
+          {!fromPublicPage ? (
+            <div>
+              <Button
+                size="sm"
+                variant="outline-danger"
+                onClick={handleProjectDelete}
+              >
+                <BsFillTrashFill /> Delete
+              </Button>
+            </div>
+          ) : (
+            ""
+          )}
         </div>
       </div>
     </PopUp>
   );
-}
+};
 
 export default Project

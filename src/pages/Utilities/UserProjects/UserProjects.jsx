@@ -15,7 +15,7 @@ import Loader from '../../../elements/Loader';
 import { ListGroup } from "react-bootstrap";
 import useInfiniteScroll from "react-infinite-scroll-hook";
 
-function useLoadItems(userId) {
+function useLoadItems(userId, wasChanged) {
   const [loading, setLoading] = useState(false);
   const [items, setItems] = useState([]);
   const [hasNextPage, setHasNextPage] = useState(true);
@@ -57,10 +57,16 @@ function useLoadItems(userId) {
     }
   }, [resetCompleted]);
 
+  useEffect(() => {
+    console.log(wasChanged);
+  }, [wasChanged]);
+  
+
   return { loading, items, hasNextPage, error, loadMore };
 }
 
 const UserProjects = (props) => {
+  const [wasChanged, setChanged] = useState(false)
   const { userInfo } = useSelector((state) => state.auth);
   const { id: viewedUserId } = useParams();
   const userId = viewedUserId || userInfo._id
@@ -180,23 +186,7 @@ const UserProjects = (props) => {
     console.log(projects)
   }
 
-  // const loadProjectsList = async () => {
-  //   try {
-  //     const projects = await axios.get(`/api/projects?authorId=${userId}`);
-  //     if (projects?.data) {
-  //       console.log(projects.data);
-  //       toast.success("got projects");
-  //       setProjects(projects.data.projects);
-  //     }
-  //   } catch (err) {
-  //     toast.error(err?.response?.data?.message || err.error);
-  //   }
-  // }
-  // useEffect(() => {
-  //   loadProjectsList();
-  // }, []);
-  
-  let { loading, items, hasNextPage, error, loadMore } = useLoadItems(userId);
+  let { loading, items, hasNextPage, error, loadMore } = useLoadItems(userId, wasChanged);
   const [sentryRef] = useInfiniteScroll({
     loading,
     hasNextPage,
@@ -233,6 +223,7 @@ const UserProjects = (props) => {
             key={i}
             deleteProjectHandler={deleteProjectHandler}
             fromPublicPage={fromPublicPage}
+            setChanged={setChanged}
           />
         ))}
       </div>
