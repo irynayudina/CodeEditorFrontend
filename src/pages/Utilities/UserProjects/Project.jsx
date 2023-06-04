@@ -119,24 +119,9 @@ const Project = ({ project, index, deleteProjectHandler, fromPublicPage }) => {
             <BsClock /> {dateUpdateString}
           </div>
         </div>
-        {/* <div className="collaborators">
-          Collaborations:
-          {collaborators.map((person, i) => (
-            <div key={i}>
-              {person}{" "}
-              <Button
-                size="sm"
-                variant="outline-dark"
-                onClick={() => handleCollaboratorDelete(i)}
-              >
-                <BsFillTrashFill />
-              </Button>
-            </div>
-          ))}
-        </div> */}
         {!fromPublicPage ? (
           <>
-            <Form.Check type="switch" label="make public" />
+            {/* <Form.Check type="switch" label="make public" /> */}
             <div className="rename ">
               <BsPencilSquare />{" "}
               <Form.Control type="text" size="sm" placeholder="Rename" />

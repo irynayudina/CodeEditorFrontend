@@ -9,28 +9,28 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import { useParams } from "react-router-dom";
 
-
 const UserPeople = () => {
   const { userInfo } = useSelector((state) => state.auth);
   const { id: viewedUserId } = useParams();
   const userId = viewedUserId || userInfo._id;
   const [fromPublicPage, setFromPublicPage] = useState(viewedUserId);
-  const [peopleArray, setPeopleArray] = useState([
-    { name: "person 11111111111111111111 222222222", role: ["follower"] },
-    { name: "person 2", role: ["follower", "following"] },
-    { name: "person3", role: ["follower"] },
-    { name: "person4", role: ["following"] },
-    { name: "person5", role: ["follower"] },
-    { name: "person6", role: ["following"] },
-    { name: "person7", role: ["follower"] },
-  ])
+  const [peopleArray, setPeopleArray] = useState([]);
   const [people, setPeople] = useState(peopleArray);
   const [filterParam, setFilter] = useState("0");
-  const deletePersonHandler = (i) => {
+  const deletePersonHandler = async (idOfUser, i) => {
     let newList = [...people];
     newList.splice(i, 1);
     setPeople(newList);
     console.log(people);
+    //unfollow request
+    try {
+      const response = await axios.post(`/api/users/unfollow`, {
+        userId: idOfUser,
+      });
+      console.log(response);
+    } catch (err) {
+      toast.error(err?.response?.data?.message || err.error);
+    }
   };
   const sortPeople = () => {
     let filtered = peopleArray;
@@ -43,7 +43,7 @@ const UserPeople = () => {
     }
     setPeople(filtered);
   };
-  React.useEffect(() => {
+  useEffect(() => {
     sortPeople();
   }, [filterParam]);
   const loadPeopleOfUSer = async () => {
@@ -83,16 +83,12 @@ const UserPeople = () => {
             <div className="person-info-group">
               <Link
                 to={`/public/user/${p?.userID}#projects`}
-                // state={{ userId: data?.author?._id }}
-                // key={data?.author?._id}
                 className="text-decoration-none black-link"
               >
                 <div className="person-img"></div>
               </Link>
               <Link
                 to={`/public/user/${p?.userID}#projects`}
-                // state={{ userId: data?.author?._id }}
-                // key={data?.author?._id}
                 className="text-decoration-none black-link"
               >
                 <div className="person-name">{p.name}</div>
@@ -103,15 +99,19 @@ const UserPeople = () => {
                 ))}
               </Link>
             </div>
-            {!fromPublicPage ?
+            {!fromPublicPage &&
+            (p.role[0] === "following" || p.role[1] === "following") ? (
               <Button
                 variant="outline-danger"
                 size="sm"
                 className="btn-center"
-                onClick={() => deletePersonHandler(i)}
+                onClick={() => deletePersonHandler(p?.userID, i)}
               >
                 <BsFillTrashFill />
-              </Button> : ""}
+              </Button>
+            ) : (
+              ""
+            )}
           </div>
         ))}
       </div>
