@@ -33,7 +33,7 @@ function useLoadCollabs(userId, wasChanged) {
         );
         setItems((prevItems) => {
           // Filter out duplicate items
-          const uniqueItems = response.data.filter((item) => {
+          const uniqueItems = response.data.collabs.filter((item) => {
             // Check if the item's _id is not present in any of the previous items
             return !prevItems.some((prevItem) => prevItem._id === item._id);
           });
