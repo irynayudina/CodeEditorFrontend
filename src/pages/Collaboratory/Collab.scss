@@ -3,6 +3,8 @@
     gap: 1rem;
     flex-wrap: wrap;
     margin: 1rem;
+    justify-content: space-between;
+    align-items: center;
     .people-collab, .people-active-now{
         display: flex;
         gap: 0.5rem;

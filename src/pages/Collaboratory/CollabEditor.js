@@ -48,6 +48,7 @@ export default function CollabEditor() {
         console.log(gotCollaboration.data);
         toast.success("Opened existing collaboration");
         setAssociatedProject(gotCollaboration.data.associatedProject);
+        setOwners(gotCollaboration.data.owners);
         // if it exists - checking our user to see if hes in owners list
         const foundInOwners = gotCollaboration.data.owners.filter(
           (user) => user._id.toString() === userInfo._id.toString()
@@ -63,8 +64,9 @@ export default function CollabEditor() {
           });
           console.log(newCollab)
           if (newCollab?.data) {
-            toast.success("Added user to ownrs list");
+            toast.success("Added user to owners list");
             console.log(newCollab.data);
+            setOwners(gotCollaboration.data?.data?.owners);
           } else {
             toast.error("Error adding a user");
           }
@@ -114,10 +116,25 @@ export default function CollabEditor() {
 
   // only owner of the project can save changes in the project related to collaboration
   const saveInProject = async () => {
-    console.log("saved to project " + associatedProject_id);
+    console.log("saved to project " + associatedProject);
     console.log("the saved text is: ");
     let plainText = quill.getText();
     console.log(plainText);
+    if (!associatedProject || !plainText) {
+      return;
+    }
+      try {
+        const project = await axios.post("/api/projects/id", {
+          projectId: associatedProject,
+          codeFile: plainText,
+        });
+        if (project?.data) {
+          console.log(project.data);
+          toast.success("Project code sucessfuly edited");
+        }
+      } catch (err) {
+        toast.error(err?.response?.data?.message || err.error);
+      }
     //request to edit the project, toast to display error or success
   }
 
@@ -128,6 +145,7 @@ export default function CollabEditor() {
   const [socket, setSocket] = useState();
   const [quill, setQuill] = useState();
   const [users, setUsers] = useState([]);
+  const [owners, setOwners] = useState([]);
   const [code, setCode] = useState("");
 
 
@@ -148,7 +166,7 @@ export default function CollabEditor() {
     console.log("owner is " + userInfo?._id);
     console.log("collab_id is " + documentId);
     console.log("associatedProject_id is " + associatedProject_id);
-    if (userInfo?._id && documentId && associatedProject_id) {
+    if (userInfo?._id && documentId ) {
       getCollabById();
     } else {
       toast.error("data was lost")
@@ -274,8 +292,16 @@ export default function CollabEditor() {
         </div>
         <div>
           <div className="people-collab">
-            People:
-            <span>peoplw</span> <span>peoplw</span> <span>peoplw</span>{" "}
+            People: owners
+            {owners.map((user, index) => (
+              <Link
+                key={index}
+                to={`/public/user/${user?.usrId}#projects`}
+                className="text-decoration-none black-link"
+              >
+                <span>{user?.name}</span>
+              </Link>
+            ))}
           </div>
           <div className="people-active-now">
             Active now:
