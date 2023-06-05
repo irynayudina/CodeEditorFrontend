@@ -199,8 +199,13 @@ const SideBar = (props) => {
             {!props.newProject && !wasChanged ? (
               <>
                 <Dropdown.Item href="#10">
-                  <FaUsers className="me-3" />
-                  <span>Collaboration mode</span>
+                  <Link
+                    to={`/documents/${"02a6829c-61fa-4a7a-9107-498272ad5736"}`}
+                    state={{ associatedProject_id: props.projectId }}
+                  >
+                    <FaUsers className="me-3" />
+                    <span>Collaboration mode</span>
+                  </Link>
                 </Dropdown.Item>
                 <Dropdown.Divider />
                 <Dropdown.Item
@@ -330,8 +335,13 @@ const SideBar = (props) => {
                   href="#10"
                   className="list-group-item list-group-item-action py-2 ripple"
                 >
-                  <FaUsers className="me-3" />
-                  <span>Collaboration mode</span>
+                  <Link
+                    to={`/documents/${"02a6829c-61fa-4a7a-9107-498272ad5736"}`}
+                    state={{ associatedProject_id: props.projectId }}
+                  >
+                    <FaUsers className="me-3" />
+                    <span>Collaboration mode</span>
+                  </Link>
                 </Nav.Link>
                 <Nav.Link
                   className="list-group-item list-group-item-action py-2 ripple"
