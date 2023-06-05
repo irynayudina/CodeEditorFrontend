@@ -102,8 +102,8 @@ export default function InfiniteLoaderForUserDiscussions({ filerObj }) {
             <div className="discussion-text">{item.text}</div>
             <div className="numbers text-muted">
               <div className="discussion-likes">
-                <BsHandThumbsUpFill />
-                {item.likes}
+                {/* <BsHandThumbsUpFill />
+                {item.likes} */}
               </div>
               <div className="discussion-comments">
                 <BsFillChatLeftFill />

@@ -35,7 +35,7 @@ const Project = ({ project, index }) => {
       </div>
       <div className="numbers">
         <div className="likes">
-          <BsFillHandThumbsUpFill /> {project.likes}
+          {/* <BsFillHandThumbsUpFill /> {project.likes} */}
         </div>
         <div className="text-muted">
           <BsClock /> {updAt}

@@ -70,8 +70,8 @@ const DiscussionSection = ({ comment, commentData }) => {
           <BsFillChatLeftFill /> {c?.answers?.length}
         </div>
         <div className="d-flex align-items-center">
-          <BsFillHandThumbsUpFill />
-          {c?.likes}
+          {/* <BsFillHandThumbsUpFill />
+          {c?.likes} */}
         </div>
       </div>
       <div>

@@ -14,6 +14,7 @@ import { useParams } from "react-router-dom";
 import Loader from '../../../elements/Loader';
 import { ListGroup } from "react-bootstrap";
 import useInfiniteScroll from "react-infinite-scroll-hook";
+import LoadCollabs from './LoadCollabs';
 
 function useLoadItems(userId, wasChanged) {
   const [loading, setLoading] = useState(false);
@@ -85,114 +86,7 @@ const UserProjects = (props) => {
   const { id: viewedUserId } = useParams();
   const userId = viewedUserId || userInfo._id
   const [fromPublicPage, setFromPublicPage] = useState(viewedUserId);
-  const [projects, setProjects] = useState([
-    {
-      name: "project1",
-      language: "c++",
-      createdAt: "26.04.2023",
-      codeFile: "...",
-      likes: "999k",
-    },
-    {
-      name: "project1",
-      language: "c++",
-      createdAt: "26.04.2023",
-      codeFile: "...",
-      likes: "10",
-    },
-    {
-      name: "project1",
-      language: "c++",
-      createdAt: "26.04.2023",
-      codeFile: "...",
-      likes: "10",
-    },
-    {
-      name: "project1",
-      language: "c++",
-      createdAt: "26.04.2023",
-      codeFile: "...",
-      likes: "10",
-    },
-    {
-      name: "project1",
-      language: "c++",
-      createdAt: "26.04.2023",
-      codeFile: "...",
-      likes: "10",
-    },
-    {
-      name: "project1",
-      language: "c++",
-      createdAt: "26.04.2023",
-      codeFile: "...",
-      likes: "10",
-    },
-    {
-      name: "project1",
-      language: "c++",
-      createdAt: "26.04.2023",
-      codeFile: "...",
-      likes: "10",
-    },
-    {
-      name: "project1",
-      language: "c++",
-      createdAt: "26.04.2023",
-      codeFile: "...",
-      likes: "10",
-    },
-    {
-      name: "project1",
-      language: "c++",
-      createdAt: "26.04.2023",
-      codeFile: "...",
-      likes: "10",
-    },
-    {
-      name: "project1",
-      language: "c++",
-      createdAt: "26.04.2023",
-      codeFile: "...",
-      likes: "10",
-    },
-    {
-      name: "project1",
-      language: "c++",
-      createdAt: "26.04.2023",
-      codeFile: "...",
-      likes: "10",
-    },
-    {
-      name: "project1",
-      language: "c++",
-      createdAt: "26.04.2023",
-      codeFile: "...",
-      likes: "10",
-    },
-    {
-      name: "project1",
-      language: "c++",
-      createdAt: "26.04.2023",
-      codeFile: "...",
-      likes: "10",
-    },
-    {
-      name: "project1",
-      language: "c++",
-      createdAt: "26.04.2023",
-      codeFile: "...",
-      likes: "10",
-    },
-    {
-      name: "project1",
-      language: "c++",
-      createdAt: "26.04.2023",
-      codeFile: "...",
-      likes: "10",
-    },
-  ]);
-  const [sortProjects, setSortProjects] = useState("1");
+  const [projects, setProjects] = useState([]);
   const deleteProjectHandler = async (i, project_id) => {
     try {
       const projectUpdated = await axios.post("/api/projects/delete", {
@@ -220,34 +114,57 @@ const UserProjects = (props) => {
     setProjects(items);
   }, [items]);
 
+  const [projectsChecked, setProjectsChecked] = useState(true);
+  const [collaborationsChecked, setCollaborationsChecked] = useState(false);
+
+  const handleProjectsChange = () => {
+    setProjectsChecked(true);
+    setCollaborationsChecked(false);
+  };
+
+  const handleCollaborationsChange = () => {
+    setProjectsChecked(false);
+    setCollaborationsChecked(true);
+  };
+
   return (
     <div className="projects-container">
       <h5 className="title-projects">Created projects & Collaborations</h5>
       <div className="topsection-projects">
-        <Form.Select
-          value={sortProjects}
-          onChange={(e) => setSortProjects(e.target.value)}
-        >
+        <Form.Select>
           <option value="1">Recent</option>
-          <option value="2">Popular</option>
         </Form.Select>
         <div>
-          <Form.Check type="switch" label="Only my prodjects" />
-          <Form.Check type="switch" label="Only collaborations" />
+          <Form.Check
+            type="switch"
+            label="Projects"
+            checked={projectsChecked}
+            onChange={handleProjectsChange}
+          />
+          <Form.Check
+            type="switch"
+            label="Collaborations"
+            checked={collaborationsChecked}
+            onChange={handleCollaborationsChange}
+          />
         </div>
       </div>
-      <div className="projects-display">
-        {projects.map((project, i) => (
-          <Project
-            project={project}
-            index={i}
-            key={i}
-            deleteProjectHandler={deleteProjectHandler}
-            fromPublicPage={fromPublicPage}
-            setChanged={setChanged}
-          />
-        ))}
-      </div>
+      {projectsChecked ? (
+        <div className="projects-display">
+          {projects.map((project, i) => (
+            <Project
+              project={project}
+              index={i}
+              key={i}
+              deleteProjectHandler={deleteProjectHandler}
+              fromPublicPage={fromPublicPage}
+              setChanged={setChanged}
+            />
+          ))}
+        </div>
+      ) : (
+        <LoadCollabs wasChanged={wasChanged} userId={userId} />
+      )}
       {(loading || hasNextPage) && (
         <ListGroup className="loader-container-list-item">
           <ListGroup.Item ref={sentryRef}>

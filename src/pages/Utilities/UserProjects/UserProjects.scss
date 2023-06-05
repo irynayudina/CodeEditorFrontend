@@ -104,3 +104,10 @@
         }
     }
 }
+.collab-card{
+    border: 1px solid whitesmoke;
+    .name-project-collab, .name-collab{
+        // font-size: 18px;
+        font-weight: 600;
+    }
+}

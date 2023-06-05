@@ -18,7 +18,7 @@ const DiscussionDisplay = ({ discussion }) => {
     
   return (
     <Link
-      to={"/discussion"}
+      to={`/discussion/${discussion?._id}`}
       state={{ ...discussion }}
       key={discussion?._id}
       className="text-decoration-none black-link"
@@ -42,9 +42,9 @@ const DiscussionDisplay = ({ discussion }) => {
         <p>{discussion.text}</p>
         <div className="down-section">
           <div className="response-statistics">
-            <div className="discussion-likes">
+            {/* <div className="discussion-likes">
               Likes <BsHandThumbsUpFill /> {discussion.likes || 0}
-            </div>
+            </div> */}
             <div className="discussion-answers">
               Answers <BsFillChatLeftFill /> {discussion.comments?.length || 0}
             </div>

@@ -91,10 +91,10 @@ const Discussion = () => {
         </Card.Body>
         <Card.Footer className="gap-3">
           <Card.Subtitle className="discussion-footer">
-            <div className="d-flex align-items-center">
+            {/* <div className="d-flex align-items-center">
               {" "}
               <BsFillHandThumbsUpFill /> {data?.likes}
-            </div>
+            </div> */}
             <div
               onClick={() => setExpandedComments(!expandedComments)}
               className="show-comments"

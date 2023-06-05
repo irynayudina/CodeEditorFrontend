@@ -61,12 +61,12 @@ const NavBar = (props) => {
               >
                 Challenges
               </Nav.Link> */}
-              <Nav.Link
+              {/* <Nav.Link
                 href="/collaboratory"
                 className={activeTab == "/collaboratory" ? "active" : ""}
               >
                 Collaboratory
-              </Nav.Link>
+              </Nav.Link> */}
               <Nav.Link
                 href="/projects"
                 className={activeTab == "/projects" ? "active" : ""}
