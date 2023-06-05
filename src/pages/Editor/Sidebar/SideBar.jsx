@@ -52,7 +52,10 @@ const SideBar = (props) => {
   const [sidebarParam, setSidebarParam] = useState("");
   const [sidebarLangVersion, setSidebarLangVersion] = useState("");
   const [wasChanged, setChanged] = useState(false);
-
+  const [collabId, seCollabId] = useState("")
+  const getCollab = async () => {
+    //
+  }
   useEffect(() => {
     //setting
     setSidebarCode(props.code);

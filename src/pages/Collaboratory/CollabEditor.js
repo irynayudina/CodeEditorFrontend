@@ -11,6 +11,9 @@ import { useLocation } from "react-router-dom";
 import { Button } from "react-bootstrap";
 import './Collab.scss'
 import { Link } from "react-router-dom";
+import axios from "axios";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 
 
@@ -36,10 +39,65 @@ export default function CollabEditor() {
   const { userInfo } = useSelector((state) => state.auth);
   const location = useLocation();
   let { associatedProject_id } = location?.state || "not passed";
+  const [associatedProject, setAssociatedProject] = useState()
   // getting collaboration by documentId
-  // if it does not exist - creating a collaboration
-  // if it exists - checking our user to see if hes in owners list
-  // if hes not - adding to the list
+  const getCollabById = async () => {
+    try {
+      const gotCollaboration = await axios.get(`/api/collab/id?collab_id=${documentId}`);
+      if (gotCollaboration?.data) {
+        console.log(gotCollaboration.data);
+        toast.success("Opened existing collaboration");
+        setAssociatedProject(gotCollaboration.data.associatedProject);
+        // if it exists - checking our user to see if hes in owners list
+        const foundInOwners = gotCollaboration.data.owners.filter(
+          (user) => user._id.toString() === userInfo._id.toString()
+        );
+        if (foundInOwners?.length > 0) {
+          toast.success("User exists in owner list");
+        }
+        // if hes not - adding to the list
+        else {
+          const newCollab = await axios.post(`/api/collab/addOwner`, {
+            collabId: documentId,
+            ownerId: userInfo._id,
+          });
+          console.log(newCollab)
+          if (newCollab?.data) {
+            toast.success("Added user to ownrs list");
+            console.log(newCollab.data);
+          } else {
+            toast.error("Error adding a user");
+          }
+        }
+      }
+      // if it does not exist - creating a collaboration
+      else {
+        const newCollab = await axios.post(`/api/collab`, {
+          collab_id: documentId,
+          associatedProject_id: associatedProject_id,
+        });
+        if (newCollab?.data) {
+          toast.success("Created a new collaboration");
+          console.log(newCollab.data);
+          //get text of a project and pass it to quill
+          const projectData = await axios.get(
+            `/api/projects/id?id=${associatedProject_id}`
+          );
+          if (projectData?.data) {
+            console.log(projectData.data);
+            toast.success("Got project text for creation of collab");
+            setCode(projectData.data?.codeFile);
+          } else {
+            toast.error("Error getting project text");
+          }
+        } else {
+          toast.error("Error creating a new collaboration");
+        }
+      }
+    } catch (err) {
+      toast.error(err?.response?.data?.message || err.error);
+    }
+  }
 
   // on a userpage getting the list of all collabs user has
   // each of them will be a link with specific collab_id to click and open
@@ -68,6 +126,8 @@ export default function CollabEditor() {
   const [socket, setSocket] = useState();
   const [quill, setQuill] = useState();
   const [users, setUsers] = useState([]);
+  const [code, setCode] = useState("");
+
 
   useEffect(() => {
   const userInfoPass = { _id: userInfo._id };
@@ -76,17 +136,19 @@ export default function CollabEditor() {
     });
     setSocket(s);
 
-    console.log("user is connected, the creation function");
-    console.log("owner is " + userInfo?._id);
-    console.log("collab_id is " + documentId);
-    console.log("associatedProject_id is " + associatedProject_id);
-
     return () => {
-      // s.emmit("user left", { id: userInfo._id });
       s.disconnect();
     };
   }, []);
 
+  useEffect(() => {
+    console.log("user is connected, the creation function");
+    console.log("owner is " + userInfo?._id);
+    console.log("collab_id is " + documentId);
+    console.log("associatedProject_id is " + associatedProject_id);
+    getCollabById();
+  }, [userInfo, documentId, associatedProject_id]);
+  
 
 
 
@@ -94,21 +156,34 @@ export default function CollabEditor() {
     if (socket == null || !userInfo._id) return;
     socket.on("welcome", function (data) {
       console.log("i was welcomed: " + data.message);
-      socket.emit("join user", { id: data.id, name: userInfo.name, usrId: userInfo._id });
+      socket.emit("join user", {
+        id: data.id,
+        name: userInfo.name,
+        usrId: userInfo._id,
+        documentId,
+      });
     });
     socket.on("users updated", function (data) {
-      console.log("Updated user list:", data); 
-      setUsers(data.users)
+      const filteredUsers = data.users.filter(
+        (user) => user.documentId === documentId
+      );
+      setUsers(filteredUsers);
     });
     socket.on("user disconnected", function (data) {
-      console.log("User disconnected:", data);
-      setUsers(data.users);
+      const filteredUsers = data.users.filter(
+        (user) => user.documentId === documentId
+      );
+      setUsers(filteredUsers);
     });
   }, [socket, userInfo]);
 
 
 
 
+  useEffect(() => {
+   if (code == null || quill == null) return;
+  quill.setText(code);
+}, [code, quill])
 
 
 
@@ -182,6 +257,14 @@ export default function CollabEditor() {
         <Button variant="primary" size="sm" onClick={saveInProject}>
           Save in associated project (only the owner)
         </Button>
+        <div>
+          <Link
+            to={`/editor/${associatedProject?._id}`}
+            className="text-decoration-none black-link"
+          >
+            {associatedProject?.projectName}
+          </Link>
+        </div>
         <div>
           <div className="people-collab">
             People:
