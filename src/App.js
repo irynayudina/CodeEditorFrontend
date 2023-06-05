@@ -20,9 +20,9 @@ import UserSettings from './pages/Utilities/UserSettings/UserSettings'
 import PublicUserpage from './pages/Utilities/PublicUserpage/PublicUserpage';
 import Challenge from './pages/Challenge/Challenge'
 import TextEditor from './TextEditor';
+import RedirectElem from './RedirectElem';
 
-import { Navigate } from "react-router-dom";
-import { v4 as uuidV4 } from "uuid"
+
 import CollabEditor from './pages/Collaboratory/CollabEditor';
 
 import { ToastContainer } from 'react-toastify';
@@ -84,7 +84,10 @@ function App() {
             }
           />
           <Route path="/discussions" element={<Discussions theme={theme} />} />
-          <Route path="/discussion/:id" element={<Discussion theme={theme} />} />
+          <Route
+            path="/discussion/:id"
+            element={<Discussion theme={theme} />}
+          />
           <Route
             path="/challenges"
             element={<Challenges theme={theme} breakpoint={breakpoint} />}
@@ -95,13 +98,10 @@ function App() {
           />
           <Route
             path="/collaboratory"
-            // element={<Collaboratory theme={theme} />}
-            element={<Navigate to={`/documents/${uuidV4()}`} />}
+            element={<RedirectElem /> }
           />
           <Route path="/documents/:id" element={<CollabEditor />} />
-
           <Route path="/projects" element={<Projects theme={theme} />} />
-
           {/* Protected Routes */}
           <Route path="" element={<PrivateRoute />}>
             <Route path="/user" element={<Userpage theme={theme} />} />

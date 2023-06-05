@@ -68,6 +68,23 @@ const Editor = (props) => {
   const [expanded, setExpanded] = useState("expandedCustom-pannel");
   const [errorLines, setErrorLines] = useState([]);
 
+  const [collabId, setCollabId] = useState("");
+  const getCollab = async () => {
+    try {
+      const gotCollaboration = await axios.get(
+        `/api/collab/projectId?associatedProject_id=${projectId}`
+      );
+      console.log(gotCollaboration);
+      if (gotCollaboration?.data?.collabId) {
+        setCollabId(`/documents/${gotCollaboration?.data?.collabId}`);
+      } else {
+        setCollabId('/collaboratory');
+      }
+    } catch (err) {
+      console.log(err?.response?.data?.message || err.error);
+    }
+  };
+
   const autocompleteOptions =
     language == "cpp14"
       ? languageAutocompletions["cpp"]
@@ -328,7 +345,7 @@ const Editor = (props) => {
       if (projectData?.data) {
         console.log(projectData.data);
         toast.success("got project");
-        // setProjects(projectData.data);
+        getCollab();
         setCode(projectData.data?.codeFile);
         setLangauge(projectData.data.language)
         const temp = projectData.data;
@@ -396,6 +413,7 @@ const Editor = (props) => {
           projectId={projectId}
           newProject={newProject}
           setNewProject={setNewProject}
+          collabId={collabId}
         >
           <div className="project-info-secion">
             <div>

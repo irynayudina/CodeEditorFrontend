@@ -52,10 +52,7 @@ const SideBar = (props) => {
   const [sidebarParam, setSidebarParam] = useState("");
   const [sidebarLangVersion, setSidebarLangVersion] = useState("");
   const [wasChanged, setChanged] = useState(false);
-  const [collabId, seCollabId] = useState("")
-  const getCollab = async () => {
-    //
-  }
+  
   useEffect(() => {
     //setting
     setSidebarCode(props.code);
@@ -199,17 +196,17 @@ const SideBar = (props) => {
                 <span>Open from project</span>
               </Link>{" "}
             </Dropdown.Item>
+            {props.projectId ? (<Dropdown.Item href="#10">
+              <Link
+                to={props.collabId}
+                state={{ associatedProject_id: props.projectId }}
+              >
+                <FaUsers className="me-3" />
+                <span>Collaboration mode</span>
+              </Link>
+            </Dropdown.Item>) : ""}
             {!props.newProject && !wasChanged ? (
               <>
-                <Dropdown.Item href="#10">
-                  <Link
-                    to={`/documents/${"02a6829c-61fa-4a7a-9107-498272ad5736"}`}
-                    state={{ associatedProject_id: props.projectId }}
-                  >
-                    <FaUsers className="me-3" />
-                    <span>Collaboration mode</span>
-                  </Link>
-                </Dropdown.Item>
                 <Dropdown.Divider />
                 <Dropdown.Item
                   href="#null"
@@ -332,20 +329,25 @@ const SideBar = (props) => {
                 <span>Open from project</span>
               </Link>{" "}
             </Nav.Link>
+            {props.projectId ? (
+              <Nav.Link
+                href="#10"
+                className="list-group-item list-group-item-action py-2 ripple"
+              >
+                <Link
+                  to={props.collabId}
+                  state={{ associatedProject_id: props.projectId }}
+                >
+                  <FaUsers className="me-3" />
+                  <span>Collaboration mode</span>
+                </Link>
+              </Nav.Link>
+            ) : (
+              ""
+            )}
+
             {!props.newProject && !wasChanged ? (
               <>
-                <Nav.Link
-                  href="#10"
-                  className="list-group-item list-group-item-action py-2 ripple"
-                >
-                  <Link
-                    to={`/documents/${"02a6829c-61fa-4a7a-9107-498272ad5736"}`}
-                    state={{ associatedProject_id: props.projectId }}
-                  >
-                    <FaUsers className="me-3" />
-                    <span>Collaboration mode</span>
-                  </Link>
-                </Nav.Link>
                 <Nav.Link
                   className="list-group-item list-group-item-action py-2 ripple"
                   href="#null"

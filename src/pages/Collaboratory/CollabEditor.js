@@ -72,6 +72,7 @@ export default function CollabEditor() {
       }
       // if it does not exist - creating a collaboration
       else {
+        console.log(" trying to create new");
         const newCollab = await axios.post(`/api/collab`, {
           collab_id: documentId,
           associatedProject_id: associatedProject_id,
@@ -79,6 +80,7 @@ export default function CollabEditor() {
         if (newCollab?.data) {
           toast.success("Created a new collaboration");
           console.log(newCollab.data);
+          setAssociatedProject(newCollab?.data?.associatedProject);
           //get text of a project and pass it to quill
           const projectData = await axios.get(
             `/api/projects/id?id=${associatedProject_id}`
@@ -146,7 +148,12 @@ export default function CollabEditor() {
     console.log("owner is " + userInfo?._id);
     console.log("collab_id is " + documentId);
     console.log("associatedProject_id is " + associatedProject_id);
-    getCollabById();
+    if (userInfo?._id && documentId && associatedProject_id) {
+      getCollabById();
+    } else {
+      toast.error("data was lost")
+    }
+      
   }, [userInfo, documentId, associatedProject_id]);
   
 
