@@ -81,10 +81,13 @@ const Project = ({
     setRenamed(renameStr);
     console.log(project._id);
     try {
-      const projectUpdated = await axios.post("/api/projects/id", {
-        projectId: project._id,
-        projectName: renameStr,
-      });
+      const projectUpdated = await axios.post(
+        "https://codeeditorbackend-production.up.railway.app/api/projects/id",
+        {
+          projectId: project._id,
+          projectName: renameStr,
+        }
+      );
       if (projectUpdated?.data) {
         console.log(projectUpdated.data);
         toast.success("edited");

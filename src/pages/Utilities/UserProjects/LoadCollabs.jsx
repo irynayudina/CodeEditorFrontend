@@ -29,7 +29,7 @@ function useLoadCollabs(userId, wasChanged) {
       setLoading(true);
       try {
         const response = await axios.get(
-          `/api/collab?page=${page}&owner_id=${userId}`
+          `https://codeeditorbackend-production.up.railway.app/api/collab?page=${page}&owner_id=${userId}`
         );
         setItems((prevItems) => {
           // Filter out duplicate items

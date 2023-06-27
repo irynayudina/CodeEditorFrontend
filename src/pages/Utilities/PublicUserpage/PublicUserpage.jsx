@@ -50,7 +50,7 @@ const PublicUserpage = () => {
     const loadUserInfo = async () => {
       try {
         const userInfoResponse = await axios.get(
-          `/api/users/profile?userId=${userInfo?._id}`
+          `https://codeeditorbackend-production.up.railway.app/api/users/profile?userId=${userInfo?._id}`
         );
         console.log(userInfoResponse.data);
         setActingUser(userInfoResponse.data);

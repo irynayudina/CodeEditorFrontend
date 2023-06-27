@@ -24,9 +24,12 @@ const UserPeople = () => {
     console.log(people);
     //unfollow request
     try {
-      const response = await axios.post(`/api/users/unfollow`, {
-        userId: idOfUser,
-      });
+      const response = await axios.post(
+        `https://codeeditorbackend-production.up.railway.app/api/users/unfollow`,
+        {
+          userId: idOfUser,
+        }
+      );
       console.log(response);
     } catch (err) {
       toast.error(err?.response?.data?.message || err.error);
@@ -49,7 +52,7 @@ const UserPeople = () => {
   const loadPeopleOfUSer = async () => {
     try {
       const responsePeople = await axios.get(
-        `/api//users/people?user_id=${userId}`
+        `https://codeeditorbackend-production.up.railway.app/api//users/people?user_id=${userId}`
       );
       setPeopleArray(responsePeople?.data);
       setPeople(responsePeople?.data);

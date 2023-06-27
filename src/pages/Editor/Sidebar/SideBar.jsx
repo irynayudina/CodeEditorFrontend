@@ -96,9 +96,12 @@ const SideBar = (props) => {
   const navigate = useNavigate();
   const deleteProjectHandler = async () => {
     try {
-      const projectUpdated = await axios.post("/api/projects/delete", {
-        projectId: props.projectId,
-      });
+      const projectUpdated = await axios.post(
+        "https://codeeditorbackend-production.up.railway.app/api/projects/delete",
+        {
+          projectId: props.projectId,
+        }
+      );
       if (projectUpdated?.data) {
         console.log(projectUpdated.data);
         toast.success("project is deleted");
@@ -114,10 +117,13 @@ const SideBar = (props) => {
   const renameProjectHandler = async () => {
     console.log("rrrr")
     try {
-      const projectUpdated = await axios.post("/api/projects/id", {
-        projectId: props.projectId,
-        projectName: renameStr,
-      });
+      const projectUpdated = await axios.post(
+        "https://codeeditorbackend-production.up.railway.app/api/projects/id",
+        {
+          projectId: props.projectId,
+          projectName: renameStr,
+        }
+      );
       if (projectUpdated?.data) {
         console.log(projectUpdated.data);
         navigate(`/editor/${props.projectId}`);

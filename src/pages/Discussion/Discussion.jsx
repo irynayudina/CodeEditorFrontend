@@ -21,9 +21,12 @@ const Discussion = () => {
 
   const handleDiscussionLoad = async (discussionId) => {
     try {
-      const discussion = await axios.get(`/api/discussions?discussionId=${discussionId}`, {
-        discussionId: discussionId,
-      });
+      const discussion = await axios.get(
+        `https://codeeditorbackend-production.up.railway.app/api/discussions?discussionId=${discussionId}`,
+        {
+          discussionId: discussionId,
+        }
+      );
       if (discussion?.data) {
         const date = new Date(discussion.data.createdAt);
         const formattedDate = date.toLocaleDateString("en-US", {

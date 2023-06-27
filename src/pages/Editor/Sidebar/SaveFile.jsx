@@ -36,11 +36,14 @@ const SaveFile = (props) => {
     console.log("language - " + props.language);
     try {
       setIsLoading(true);
-      const project = await axios.post("/api/projects", {
-        projectName: name,
-        codeFile: props.code,
-        language: props.language,
-      });
+      const project = await axios.post(
+        "https://codeeditorbackend-production.up.railway.app/api/projects",
+        {
+          projectName: name,
+          codeFile: props.code,
+          language: props.language,
+        }
+      );
       if (project?.data) {
         console.log(project.data);
         props.setFilename(project.data.projectName);
@@ -57,11 +60,14 @@ const SaveFile = (props) => {
     console.log(props.projectId)
     try {
       setIsLoading(true);
-      const project = await axios.post("/api/projects/id", {
-        projectId: props.projectId,
-        codeFile: props.code,
-        language: props.language,
-      });
+      const project = await axios.post(
+        "https://codeeditorbackend-production.up.railway.app/api/projects/id",
+        {
+          projectId: props.projectId,
+          codeFile: props.code,
+          language: props.language,
+        }
+      );
       if (project?.data) {
         console.log(project.data);
         toast.success("edited");

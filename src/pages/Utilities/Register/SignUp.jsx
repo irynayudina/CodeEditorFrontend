@@ -66,6 +66,8 @@ export default function SignUp() {
       try {
         const res = await register({ name, email, password, phone, username }).unwrap();
         dispatch(setCredentials({ ...res }))
+        console.log("register useRegisterMutation " + res)
+        console.log("dispatch " )
         navigate('/')
       } catch (err) {
         toast.error(err?.data?.message || err.error);

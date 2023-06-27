@@ -13,16 +13,22 @@ const ReplyDiscussion = ({ discussionId, handleReply }) => {
     e.preventDefault();
     try {
       setIsLoading(true);
-      const comment = await axios.post("/api/comments", {
-        text: commentText,
-        parentDiscussion: discussionId,
-      });
+      const comment = await axios.post(
+        "https://codeeditorbackend-production.up.railway.app/api/comments",
+        {
+          text: commentText,
+          parentDiscussion: discussionId,
+        }
+      );
       if (comment?.data) {
         // setCommentNew(comment.data);
-        const commentTo = await axios.post("/api/discussions/comments", {
-          discussionId,
-          commentId: comment.data?._id,
-        });
+        const commentTo = await axios.post(
+          "https://codeeditorbackend-production.up.railway.app/api/discussions/comments",
+          {
+            discussionId,
+            commentId: comment.data?._id,
+          }
+        );
         handleReply(comment.data);
       }
     } catch (err) {

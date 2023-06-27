@@ -28,19 +28,22 @@ const CreateDiscussionForm = () => {
 
   useEffect(() => {
     if (discussionData) {
-      navigate("/discussion", { state: discussionData });
+      navigate(`/discussion/${discussionData._id}`, { state: discussionData });
     }
   }, [navigate, discussionData]);
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       setIsLoading(true);
-      const discussion = await axios.post("/api/discussions", {
-        topic: topic,
-        title: title,
-        text: text,
-        tags: tags,
-      });
+      const discussion = await axios.post(
+        "https://codeeditorbackend-production.up.railway.app/api/discussions",
+        {
+          topic: topic,
+          title: title,
+          text: text,
+          tags: tags,
+        }
+      );
       if (discussion?.data) {
         setDiscussionData(discussion.data);
       }

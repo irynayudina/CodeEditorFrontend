@@ -14,7 +14,7 @@ const PublicUserInfo = ({ userId, me }) => {
   const loadInfoFollow = async () => {
     try {
         const userInfoResponse = await axios.get(
-          `/api/users/followingFollowers`
+          `https://codeeditorbackend-production.up.railway.app/api/users/followingFollowers`
         );
       setMainUser(userInfoResponse.data);
       console.log(userInfoResponse.data);
@@ -31,7 +31,7 @@ const PublicUserInfo = ({ userId, me }) => {
     const loadUserInfo = async () => {
       try {
         const userInfoResponse = await axios.get(
-          `/api/users/profile?userId=${userId}`
+          `https://codeeditorbackend-production.up.railway.app/api/users/profile?userId=${userId}`
         );
         setUserInfo(userInfoResponse.data);
       } catch (err) {
@@ -44,9 +44,12 @@ const PublicUserInfo = ({ userId, me }) => {
     const followUserHandler = async () => {
         if (userInfo?._id) {
             try {
-              const response = await axios.post(`/api/users/follow`, {
-                userId: userInfo?._id,
-              });
+              const response = await axios.post(
+                `https://codeeditorbackend-production.up.railway.app/api/users/follow`,
+                {
+                  userId: userInfo?._id,
+                }
+              );
                 if (response?.data?.updatedUser) {
                     me = response?.data?.updatedUser;
                 // setDiscussionData(discussion.data);
@@ -66,9 +69,12 @@ const PublicUserInfo = ({ userId, me }) => {
       //   axios.post(`/api/users/${userId}/unfollow`);/unfollow
         if (userInfo?._id) {
             try {
-              const response = await axios.post(`/api/users/unfollow`, {
-                userId: userInfo?._id,
-              });
+              const response = await axios.post(
+                `https://codeeditorbackend-production.up.railway.app/api/users/unfollow`,
+                {
+                  userId: userInfo?._id,
+                }
+              );
                 if (response?.data?.updatedUser) {
                     me = response?.data?.updatedUser;
                 // setDiscussionData(discussion.data);

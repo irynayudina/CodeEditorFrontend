@@ -28,7 +28,7 @@ function useLoadItems(userId, wasChanged) {
       setLoading(true);
       try {
         const response = await axios.get(
-          `/api/projects?page=${page}&authorId=${userId}`
+          `https://codeeditorbackend-production.up.railway.app/api/projects?page=${page}&authorId=${userId}`
         );
         setItems((prevItems) => {
           // Filter out duplicate items
@@ -89,9 +89,12 @@ const UserProjects = (props) => {
   const [projects, setProjects] = useState([]);
   const deleteProjectHandler = async (i, project_id) => {
     try {
-      const projectUpdated = await axios.post("/api/projects/delete", {
-        projectId: project_id,
-      });
+      const projectUpdated = await axios.post(
+        "https://codeeditorbackend-production.up.railway.app/api/projects/delete",
+        {
+          projectId: project_id,
+        }
+      );
       if (projectUpdated?.data) {
         console.log(projectUpdated.data);
         toast.success("project is deleted");

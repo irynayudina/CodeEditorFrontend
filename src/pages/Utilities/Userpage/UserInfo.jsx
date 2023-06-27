@@ -12,7 +12,9 @@ const UserInfo = ({ isPublic }) => {
   const [mainUser, setMainUser] = useState(userInfo);
   const loadInfoFollow = async () => {
     try {
-      const userInfoResponse = await axios.get(`/api/users/followingFollowers`);
+      const userInfoResponse = await axios.get(
+        `https://codeeditorbackend-production.up.railway.app/api/users/followingFollowers`
+      );
       setMainUser(userInfoResponse.data);
       console.log(userInfoResponse.data);
     } catch (err) {

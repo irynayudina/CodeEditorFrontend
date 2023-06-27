@@ -43,7 +43,9 @@ export default function CollabEditor() {
   // getting collaboration by documentId
   const getCollabById = async () => {
     try {
-      const gotCollaboration = await axios.get(`/api/collab/id?collab_id=${documentId}`);
+      const gotCollaboration = await axios.get(
+        `https://codeeditorbackend-production.up.railway.app/api/collab/id?collab_id=${documentId}`
+      );
       if (gotCollaboration?.data) {
         console.log(gotCollaboration.data);
         toast.success("Opened existing collaboration");
@@ -58,15 +60,18 @@ export default function CollabEditor() {
         }
         // if hes not - adding to the list
         else {
-          const newCollab = await axios.post(`/api/collab/addOwner`, {
-            collabId: documentId,
-            ownerId: userInfo._id,
-          });
+          const newCollab = await axios.post(
+            `https://codeeditorbackend-production.up.railway.app/api/collab/addOwner`,
+            {
+              collabId: documentId,
+              ownerId: userInfo._id,
+            }
+          );
           console.log(newCollab)
           if (newCollab?.data) {
             toast.success("Added user to owners list");
             console.log(newCollab.data);
-            setOwners(gotCollaboration.data?.data?.owners);
+            setOwners(newCollab.data?.data?.owners);
           } else {
             toast.error("Error adding a user");
           }
@@ -75,17 +80,21 @@ export default function CollabEditor() {
       // if it does not exist - creating a collaboration
       else {
         console.log(" trying to create new");
-        const newCollab = await axios.post(`/api/collab`, {
-          collab_id: documentId,
-          associatedProject_id: associatedProject_id,
-        });
+        const newCollab = await axios.post(
+          `https://codeeditorbackend-production.up.railway.app/api/collab`,
+          {
+            collab_id: documentId,
+            associatedProject_id: associatedProject_id,
+          }
+        );
         if (newCollab?.data) {
           toast.success("Created a new collaboration");
           console.log(newCollab.data);
           setAssociatedProject(newCollab?.data?.associatedProject);
+          setOwners(newCollab?.data?.owners)
           //get text of a project and pass it to quill
           const projectData = await axios.get(
-            `/api/projects/id?id=${associatedProject_id}`
+            `https://codeeditorbackend-production.up.railway.app/api/projects/id?id=${associatedProject_id}`
           );
           if (projectData?.data) {
             console.log(projectData.data);
@@ -124,10 +133,13 @@ export default function CollabEditor() {
       return;
     }
       try {
-        const project = await axios.post("/api/projects/id", {
-          projectId: associatedProject,
-          codeFile: plainText,
-        });
+        const project = await axios.post(
+          "https://codeeditorbackend-production.up.railway.app/api/projects/id",
+          {
+            projectId: associatedProject,
+            codeFile: plainText,
+          }
+        );
         if (project?.data) {
           console.log(project.data);
           toast.success("Project code sucessfuly edited");
@@ -151,7 +163,7 @@ export default function CollabEditor() {
 
   useEffect(() => {
   const userInfoPass = { _id: userInfo._id };
-    const s = io("http://localhost:3001", {
+    const s = io("codeeditorsocketserver-production.up.railway.app", {
       query: { userInfo: JSON.stringify(userInfoPass) },
     });
     setSocket(s);
@@ -207,7 +219,8 @@ export default function CollabEditor() {
 
   useEffect(() => {
    if (code == null || quill == null) return;
-  quill.setText(code);
+    quill.setText(code);
+    console.log(code);
 }, [code, quill])
 
 
@@ -292,8 +305,8 @@ export default function CollabEditor() {
         </div>
         <div>
           <div className="people-collab">
-            People: owners
-            {owners.map((user, index) => (
+            People (collab owners):
+            {owners?.map((user, index) => (
               <Link
                 key={index}
                 to={`/public/user/${user?.usrId}#projects`}
@@ -305,7 +318,7 @@ export default function CollabEditor() {
           </div>
           <div className="people-active-now">
             Active now:
-            {users.map((user, index) => (
+            {users?.map((user, index) => (
               <Link
                 key={index}
                 to={`/public/user/${user?.usrId}#projects`}

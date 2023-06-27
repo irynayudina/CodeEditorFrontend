@@ -72,7 +72,7 @@ const Editor = (props) => {
   const getCollab = async () => {
     try {
       const gotCollaboration = await axios.get(
-        `/api/collab/projectId?associatedProject_id=${projectId}`
+        `https://codeeditorbackend-production.up.railway.app/api/collab/projectId?associatedProject_id=${projectId}`
       );
       console.log(gotCollaboration);
       if (gotCollaboration?.data?.collabId) {
@@ -154,17 +154,21 @@ const Editor = (props) => {
       cmdargs: cmdargs,
     };
     axios
-      .post("https://dry-field-3178.fly.dev/editor/execute", data, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      })
+      .post(
+        "https://codeeditorbackend-production.up.railway.app/editor/execute",
+        data,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      )
       .then((response) => {
         if (response.status === 200) {
           setResult(response.data.output);
           console.log(response);
           setCompiling(false);
-          parseErrors(response, setErrorLines, language)
+          parseErrors(response, setErrorLines, language);
         } else {
           setResult("error in response");
           setCompiling(false);
@@ -341,7 +345,9 @@ const Editor = (props) => {
   const [projectInfo, setProjectInfo] = useState()
   const getProjectData = async () => {
     try {
-      const projectData = await axios.get(`/api/projects/id?id=${projectId}`);
+      const projectData = await axios.get(
+        `https://codeeditorbackend-production.up.railway.app/api/projects/id?id=${projectId}`
+      );
       if (projectData?.data) {
         console.log(projectData.data);
         toast.success("got project");
