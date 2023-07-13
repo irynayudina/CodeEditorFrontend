@@ -3,7 +3,7 @@ import "./Projects.scss";
 import { Form } from "react-bootstrap";
 import { languages } from "../Editor/Syntax/EditorData.ts";
 import { Button } from "react-bootstrap";
-import Topic from "../Challenges/Topics/Topic";
+import Topic from "./Topic";
 import Project from "../Project/Project";
 import axios from "axios";
 
