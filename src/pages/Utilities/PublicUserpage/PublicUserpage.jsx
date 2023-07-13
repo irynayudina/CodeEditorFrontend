@@ -1,5 +1,4 @@
 import React, {useState, useEffect} from 'react'
-import UserCharts from '../UserCharts/UserCharts';
 import UserProjects from '../UserProjects/UserProjects';
 import UserPeople from '../UserPeople/UserPeople';
 import UserDiscussions from '../UserDiscussions/UserDiscussions';
@@ -25,9 +24,6 @@ const PublicUserpage = () => {
       switch (subpage) {
         case "#projects":
           setPageContent(<UserProjects />);
-          break;
-        case "#charts":
-          setPageContent(<UserCharts />);
           break;
         case "#people":
           setPageContent(<UserPeople />);
