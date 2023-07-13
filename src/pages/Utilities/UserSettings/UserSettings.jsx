@@ -2,7 +2,6 @@ import React, {useState} from 'react'
 import './UserSettings.scss'
 import InfoSettings from './InfoSettings/InfoSettings'
 import SecuritySettings from './SecuritySettings/SecuritySettings'
-import PrivacySettings from './PrivacySettings/PrivacySettings'
 const UserSettings = () => {
   const [activeSubsetting, setActiveSubsetting] = useState('info')
   return (
@@ -18,14 +17,6 @@ const UserSettings = () => {
           >
             Information
           </div>
-          {/* <div
-            className={`subpage-link ${
-              activeSubsetting == "privacy" ? "active-subpage" : ""
-            }`}
-            onClick={() => setActiveSubsetting("privacy")}
-          >
-            Privacy
-          </div> */}
           <div
             className={`subpage-link ${
               activeSubsetting == "security" ? "active-subpage" : ""
@@ -37,7 +28,6 @@ const UserSettings = () => {
         </div>
         <div className="display-sidepage">
           {activeSubsetting == 'info' ? <InfoSettings /> : 
-            // activeSubsetting == 'privacy' ? <PrivacySettings /> :
             <SecuritySettings />
           }
         </div>

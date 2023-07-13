@@ -21,8 +21,6 @@ const UserPeople = () => {
     let newList = [...people];
     newList.splice(i, 1);
     setPeople(newList);
-    console.log(people);
-    //unfollow request
     try {
       const response = await axios.post(
         `https://codeeditorbackend-production.up.railway.app/api/users/unfollow`,
@@ -31,7 +29,6 @@ const UserPeople = () => {
         },
         { withCredentials: true }
       );
-      console.log(response);
     } catch (err) {
       toast.error(err?.response?.data?.message || err.error);
     }
@@ -58,7 +55,6 @@ const UserPeople = () => {
       );
       setPeopleArray(responsePeople?.data);
       setPeople(responsePeople?.data);
-      // console.log(responsePeople?.data);
     } catch (error) {
       toast.error(error.message);
     }
@@ -90,7 +86,14 @@ const UserPeople = () => {
                 to={`/public/user/${p?.userID}#projects`}
                 className="text-decoration-none black-link"
               >
-                <div className="person-img"></div>
+                <div
+                  className="person-img"
+                  style={{
+                    backgroundImage: `url(${
+                      p?.pic || "blank-profile-picture.png"
+                    })`,
+                  }}
+                ></div>
               </Link>
               <Link
                 to={`/public/user/${p?.userID}#projects`}

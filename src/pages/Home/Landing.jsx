@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { FaCode, FaPuzzlePiece, FaComments, FaUsers } from 'react-icons/fa';
+import { FaCode, FaComments, FaUsers } from 'react-icons/fa';
 import { Container, Row, Col, Button } from 'react-bootstrap';
 import { Link } from "react-router-dom";
 const LandingPage = () => {
@@ -58,18 +58,6 @@ const LandingPage = () => {
             <p>Write and run your code using our powerful code editor.</p>
           </motion.div>
         </Col>
-        {/* <Col md={3}>
-          <motion.div
-            initial={{ opacity: 0, y: 50 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 1 }}
-            className="text-center mb-4"
-          >
-            <FaPuzzlePiece className="icon" />
-            <h3>Challenges</h3>
-            <p>Take on coding challenges to sharpen your skills.</p>
-          </motion.div>
-        </Col> */}
         <Col md={3}>
           <motion.div
             initial={{ opacity: 0, y: 50 }}

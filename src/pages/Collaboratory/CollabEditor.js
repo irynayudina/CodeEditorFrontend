@@ -13,7 +13,6 @@ import './Collab.scss'
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
 
 
 
@@ -48,7 +47,6 @@ export default function CollabEditor() {
         { withCredentials: true }
       );
       if (gotCollaboration?.data) {
-        console.log(gotCollaboration.data);
         toast.success("Opened existing collaboration");
         setAssociatedProject(gotCollaboration.data.associatedProject);
         setOwners(gotCollaboration.data.owners);
@@ -69,10 +67,8 @@ export default function CollabEditor() {
             },
             { withCredentials: true }
           );
-          console.log(newCollab)
           if (newCollab?.data) {
             toast.success("Added user to owners list");
-            console.log(newCollab.data);
             setOwners(newCollab.data?.data?.owners);
           } else {
             toast.error("Error adding a user");
@@ -81,7 +77,6 @@ export default function CollabEditor() {
       }
       // if it does not exist - creating a collaboration
       else {
-        console.log(" trying to create new");
         const newCollab = await axios.post(
           `https://codeeditorbackend-production.up.railway.app/api/collab`,
           {
@@ -92,7 +87,6 @@ export default function CollabEditor() {
         );
         if (newCollab?.data) {
           toast.success("Created a new collaboration");
-          console.log(newCollab.data);
           setAssociatedProject(newCollab?.data?.associatedProject);
           setOwners(newCollab?.data?.owners)
           //get text of a project and pass it to quill
@@ -101,7 +95,6 @@ export default function CollabEditor() {
             { withCredentials: true }
           );
           if (projectData?.data) {
-            console.log(projectData.data);
             toast.success("Got project text for creation of collab");
             setCode(projectData.data?.codeFile);
           } else {
@@ -129,10 +122,7 @@ export default function CollabEditor() {
 
   // only owner of the project can save changes in the project related to collaboration
   const saveInProject = async () => {
-    console.log("saved to project " + associatedProject);
-    console.log("the saved text is: ");
     let plainText = quill.getText();
-    console.log(plainText);
     if (!associatedProject || !plainText) {
       return;
     }
@@ -146,7 +136,6 @@ export default function CollabEditor() {
           { withCredentials: true }
         );
         if (project?.data) {
-          console.log(project.data);
           toast.success("Project code sucessfuly edited");
         }
       } catch (err) {
@@ -179,10 +168,6 @@ export default function CollabEditor() {
   }, []);
 
   useEffect(() => {
-    console.log("user is connected, the creation function");
-    console.log("owner is " + userInfo?._id);
-    console.log("collab_id is " + documentId);
-    console.log("associatedProject_id is " + associatedProject_id);
     if (userInfo?._id && documentId ) {
       getCollabById();
     } else {
@@ -197,7 +182,6 @@ export default function CollabEditor() {
   useEffect(() => {
     if (socket == null || !userInfo._id) return;
     socket.on("welcome", function (data) {
-      console.log("i was welcomed: " + data.message);
       socket.emit("join user", {
         id: data.id,
         name: userInfo.name,
@@ -225,7 +209,6 @@ export default function CollabEditor() {
   useEffect(() => {
    if (code == null || quill == null) return;
     quill.setText(code);
-    console.log(code);
 }, [code, quill])
 
 

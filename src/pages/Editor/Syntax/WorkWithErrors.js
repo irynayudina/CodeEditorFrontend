@@ -164,7 +164,6 @@ export const parseErrors = (response, setErrorLines, language) => {
     errorLinesArr = errorLineMatches.map((match) =>
     parseInt(match.match(/(\d+)/)));
   }
-  console.log(errorLineMatches);
   errorLinesArr = errorLinesArr?.filter((c, index) => {
     return errorLinesArr.indexOf(c) === index;
   });

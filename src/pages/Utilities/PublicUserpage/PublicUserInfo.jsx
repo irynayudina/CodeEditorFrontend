@@ -18,7 +18,6 @@ const PublicUserInfo = ({ userId, me }) => {
           { withCredentials: true }
         );
       setMainUser(userInfoResponse.data);
-      console.log(userInfoResponse.data);
       } catch (err) {
         toast.error(err?.response?.data?.message || err.error);
       }
@@ -55,12 +54,9 @@ const PublicUserInfo = ({ userId, me }) => {
               );
                 if (response?.data?.updatedUser) {
                     me = response?.data?.updatedUser;
-                // setDiscussionData(discussion.data);
                     toast.success("user added to following list");
                     setMainUser(response?.data?.updatedUser);
-                    console.log(me?.following.includes(userInfo?._id));
               }
-              console.log(response);
             } catch (err) {
               toast.error(err?.response?.data?.message || err.error);
             }
@@ -69,7 +65,6 @@ const PublicUserInfo = ({ userId, me }) => {
         }     
     };
     const unfollowUserHandler = async () => {
-      //   axios.post(`/api/users/${userId}/unfollow`);/unfollow
         if (userInfo?._id) {
             try {
               const response = await axios.post(
@@ -81,12 +76,9 @@ const PublicUserInfo = ({ userId, me }) => {
               );
                 if (response?.data?.updatedUser) {
                     me = response?.data?.updatedUser;
-                // setDiscussionData(discussion.data);
                     toast.success("user removed from following");
                     setMainUser(response?.data?.updatedUser);
-                    console.log(me?.following.includes(userInfo?._id));
               }
-              console.log(response);
             } catch (err) {
               toast.error(err?.response?.data?.message || err.error);
             }
@@ -127,7 +119,6 @@ const PublicUserInfo = ({ userId, me }) => {
           </div>
         </div>
         {mainUser?.following.includes(userInfo?._id) ? (
-          //handler for the state to update following list
           <Button
             size="sm"
             className="follow-btn"

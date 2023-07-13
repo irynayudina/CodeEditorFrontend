@@ -1,10 +1,8 @@
 import React, {useState, useEffect} from 'react'
-// import UserNav from '../Userpage/UserNav';
 import UserCharts from '../UserCharts/UserCharts';
 import UserProjects from '../UserProjects/UserProjects';
 import UserPeople from '../UserPeople/UserPeople';
 import UserDiscussions from '../UserDiscussions/UserDiscussions';
-// import { useLocation } from "react-router-dom";
 import PublicUserInfo from './PublicUserInfo';
 import './PublicUserpage.scss';
 import { useSelector } from "react-redux";
@@ -20,8 +18,6 @@ const PublicUserpage = () => {
   const { userInfo } = useSelector((state) => state.auth);
   const [actingUser, setActingUser] = useState(userInfo);
   const navigate = useNavigate();
-  // const location = useLocation();
-  // const { state } = location;
   const { id: userId } = useParams();
     const [subpage, setSubpage] = useState("#projects");
     const [pageContent, setPageContent] = useState();
@@ -53,7 +49,6 @@ const PublicUserpage = () => {
           `https://codeeditorbackend-production.up.railway.app/api/users/profile?userId=${userInfo?._id}`,
           { withCredentials: true }
         );
-        console.log(userInfoResponse.data);
         setActingUser(userInfoResponse.data);
       } catch (err) {
         toast.error(err?.response?.data?.message || err.error);

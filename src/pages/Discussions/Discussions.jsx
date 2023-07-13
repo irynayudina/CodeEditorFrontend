@@ -4,41 +4,9 @@ import './Discussions.scss'
 import { Button } from "react-bootstrap";
 import PopUp from '../../elements/PopUp/PopUp';
 import AddNewDiscussion from './AddNewDiscussion'
-import { toast } from "react-toastify";
 import InfiniteListWithVerticalScroll from '../../elements/InfiniteLoader/InfiniteListWithVerticalScroll';
 const Discussions = (props) => {
   const [closePopup, setClosePopup] = useState();
-  const discussionsExample = [
-    {
-      title: "name1",
-      text: "desc1",
-      createdAt: "18.04.2023",
-      author: { name: "Code-Network" },
-      topic: "Algorithms",
-    },
-    {
-      title: "name2",
-      text: "desc2",
-      createdAt: "18.04.2023",
-      author: { name: "Code-Network" },
-      topic: "Web",
-    },
-    {
-      title: "name3",
-      text: "desc3",
-      createdAt: "18.04.2023",
-      author: { name: "Code-Network" },
-      topic: "Custom",
-    },
-    {
-      title: "name4",
-      text: "desc4",
-      createdAt: "18.04.2023",
-      author: { name: "Code-Network" },
-      topic: "Custom",
-      tags: ["hashtag", "another"],
-    },
-  ];
   const [selectedDiscussionTopic, setSelectedDiscussionTopic] = useState("");
   const [sortDiscussions, setSortDiscussions] = useState('recent');
   const textInput = useRef()
@@ -53,7 +21,6 @@ const Discussions = (props) => {
       tags: queryTextSringForArray,
       sortBy: sortDiscussions,
     });
-    // console.log(sortDiscussions);
   };
   // Update the filtered discussions whenever the selected topic or search text changes
   React.useEffect(() => {

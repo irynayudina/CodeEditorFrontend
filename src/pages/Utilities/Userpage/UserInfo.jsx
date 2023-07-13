@@ -17,7 +17,6 @@ const UserInfo = ({ isPublic }) => {
         { withCredentials: true }
       );
       setMainUser(userInfoResponse.data);
-      console.log(userInfoResponse.data);
     } catch (err) {
       toast.error(err?.response?.data?.message || err.error);
     }

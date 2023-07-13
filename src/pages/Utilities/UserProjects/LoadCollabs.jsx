@@ -6,12 +6,7 @@ import { ListGroup } from "react-bootstrap";
 import useInfiniteScroll from "react-infinite-scroll-hook";
 import { Link } from "react-router-dom";
 import {
-  BsFillGearFill,
-  BsFillTrashFill,
   BsPencilSquare,
-  BsCodeSlash,
-  BsFillHandThumbsUpFill,
-  BsClock,
 } from "react-icons/bs";
 import { Button } from "react-bootstrap";
 
@@ -52,7 +47,6 @@ function useLoadCollabs(userId, wasChanged) {
         setLoading(false);
       }
     }
-    console.log(page + " inside loadmore");
   };
 
   const statesReset = () => {
@@ -65,7 +59,6 @@ function useLoadCollabs(userId, wasChanged) {
   useEffect(() => {
     setResetCompleted(false);
     statesReset();
-    console.log(page + " useEffect");
   }, [wasChanged]);
 
   useEffect(() => {
@@ -73,10 +66,6 @@ function useLoadCollabs(userId, wasChanged) {
       loadMore();
     }
   }, [resetCompleted]);
-
-  useEffect(() => {
-    console.log(wasChanged);
-  }, [wasChanged]);
 
   return { loading, items, hasNextPage, error, loadMore };
 }

@@ -75,7 +75,6 @@ const Editor = (props) => {
         `https://codeeditorbackend-production.up.railway.app/api/collab/projectId?associatedProject_id=${projectId}`,
         { withCredentials: true }
       );
-      console.log(gotCollaboration);
       if (gotCollaboration?.data?.collabId) {
         setCollabId(`/documents/${gotCollaboration?.data?.collabId}`);
       } else {
@@ -168,7 +167,6 @@ const Editor = (props) => {
       .then((response) => {
         if (response.status === 200) {
           setResult(response.data.output);
-          console.log(response);
           setCompiling(false);
           parseErrors(response, setErrorLines, language);
         } else {
@@ -178,7 +176,6 @@ const Editor = (props) => {
         }
       })
       .catch((error) => {
-        console.error(error);
         setResult("error in request");
         setCompiling(false);
       });
@@ -352,7 +349,6 @@ const Editor = (props) => {
         { withCredentials: true }
       );
       if (projectData?.data) {
-        console.log(projectData.data);
         toast.success("got project");
         getCollab();
         setCode(projectData.data?.codeFile);
@@ -378,7 +374,6 @@ const Editor = (props) => {
   const { userInfo } = useSelector((state) => state.auth);
   useEffect(() => {
     if (projectId) {
-     console.log(projectId);
       getProjectData(); 
     }
   }, [projectId]);
@@ -400,7 +395,6 @@ const Editor = (props) => {
       theme={props.theme}
       expanded={expanded}
       highlightErrors={highlightErrors}
-      // onClick={startResizing}
     >
       <div className="elem elem1">
         <SideBar
@@ -429,8 +423,6 @@ const Editor = (props) => {
               <div className="name">{projectInfo?.projectName}</div>
               <Link
                 to={`/public/user/${projectInfo?.author?._id}#projects`}
-                // state={{ userId: data?.author?._id }}
-                // key={data?.author?._id}
                 className="text-decoration-none black-link"
               >
                 <div className="author">{projectInfo?.author?.name}</div>
@@ -481,7 +473,7 @@ const Editor = (props) => {
         />
         <Button
           variant={props.theme == "lighttheme" ? "primary" : "dark"}
-          className={`btn-editor-${props.editorSize}`}
+          className={`btn-editor`}
           onClick={execute}
           style={{ marginBottom: "calc(1rem - 1px)" }}
         >

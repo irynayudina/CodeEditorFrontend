@@ -17,7 +17,6 @@ const Userpage = () => {
   useEffect(() => {
     function handleResize() {
       const elementWidth = elementRef.current.offsetWidth;
-      console.log(elementWidth);
       setContentWidth(elementWidth-50)
     }
     window.addEventListener("resize", handleResize);
@@ -26,9 +25,6 @@ const Userpage = () => {
       window.removeEventListener("resize", handleResize);
     };
   }, [elementRef]);
-  // useEffect(() => {
-  //   //
-  // }, [])
   
   useEffect(() => {
     switch (subpage) {

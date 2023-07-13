@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from "react";
 import "./Projects.scss";
-import { Container, Row, Col, Form, Badge } from "react-bootstrap";
+import { Form } from "react-bootstrap";
 import { languages } from "../Editor/Syntax/EditorData.ts";
 import { Button } from "react-bootstrap";
 import Topic from "../Challenges/Topics/Topic";
 import Project from "../Project/Project";
 import axios from "axios";
-import { toast } from "react-toastify";
 
 import Loader from "../../elements/Loader";
 import { ListGroup } from "react-bootstrap";
@@ -55,7 +54,6 @@ function useLoadItems(filerObj) {
         setLoading(false);
       }
     }
-    console.log(page + " inside loadmore");
   };
 
   const statesReset = () => {
@@ -69,7 +67,6 @@ function useLoadItems(filerObj) {
     if (filterQuery !== "") {
       setResetCompleted(false);
       statesReset();
-      console.log(page + " useEffect");
     }
   }, [filerObj, filterQuery]);
 
@@ -225,11 +222,6 @@ const Projects = () => {
       projectName: name,
       language: languagesSelected,
     });
-    console.log({
-      projectName: name,
-      language: languagesSelected,
-    });
-    // console.log(sortDiscussions);
   };
 
   useEffect(() => {

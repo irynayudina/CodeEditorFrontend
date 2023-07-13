@@ -46,7 +46,6 @@ const UserNav = ({ subpage, setSubpage, isPublic }) => {
             }`}
             aria-current="true"
           >
-            {/* <FaFileCode className="me-3" /> */}
             <span>Discussions</span>
           </Nav.Link>
         </div>
@@ -59,7 +58,6 @@ const UserNav = ({ subpage, setSubpage, isPublic }) => {
             }`}
             aria-current="true"
           >
-            {/* <FaFileCode className="me-3" /> */}
             <span>People</span>
           </Nav.Link>
           {!isPublic ? (
@@ -71,7 +69,6 @@ const UserNav = ({ subpage, setSubpage, isPublic }) => {
               }`}
               aria-current="true"
             >
-              {/* <FaFileCode className="me-3" /> */}
               <span>Settings</span>
             </Nav.Link>
           ) : (
@@ -88,7 +85,6 @@ const UserNav = ({ subpage, setSubpage, isPublic }) => {
             aria-current="true"
             onClick={logoutHandler}
           >
-            {/* <FaFileCode className="me-3" /> */}
             <span>Sign Out</span>
           </Nav.Link>
         ) : (

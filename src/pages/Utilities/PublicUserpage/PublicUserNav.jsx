@@ -32,7 +32,6 @@ const PublicUserNav = ({ subpage, setSubpage }) => {
             }`}
             aria-current="true"
           >
-            {/* <FaFileCode className="me-3" /> */}
             <span>People</span>
           </Nav.Link>
         </div>
@@ -44,7 +43,6 @@ const PublicUserNav = ({ subpage, setSubpage }) => {
           }`}
           aria-current="true"
         >
-          {/* <FaFileCode className="me-3" /> */}
           <span>Discussions</span>
         </Nav.Link>
       </Nav>

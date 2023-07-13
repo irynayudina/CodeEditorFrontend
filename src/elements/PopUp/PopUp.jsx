@@ -28,7 +28,6 @@ const PopUp = ({ children, className }) => {
         !triggerRef.current.contains(event.target)
       ) {
         handleClosePopup();
-        console.log("outside");
       }
     };
 

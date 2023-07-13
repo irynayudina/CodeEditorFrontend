@@ -22,7 +22,6 @@ const ReplyDiscussion = ({ discussionId, handleReply }) => {
         { withCredentials: true }
       );
       if (comment?.data) {
-        // setCommentNew(comment.data);
         const commentTo = await axios.post(
           "https://codeeditorbackend-production.up.railway.app/api/discussions/comments",
           {

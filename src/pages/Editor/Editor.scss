@@ -55,23 +55,13 @@
 }
 .btn-editor {
   width: calc(100% );
-  // margin-left: 0.5rem;
-  // margin-right: 0.5rem;
-}
-.btn-editor-sm{
   width: calc(100% - 1rem);
   margin-left: 0.5rem;
   margin-right: 0.5rem;
   font-weight: 600;
   font-size: 18px;
 }
-.btn-editor-lg{
-  width: calc(100% - 1rem);
-  margin-left: 0.5rem;
-  margin-right: 0.5rem;
-  font-weight: 600;
-}
-.btn-editor-lg.btn.btn-dark{
+.btn-editor.btn.btn-dark{
   background-color: #191A16;
   &:hover{
     background-color: #0D6EFD;

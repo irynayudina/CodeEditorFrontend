@@ -17,12 +17,6 @@ import { useNavigate } from "react-router-dom";
 const theme = createTheme();
 
 const SaveFile = (props) => {
-  // {
-  //   code, language, langVersion, cmd, params, newProject;
-  // }
-  // useEffect(() => {
-  //   console.log(props.code);
-  // }, [props.code]);
   const navigate = useNavigate();
 
   const [isLoading, setIsLoading] = useState(false);
@@ -31,9 +25,6 @@ const SaveFile = (props) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     const name = data.get("project-name");
-    console.log("name - " + name);
-    console.log("code - " + props.code);
-    console.log("language - " + props.language);
     try {
       setIsLoading(true);
       const project = await axios.post(
@@ -46,10 +37,8 @@ const SaveFile = (props) => {
         { withCredentials: true }
       );
       if (project?.data) {
-        console.log(project.data);
         props.setFilename(project.data.projectName);
         props.setNewProject(false);
-        // Navigate to the editor page with the project ID
         navigate(`/editor/${project.data._id}`);
       }
     } catch (err) {
@@ -58,7 +47,6 @@ const SaveFile = (props) => {
     setIsLoading(false);
   };
   const handleEdit = async () => {
-    console.log(props.projectId)
     try {
       setIsLoading(true);
       const project = await axios.post(
@@ -71,7 +59,6 @@ const SaveFile = (props) => {
         { withCredentials: true }
       );
       if (project?.data) {
-        console.log(project.data);
         toast.success("edited");
       }
     } catch (err) {

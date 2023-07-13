@@ -6,11 +6,6 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-//collaboration interface - save in a connected project, leave, display list of people who edit now, display list of people who have access
-//creating collaboration from project: name = project name, connected project = projecct id,
-//creating from navbar:  name and connected project are unset, required to select before saving in project - a list of user projects to click on and pick from, to get the project name and id
-//shema for collaboration - id, text, name, connected project id, collaborators ids, currently editing collaborators ids
-//endpoints for:  saving in project, leaving, displaying currently connected users, displaying all users, updating text, assigning project - name and id, assigning adding and removing a user 
 import Loader from '../../../elements/Loader';
 import { ListGroup } from "react-bootstrap";
 import useInfiniteScroll from "react-infinite-scroll-hook";
@@ -51,7 +46,6 @@ function useLoadItems(userId, wasChanged) {
         setLoading(false);
       }
     }
-    console.log(page + " inside loadmore");
   };
 
 const statesReset = () => {
@@ -59,12 +53,11 @@ const statesReset = () => {
   setHasNextPage(true);
   setLoading(false);
   setItems([]);
-  setResetCompleted(true); //--
+  setResetCompleted(true); 
 };
 useEffect(() => {
   setResetCompleted(false);
   statesReset();
-  console.log(page + " useEffect");
 }, [wasChanged]);
 
   useEffect(() => {
@@ -72,11 +65,6 @@ useEffect(() => {
       loadMore();
     }
   }, [resetCompleted]);
-
-  useEffect(() => {
-    console.log(wasChanged);
-  }, [wasChanged]);
-  
 
   return { loading, items, hasNextPage, error, loadMore };
 }
@@ -98,7 +86,6 @@ const UserProjects = (props) => {
         { withCredentials: true }
       );
       if (projectUpdated?.data) {
-        console.log(projectUpdated.data);
         toast.success("project is deleted");
       }
     } catch (err) {

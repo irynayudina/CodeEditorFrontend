@@ -51,7 +51,6 @@ function useLoadItems(filerObj) {
         setLoading(false);
       }
     }
-    console.log(page + " inside loadmore");
   };
 
   const statesReset = () => {
@@ -65,7 +64,6 @@ function useLoadItems(filerObj) {
     if (filterQuery !== "") {
       setResetCompleted(false);
       statesReset();
-      console.log(page + " useEffect");
     }
   }, [filerObj, filterQuery]);
 

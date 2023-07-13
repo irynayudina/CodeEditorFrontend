@@ -17,7 +17,6 @@ function useLoadItems(filerObj) {
   const [resetCompleted, setResetCompleted] = useState(false);
 
   let filterQuery = filerObj?.authorId ? `&authorId=${filerObj?.authorId}` : "";
-    console.log(filterQuery);
   const loadMore = async () => {
     if (!loading && hasNextPage) {
       setLoading(true);
@@ -46,7 +45,6 @@ function useLoadItems(filerObj) {
         setLoading(false);
       }
     }
-    console.log(page + " inside loadmore");
   };
 
   const statesReset = () => {
@@ -60,7 +58,6 @@ function useLoadItems(filerObj) {
     if (filterQuery !== "") {
       setResetCompleted(false);
       statesReset();
-      console.log(page + " useEffect");
     }
   }, [filerObj, filterQuery]);
 

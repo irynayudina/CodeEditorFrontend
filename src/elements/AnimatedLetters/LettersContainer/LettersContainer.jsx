@@ -4,9 +4,6 @@ import "./LettersContainer.scss";
 
 const LettersContainer = (props) => {
   const lines = props.lines || [];
-  lines.forEach(line => {
-    console.log(line);
-  });
 
   const sentence = {
     hidden: { opacity: 1 },

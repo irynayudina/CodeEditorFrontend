@@ -3,11 +3,9 @@ import "./Discussion.scss";
 import { Link } from "react-router-dom";
 import { Card, Badge, Button } from "react-bootstrap";
 import {
-  BsFillHandThumbsUpFill,
   BsFillChatLeftFill,
 } from "react-icons/bs";
 import ReplyDiscussion from "./ReplyDiscussion";
-import { useLocation } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
 import MappingComments from "./MappingComments";
@@ -16,8 +14,6 @@ import { useParams } from "react-router-dom";
 const Discussion = () => {
   const { id: discussionId } = useParams();
   const [data, setData] = useState();
-  // const location = useLocation();
-  // const { state } = location;
 
   const handleDiscussionLoad = async (discussionId) => {
     try {
@@ -82,7 +78,6 @@ const Discussion = () => {
           <Card.Subtitle className="mb-2 text-muted">
             <Link
               to={`/public/user/${data?.author?._id}`}
-              // state={{ userId: data?.author?._id }}
               key={data?.author?._id}
               className="text-decoration-none black-link"
             >
@@ -94,10 +89,6 @@ const Discussion = () => {
         </Card.Body>
         <Card.Footer className="gap-3">
           <Card.Subtitle className="discussion-footer">
-            {/* <div className="d-flex align-items-center">
-              {" "}
-              <BsFillHandThumbsUpFill /> {data?.likes}
-            </div> */}
             <div
               onClick={() => setExpandedComments(!expandedComments)}
               className="show-comments"

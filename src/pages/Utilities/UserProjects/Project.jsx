@@ -77,9 +77,7 @@ const Project = ({
   const [renamed, setRenamed] = useState(false);
 
   const renameProjectHandler = async () => {
-    console.log("renamed " + renameStr);
     setRenamed(renameStr);
-    console.log(project._id);
     try {
       const projectUpdated = await axios.post(
         "https://codeeditorbackend-production.up.railway.app/api/projects/id",
@@ -90,7 +88,6 @@ const Project = ({
         { withCredentials: true }
       );
       if (projectUpdated?.data) {
-        console.log(projectUpdated.data);
         toast.success("edited");
       }
     } catch (err) {
@@ -107,7 +104,6 @@ const Project = ({
         </div>
         <div className="numbers">
           <div className="likes">
-            {/* <BsFillHandThumbsUpFill /> {project.likes} */}
           </div>
           <div className="text-muted">
             <BsClock /> {dateUpdateString}

@@ -71,8 +71,6 @@ const CpropImageForm = () => {
   };
 
   const handleSave = async () => {
-    // setCurrentPage("choose-img");
-    console.log(imgAfterCrop)   
     try {
         const res = await updateProfile({
           _id: userInfo._id,
@@ -113,10 +111,6 @@ const CpropImageForm = () => {
               className="cropped-img sizes-for-cropp-image"
             />
           </div>
-          {/* <div
-            className="profile-pic-preview"
-            style={{ backgroundImage: `url(${imgAfterCrop})` }}
-          ></div> */}
 
           <div className="d-flex mt-1">
             <Button
@@ -125,10 +119,7 @@ const CpropImageForm = () => {
             >
               Crop
             </Button>
-            <Button
-              variant="secondary"
-              onClick={handleSave}
-            >
+            <Button variant="secondary" onClick={handleSave}>
               Save
             </Button>
           </div>

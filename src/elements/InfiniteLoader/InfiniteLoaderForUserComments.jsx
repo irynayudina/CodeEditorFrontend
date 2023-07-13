@@ -17,7 +17,6 @@ function useLoadItems(filerObj) {
   const [resetCompleted, setResetCompleted] = useState(false);
 
   let filterQuery = filerObj?.authorId ? `&authorId=${filerObj?.authorId}` : "";
-  console.log(filterQuery);
   const loadMore = async () => {
     if (!loading && hasNextPage) {
       setLoading(true);
@@ -26,7 +25,6 @@ function useLoadItems(filerObj) {
           `https://codeeditorbackend-production.up.railway.app/api/comments/ofUser?page=${page}${filterQuery}`,
           { withCredentials: true }
         );
-          console.log(response)
         setItems((prevItems) => {
           // Filter out duplicate items
           const uniqueItems = response?.data?.comments?.filter((item) => {
@@ -47,7 +45,6 @@ function useLoadItems(filerObj) {
         setLoading(false);
       }
     }
-    console.log(page + " inside loadmore");
   };
 
   const statesReset = () => {
@@ -61,7 +58,6 @@ function useLoadItems(filerObj) {
     if (filterQuery !== "") {
       setResetCompleted(false);
       statesReset();
-      console.log(page + " useEffect");
     }
   }, [filerObj, filterQuery]);
 

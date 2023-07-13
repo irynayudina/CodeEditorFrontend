@@ -42,9 +42,6 @@ const DiscussionDisplay = ({ discussion }) => {
         <p>{discussion.text}</p>
         <div className="down-section">
           <div className="response-statistics">
-            {/* <div className="discussion-likes">
-              Likes <BsHandThumbsUpFill /> {discussion.likes || 0}
-            </div> */}
             <div className="discussion-answers">
               Answers <BsFillChatLeftFill /> {discussion.comments?.length || 0}
             </div>

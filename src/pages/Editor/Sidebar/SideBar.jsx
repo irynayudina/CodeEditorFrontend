@@ -6,13 +6,11 @@ import { Form } from "react-bootstrap";
 import "./SideBar.scss";
 import {
   FaArrowLeft,
-  FaFileCode,
   FaUsers,
   FaSdCard,
   FaFolderOpen,
   FaTrashAlt,
   FaEdit,
-  FaLockOpen,
   FaDownload,
   FaWhmcs,
 } from "react-icons/fa";
@@ -104,7 +102,6 @@ const SideBar = (props) => {
         { withCredentials: true }
       );
       if (projectUpdated?.data) {
-        console.log(projectUpdated.data);
         toast.success("project is deleted");
         setChanged(true);
         navigate("/editor");
@@ -116,7 +113,6 @@ const SideBar = (props) => {
   };
   const [renameStr, setRenameStr] = useState("");
   const renameProjectHandler = async () => {
-    console.log("rrrr")
     try {
       const projectUpdated = await axios.post(
         "https://codeeditorbackend-production.up.railway.app/api/projects/id",
@@ -127,12 +123,10 @@ const SideBar = (props) => {
         { withCredentials: true }
       );
       if (projectUpdated?.data) {
-        console.log(projectUpdated.data);
         navigate(`/editor/${props.projectId}`);
         toast.success("renamed");
         window.location.reload();
       }
-      console.log(projectUpdated);
     } catch (err) {
       toast.error(err?.response?.data?.message || err.error);
     }
@@ -148,7 +142,6 @@ const SideBar = (props) => {
           setThemesPick={setThemesPick}
         />
       </div>
-      {/* {sidebarLayout} */}
       {props.editorSize == "sm" ? (
         <Dropdown className={`list-group list-group-flush`}>
           <Dropdown.Toggle
@@ -158,10 +151,6 @@ const SideBar = (props) => {
             <p className="sidebar-dropdown-name">File menu</p>
           </Dropdown.Toggle>
           <Dropdown.Menu>
-            {/* <Dropdown.Item href="#1">
-              <FaFileCode className="me-3" />
-              <span>Editor ({filename})</span>
-            </Dropdown.Item> */}
             {props.projectId ? props.children : ""}
             <Dropdown.Divider />
             <Dropdown.Item href="#11" onClick={handleSaveClick}>
@@ -196,8 +185,6 @@ const SideBar = (props) => {
             <Dropdown.Item href="#8">
               <Link
                 to={`/user#projects`}
-                // state={{ userId: data?.author?._id }}
-                // key={data?.author?._id}
                 className="text-decoration-none black-link"
               >
                 <FaFolderOpen className="me-3" />
@@ -329,8 +316,6 @@ const SideBar = (props) => {
             >
               <Link
                 to={`/user#projects`}
-                // state={{ userId: data?.author?._id }}
-                // key={data?.author?._id}
                 className="text-decoration-none black-link"
               >
                 <FaFolderOpen className="me-3" />
@@ -375,7 +360,6 @@ const SideBar = (props) => {
                   <Form.Control
                     type="text"
                     onChange={(e) => setRenameStr(e.target.value)}
-                    // autoComplete="off"
                   />
                 </Nav.Link>
                 <Nav.Link

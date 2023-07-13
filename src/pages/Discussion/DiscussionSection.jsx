@@ -1,40 +1,14 @@
 import React, {useState, useEffect} from 'react'
 import {
   BsFillHandThumbsUpFill,
-  BsClock,
   BsFillChatLeftFill,
 } from "react-icons/bs";
-import axios from "axios";
-import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
 import Loader from "../../elements/Loader";
 const DiscussionSection = ({ comment, commentData }) => {
   const [c, setC] = useState();
   const [isLoading, setIsLoading] = useState(false);
-  // useEffect(() => {
-  //   const loadComment = async () => {
-  //     try {
-  //       const commentData = await axios.get(
-  //         `/api/comments/id?commentId=${comment}`
-  //       );
-  //       let resData = commentData?.data?.comment;
-  //       const date = new Date(resData?.createdAt);
-  //       const formattedDate = date.toLocaleDateString("en-US", {
-  //         month: "long",
-  //         day: "numeric",
-  //         year: "numeric",
-  //       });
-  //       resData.createdAt = formattedDate;
-  //       setC(resData);
-  //     } catch (err) {
-  //       toast.error(err?.response?.data?.message || err.error);
-  //     } finally {
-  //       console.log(c);
-  //     }
-  //   };
-
-  //   loadComment();
-  // }, [comment]);
+  
   useEffect(() => {
     let resData = commentData;
     const date = new Date(resData?.createdAt);
@@ -45,8 +19,6 @@ const DiscussionSection = ({ comment, commentData }) => {
     });
     resData.createdAt = formattedDate;
     setC(resData);
-    // setC(commentData);
-    console.log(commentData);
   }, [commentData]);
 
   const [showReply, setShowReply] = useState(false);
@@ -70,8 +42,6 @@ const DiscussionSection = ({ comment, commentData }) => {
           <BsFillChatLeftFill /> {c?.answers?.length}
         </div>
         <div className="d-flex align-items-center">
-          {/* <BsFillHandThumbsUpFill />
-          {c?.likes} */}
         </div>
       </div>
       <div>

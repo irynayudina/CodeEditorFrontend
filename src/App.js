@@ -1,25 +1,20 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.css'
-import { BrowserRouter, Route, Routes, Switch, Redirect } from 'react-router-dom';
+import { BrowserRouter, Route, Routes} from 'react-router-dom';
 import Navbar from './elements/NavBar/NavBar';
 import Home from './pages/Home/Home';
 import Editor from './pages/Editor/Editor';
 import Discussions from './pages/Discussions/Discussions';
 import Discussion from './pages/Discussion/Discussion'
-import Challenges from './pages/Challenges/Challenges';
-import Collaboratory from './pages/Collaboratory/Collaboratory'
 import Projects from './pages/Projects/Projects'
 import SignUp from './pages/Utilities/Register/SignUp';
 import SignIn from './pages/Utilities/Login/SignIn';
-import ResetPassword from './pages/Utilities/Login/ResetPassword';
 import UserNotifications from './pages/Utilities/UserNotifications/UserNotifications'
 import Userpage from './pages/Utilities/Userpage/Userpage'
 import UserProjects from './pages/Utilities/UserProjects/UserProjects'
 import UserSettings from './pages/Utilities/UserSettings/UserSettings'
 import PublicUserpage from './pages/Utilities/PublicUserpage/PublicUserpage';
-import Challenge from './pages/Challenge/Challenge'
-import TextEditor from './TextEditor';
 import RedirectElem from './RedirectElem';
 
 
@@ -32,19 +27,12 @@ import PrivateRoute from './private/PrivateRoute';
 
 function App() {
   const [theme, setTheme] = useState("lighttheme");
-  const [breakpoint, setBreakpoint] = useState("xxl")
   const [editorBreakpoint, setEditorBreakpoint] = useState(1400)
   useEffect(() => {
     const handleWindowResize = () => {
       setEditorBreakpoint(window.innerWidth)
-      if (window.innerWidth >= 1400) setBreakpoint("xxl");
-      else if (window.innerWidth >= 1200) setBreakpoint("xl");
-      else if (window.innerWidth >= 992) setBreakpoint("lg");
-      else if (window.innerWidth >= 768) setBreakpoint("md");
-      else if (window.innerWidth >= 567) setBreakpoint("sm");
-      else setBreakpoint("xs");
     };
-    handleWindowResize(); // initially on load without resize
+    handleWindowResize(); 
     window.addEventListener('resize', handleWindowResize);
     return () => {
     window.removeEventListener('resize', handleWindowResize);
@@ -64,7 +52,6 @@ function App() {
         <ToastContainer />
         <Routes>
           <Route path="/" exact="true" element={<Home />} />
-          <Route path="/texteditor" element={<TextEditor />} />
           <Route
             path="/editor/:id"
             element={
@@ -89,14 +76,6 @@ function App() {
             element={<Discussion theme={theme} />}
           />
           <Route
-            path="/challenges"
-            element={<Challenges theme={theme} breakpoint={breakpoint} />}
-          />
-          <Route
-            path="/challenge"
-            element={<Challenge theme={theme} breakpoint={breakpoint} />}
-          />
-          <Route
             path="/collaboratory"
             element={<RedirectElem /> }
           />
@@ -118,7 +97,6 @@ function App() {
               element={<UserSettings theme={theme} />}
             />
           </Route>
-          <Route path="/forgot-password" element={<ResetPassword />} />
           <Route
             path="/public/user/:id"
             element={<PublicUserpage theme={theme} />}

@@ -1,7 +1,6 @@
 import React, {useState, useEffect} from 'react'
 import './UserDiscussions.scss'
-import { BsFillChatLeftFill, BsHandThumbsUpFill } from "react-icons/bs";
-import { Container, Row, Col, Form, Badge } from "react-bootstrap";
+import { Form } from "react-bootstrap";
 import InfiniteLoaderForUserDiscussions from '../../../elements/InfiniteLoader/InfiniteLoaderForUserDiscussions';
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
@@ -14,9 +13,6 @@ const UserDiscussions = () => {
   const userId = viewedUserId || userInfo._id;
   const [filterObj, setFilterObj] = useState({ authorId: userId });
   const [selectedType, setSelectedType] = useState("discussions");
-  useEffect(() => {
-    ///setDiscussions
-  }, [])
   
   return (
     <div className="class-discussions">
@@ -32,7 +28,6 @@ const UserDiscussions = () => {
         <InfiniteLoaderForUserDiscussions filerObj={filterObj} />
       ) : (
         <InfiniteLoaderForUserComments filerObj={filterObj} />
-          // "com"
       )}
     </div>
   );
