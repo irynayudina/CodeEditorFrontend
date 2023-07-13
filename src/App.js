@@ -10,7 +10,6 @@ import Discussion from './pages/Discussion/Discussion'
 import Projects from './pages/Projects/Projects'
 import SignUp from './pages/Utilities/Register/SignUp';
 import SignIn from './pages/Utilities/Login/SignIn';
-import UserNotifications from './pages/Utilities/UserNotifications/UserNotifications'
 import Userpage from './pages/Utilities/Userpage/Userpage'
 import UserProjects from './pages/Utilities/UserProjects/UserProjects'
 import UserSettings from './pages/Utilities/UserSettings/UserSettings'
@@ -87,10 +86,6 @@ function App() {
             <Route
               path="/user/projects"
               element={<UserProjects theme={theme} />}
-            />
-            <Route
-              path="/user/notifications"
-              element={<UserNotifications theme={theme} />}
             />
             <Route
               path="/user/settings"
