@@ -501,17 +501,19 @@ const Editor = (props) => {
           onChange={cmdHandler}
           className={`inp ${props.theme} editor-input-up `}
         />
-        <div className={`result ${props.theme}`}>
+        <div className={`result ${props.theme}`} style={{ whiteSpace: 'pre-wrap' }}>
           {compiling ? (
             "compiling..."
           ) : (
             <div
+              style={{ whiteSpace: 'pre-wrap' }}
               dangerouslySetInnerHTML={{
                 __html: result?.replace(/\n/g, "<br />"),
               }}
             ></div>
           )}
         </div>
+
         <div className="botInp">
           <Form.Label
             style={{ float: "left", margin: "0.5rem", marginTop: "0.5rem" }}
