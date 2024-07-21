@@ -40,7 +40,7 @@ const LandingPage = () => {
               <Button>Log In</Button>
             </Link>{" "}
             <Link to="/register">
-              <Button>Sing Up</Button>
+              <Button>Sign Up</Button>
             </Link>
           </motion.div>
         </Col>
