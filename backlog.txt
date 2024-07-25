@@ -1,0 +1,11 @@
+If I am logged in , that sign up and Log IN button shouldnt appear
+Remove/Improve Dark theme option
+Pages Height equals Screen Height
+Make numbered Pagination 
+Fix replies to comments
+Remove redirect of authorized users on Login Page
+Fix spaces in code output
+remove toast "got project"
+remove certain file extensions "choose fro file"
+Hide te option "collaboration mode" from the users who arent allowed
+Fix all the authentication error for project
