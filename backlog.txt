@@ -9,3 +9,4 @@ remove toast "got project"
 remove certain file extensions "choose fro file"
 Hide te option "collaboration mode" from the users who arent allowed
 Fix all the authentication error for project
+Make the rename thing better
