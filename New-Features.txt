@@ -1,3 +1,4 @@
 Comments section under Project
 Public/Private project settings
 Real time comment section under collab
+Add api endpoint and functionality to delete the collab in the profile page for a user
