@@ -1,1 +1,2 @@
 Comments section under Project
+Public/Private project settings
