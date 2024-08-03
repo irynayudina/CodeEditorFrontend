@@ -1,6 +1,6 @@
 If I am logged in , that sign up and Log IN button shouldnt appear
 Remove/Improve Dark theme option
-Pages Height equals Screen Height
+Pages Height equals Screen Height 🍂🍂🍁🍂🍂
 Make numbered Pagination 
 Fix replies to comments
 Remove redirect of authorized users on Login Page
