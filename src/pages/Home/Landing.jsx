@@ -46,7 +46,7 @@ const LandingPage = () => {
         </Col>
       </Row>
       <Row className="mt-5">
-        <Col md={3}>
+        <Col md={4}>
           <motion.div
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
@@ -58,7 +58,7 @@ const LandingPage = () => {
             <p>Write and run your code using our powerful code editor.</p>
           </motion.div>
         </Col>
-        <Col md={3}>
+        <Col md={4}>
           <motion.div
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
@@ -72,7 +72,7 @@ const LandingPage = () => {
             </p>
           </motion.div>
         </Col>
-        <Col md={3}>
+        <Col md={4}>
           <motion.div
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}

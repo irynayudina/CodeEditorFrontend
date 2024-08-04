@@ -256,20 +256,21 @@ const SideBar = (props) => {
           <Dropdown
             className={`list-group list-group-flush ${visibleDropdown}`}
             onClick={showSidebar}
+            title="Open sidebar"
           >
             <Dropdown.Toggle
               variant={`${props.theme == "lighttheme" ? "primary" : "dark"}`}
               id="dropdown-basic"
               className="dropdown-turned"
             >
-              <p className="sidebar-dropdown-name">File menu</p>
+              File menu
             </Dropdown.Toggle>
           </Dropdown>{" "}
           <Button
             className={`hide-btn ${visibleSidebar}`}
             onClick={hideSidebar}
           >
-            <FaArrowLeft className="me-3" />
+            <FaArrowLeft className="me-2" size={14} />
             <span>Hide the Sidebar</span>
           </Button>
           <Nav className={`list-group list-group-flush ${visibleSidebar}`}>

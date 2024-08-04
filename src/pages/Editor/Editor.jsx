@@ -334,11 +334,6 @@ const Editor = (props) => {
       document.removeEventListener("visibilitychange", handleVisibilityChange);
     };
   });
-  const [resultSm, setResultSm] = useState('')
-  const resizeRef = useRef(null);
-
-
-
 
   //getting the file by id from url line
   const [projectInfo, setProjectInfo] = useState()
@@ -436,9 +431,10 @@ const Editor = (props) => {
         </SideBar>
       </div>
       <div className={`elem elem2 ${props.theme}`} id="CodeEditor">
-        <Form.Select
+        <div style={{display: 'flex', flexWrap: 'wrap'}}>
+          <Form.Select
           size="sm"
-          style={{ width: "auto", float: "left" }}
+          style={{ width: "auto", float: "left", flexGrow: 1 }}
           onChange={languageHandler}
           value={language}
           className={`select ${props.theme}`}
@@ -451,7 +447,7 @@ const Editor = (props) => {
         </Form.Select>
         <Form.Select
           size="sm"
-          style={{ width: "auto" }}
+          style={{ width: "auto", flexGrow: 1 }}
           onChange={versionHandler}
           className={`select ${props.theme}`}
         >
@@ -461,41 +457,32 @@ const Editor = (props) => {
             </option>
           ))}
         </Form.Select>
+        </div>
         <CodeMirror
           value={code}
           mode={language}
           theme={editorTheme}
-          height="546px"
+          height="calc(100vh - 170px)"
+          minHeight="64px"
           className="overflow-hidden"
-          style={{ overflowX: "scroll", margin: "0.5rem 0 0.5rem 0" }}
+          style={{ overflowX: "scroll", margin: "0.5rem 0 0.5rem 0", flexShrink: 2 }}
           extensions={extensionsObj}
           onChange={onChangeCM}
         />
         <Button
           variant={props.theme == "lighttheme" ? "primary" : "dark"}
-          className={`btn-editor`}
+          className={`btn-editor ${expanded == "hiddenPannel" ? 'big' : ''}`}
           onClick={execute}
           style={{ marginBottom: "calc(1rem - 1px)" }}
         >
           Run
         </Button>
       </div>
-      <div className={`elem ${props.theme} ${resultSm}`} ref={resizeRef}>
-        <Form.Label
-          style={{
-            float: "left",
-            marginRight: "0.5rem",
-            marginLeft: "0.5rem",
-            marginTop: "0.2rem",
-          }}
-          className={`text ${props.theme}`}
-        >
-          CMD arguments
-        </Form.Label>
+      <div className={`elem ${props.theme}`}>
         <Form.Control
           as="textarea"
           rows={1}
-          placeholder="command line"
+          placeholder="CMD arguments of command line"
           size="sm"
           value={cmdargs}
           onChange={cmdHandler}
@@ -515,16 +502,10 @@ const Editor = (props) => {
         </div>
 
         <div className="botInp">
-          <Form.Label
-            style={{ float: "left", margin: "0.5rem", marginTop: "0.5rem" }}
-            className={`text ${props.theme}`}
-          >
-            Standard inputs
-          </Form.Label>
           <Form.Control
             as="textarea"
             rows={2}
-            placeholder="standard inputs separated by newline"
+            placeholder="Standard input separated by a newline"
             size="md"
             value={userinp}
             onChange={userinpHandler}

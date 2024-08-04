@@ -1,11 +1,13 @@
 .home-container{
-    padding-top: 5vw;
+    padding-top: 92px;
+    box-sizing: border-box;
+    max-height: 100vh;
+    height: 100vh;
+    overflow: auto;
 }
 .landing-logo-animation{
     width: 736px;
-    // height: 300px;
     margin: auto;
-    // border: 1px solid rgb(8,137,226);//rgb(228, 205, 205);
     text-align: center;
     h3 {
         font-size: 72px;
@@ -24,7 +26,6 @@
 @media (max-width: 750px) {
   .landing-logo-animation{
     width: 100vw;
-    // height: 300px;
     h3{
       font-size: 9vw;
       font-weight: 700;

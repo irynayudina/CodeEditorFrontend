@@ -6,3 +6,17 @@
 .darktheme .dropdown-item{
     color: #59698d;
 }
+
+@media (max-width: 575.98px) { 
+
+ #basic-navbar-nav.navbar-collapse.collapse.show {
+    padding-top: 8px;
+}
+
+}
+.navbar-toggler {
+    margin-bottom: 8px;
+}
+.navbar-toggler.collapsed {
+    margin-bottom: 0px;
+}

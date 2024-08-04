@@ -1,6 +1,8 @@
 .discussions{
-    margin: 1rem;
-    // margin-top: 20px;
+    padding-top: 66px;
+    box-sizing: border-box;
+    max-height: 100vh;
+    overflow: auto;
     .discussions-topsection{
         display: flex;
         justify-content: space-evenly;
@@ -29,24 +31,12 @@
                 display: flex;
                 flex-wrap: wrap;
                 gap: 0.5rem;
-                // align-items: flex-start;
                 align-items: baseline;
             }
             .response-statistics{
                 display: flex;
                 gap: 1rem;
                 flex-wrap: wrap;
-                // .discussion-likes {
-                //     display: flex;
-                //     align-items: baseline;
-                //     gap: 0.5rem;
-                //     div{
-                //         display: flex;
-                //         align-items: center;
-                //         // gap: 0.5rem;
-                //     }
-                // }
-                // .discussion-answers{}
             }
         }
         .metadata-discussions{
@@ -87,8 +77,6 @@
         padding: 0;
         max-height: calc(100vh - 100px);
     }
-    // overflow-x:visible;
-    // overflow-y: scroll;
     scrollbar-width: none; /* Hide scrollbar for Firefox */
     -ms-overflow-style: none; /* Hide scrollbar for IE and Edge */
 }

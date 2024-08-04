@@ -15,9 +15,6 @@
         color: #FFFFFF;
     }
 }
-.side.lighttheme{
-    border-top: 1px solid white;
-}
 .side.lighttheme.sm{
     border-top: none;
 }
@@ -32,12 +29,9 @@
 .dropdown-menu, .show{
     width: 100%;
 }
-.sidebar-dropdown-name{
-    font-size: 18px;
-    margin-bottom: 0;
-}
+
 .dropdown-turned{
-    transform: rotate(90deg) translateX(200px) translateY(70px);
+    transform: rotate(90deg) translateX(120px) translateY(80px);
     min-width: 200px;
     width: auto;
 }
@@ -68,7 +62,6 @@
 }
 .open-drive-editor{
     width: auto;
-    // display: inline;
     padding: 1px;
     margin-left: 2rem;
 }

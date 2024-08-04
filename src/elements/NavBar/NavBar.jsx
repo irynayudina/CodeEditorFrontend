@@ -32,6 +32,7 @@ const NavBar = (props) => {
         variant="dark"
         expand="lg"
         className={props.theme}
+        style={{position: 'absolute', width: '100vw', zIndex: '99'}}
       >
         <Container fluid={true}>
           <Navbar.Brand href="/">Code-Network &lt;/&gt;</Navbar.Brand>
