@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { Form, Button, Col } from "react-bootstrap";
-import axios from 'axios'
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import Loader from "../../elements/Loader";
+import { useCreateDiscussionMutation } from "../../slices/discussionsApiSlice";
 
 const CreateDiscussionForm = () => {
   const navigate = useNavigate();
+  const [createDiscussion, { isLoading }] = useCreateDiscussionMutation();
   const [discussionData, setDiscussionData] = useState();
-  const [isLoading, setIsLoading] = useState(false)
   const [topic, setTopic] = useState("Custom");
   const [title, setTitle] = useState("");
   const [text, setText] = useState("");
@@ -16,10 +16,12 @@ const CreateDiscussionForm = () => {
 
   useEffect(() => {
     if (!tags.includes(topic)) {
-      tags.shift();
-      setTags([topic, ...tags]);
+      const newTags = [...tags];
+      if (newTags.length > 0) newTags.shift();
+      setTags([topic, ...newTags]);
     }
-  }, [topic])
+  }, [topic]);
+
   const topicOptions = [
     { value: "Algorithms", label: "Algorithms" },
     { value: "Web", label: "Web" },
@@ -31,27 +33,23 @@ const CreateDiscussionForm = () => {
       navigate(`/discussion/${discussionData._id}`, { state: discussionData });
     }
   }, [navigate, discussionData]);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      setIsLoading(true);
-      const discussion = await axios.post(
-        "https://codeeditorbackend-production.up.railway.app/api/discussions",
-        {
-          topic: topic,
-          title: title,
-          text: text,
-          tags: tags,
-        },
-        { withCredentials: true }
-      );
-      if (discussion?.data) {
-        setDiscussionData(discussion.data);
+      const result = await createDiscussion({
+        topic,
+        title,
+        text,
+        tags,
+      }).unwrap();
+      if (result) {
+        setDiscussionData(result);
+        toast.success("Discussion created successfully!");
       }
     } catch (err) {
-      toast.error(err?.response?.data?.message || err.error);
+      toast.error(err?.data?.message || err?.message || "Failed to create discussion");
     }
-    setIsLoading(false);
   };
 
   const handleKeyDown = (e) => {
@@ -120,8 +118,8 @@ const CreateDiscussionForm = () => {
           />
         </Form.Group>
 
-        <Button variant="primary" disabled={isLoading} onClick={handleSubmit}>
-          Create Discussion
+        <Button variant="primary" type="submit" disabled={isLoading}>
+          {isLoading ? "Creating..." : "Create Discussion"}
         </Button>
       </Form>
     </div>

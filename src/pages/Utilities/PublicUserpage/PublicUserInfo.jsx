@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { toast } from "react-toastify";
-import axios from "axios";
 import {
   BsTrophyFill,
   BsBarChartLineFill,
@@ -8,84 +7,53 @@ import {
   BsFillPersonDashFill,
 } from "react-icons/bs";
 import { Button } from "react-bootstrap";
+import {
+  useGetUserProfileQuery,
+  useGetFollowingFollowersQuery,
+  useFollowUserMutation,
+  useUnfollowUserMutation,
+} from "../../../slices/usersApiSlice";
 
 const PublicUserInfo = ({ userId, me }) => {
-  const [mainUser, setMainUser] = useState(me);
-  const loadInfoFollow = async () => {
-    try {
-        const userInfoResponse = await axios.get(
-          `https://codeeditorbackend-production.up.railway.app/api/users/followingFollowers`,
-          { withCredentials: true }
-        );
-      setMainUser(userInfoResponse.data);
-      } catch (err) {
-        toast.error(err?.response?.data?.message || err.error);
-      }
-  }
-  useEffect(() => {
-    loadInfoFollow();
-  }, [me, userId]);
+  const { data: mainUserData, refetch: refetchFollowing } = useGetFollowingFollowersQuery();
+  const { data: userInfo, isLoading: isLoadingProfile } = useGetUserProfileQuery(userId);
+  const [followUser, { isLoading: isFollowing }] = useFollowUserMutation();
+  const [unfollowUser, { isLoading: isUnfollowing }] = useUnfollowUserMutation();
   
-  const [userInfo, setUserInfo] = useState();
-  useEffect(() => {
-    const loadUserInfo = async () => {
-      try {
-        const userInfoResponse = await axios.get(
-          `https://codeeditorbackend-production.up.railway.app/api/users/profile?userId=${userId}`,
-          { withCredentials: true }
-        );
-        setUserInfo(userInfoResponse.data);
-      } catch (err) {
-        toast.error(err?.response?.data?.message || err.error);
+  const mainUser = mainUserData || me;
+  const isFollowingUser = mainUser?.following?.includes(userInfo?._id);
+
+  const followUserHandler = async () => {
+    if (!userInfo?._id) {
+      toast.error("User information not available");
+      return;
+    }
+    try {
+      const result = await followUser({ userId: userInfo._id }).unwrap();
+      if (result?.updatedUser) {
+        toast.success("User added to following list");
+        refetchFollowing();
       }
-    };
-    loadUserInfo();
-  }, [userId, me, mainUser]);
-    
-    const followUserHandler = async () => {
-        if (userInfo?._id) {
-            try {
-              const response = await axios.post(
-                `https://codeeditorbackend-production.up.railway.app/api/users/follow`,
-                {
-                  userId: userInfo?._id,
-                },
-                { withCredentials: true }
-              );
-                if (response?.data?.updatedUser) {
-                    me = response?.data?.updatedUser;
-                    toast.success("user added to following list");
-                    setMainUser(response?.data?.updatedUser);
-              }
-            } catch (err) {
-              toast.error(err?.response?.data?.message || err.error);
-            }
-        } else {
-            console.log("failed attempt")
-        }     
-    };
-    const unfollowUserHandler = async () => {
-        if (userInfo?._id) {
-            try {
-              const response = await axios.post(
-                `https://codeeditorbackend-production.up.railway.app/api/users/unfollow`,
-                {
-                  userId: userInfo?._id,
-                },
-                { withCredentials: true }
-              );
-                if (response?.data?.updatedUser) {
-                    me = response?.data?.updatedUser;
-                    toast.success("user removed from following");
-                    setMainUser(response?.data?.updatedUser);
-              }
-            } catch (err) {
-              toast.error(err?.response?.data?.message || err.error);
-            }
-        } else {
-            console.log("failed attempt")
-        }     
-    };
+    } catch (err) {
+      toast.error(err?.data?.message || err?.message || "Failed to follow user");
+    }
+  };
+
+  const unfollowUserHandler = async () => {
+    if (!userInfo?._id) {
+      toast.error("User information not available");
+      return;
+    }
+    try {
+      const result = await unfollowUser({ userId: userInfo._id }).unwrap();
+      if (result?.updatedUser) {
+        toast.success("User removed from following");
+        refetchFollowing();
+      }
+    } catch (err) {
+      toast.error(err?.data?.message || err?.message || "Failed to unfollow user");
+    }
+  };
 
   return (
     <div>
@@ -118,18 +86,24 @@ const PublicUserInfo = ({ userId, me }) => {
             <div>Following</div>
           </div>
         </div>
-        {mainUser?.following.includes(userInfo?._id) ? (
+        {isFollowingUser ? (
           <Button
             size="sm"
             className="follow-btn"
             variant="danger"
             onClick={unfollowUserHandler}
+            disabled={isUnfollowing}
           >
-            <BsFillPersonDashFill /> Unfollow
+            <BsFillPersonDashFill /> {isUnfollowing ? "Unfollowing..." : "Unfollow"}
           </Button>
         ) : (
-          <Button size="sm" className="follow-btn" onClick={followUserHandler}>
-            <BsFillPersonPlusFill /> Follow
+          <Button 
+            size="sm" 
+            className="follow-btn" 
+            onClick={followUserHandler}
+            disabled={isFollowing}
+          >
+            <BsFillPersonPlusFill /> {isFollowing ? "Following..." : "Follow"}
           </Button>
         )}
         <hr />
