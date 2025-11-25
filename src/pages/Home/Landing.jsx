@@ -34,14 +34,14 @@ const LandingPage = () => {
             initial={{ opacity: 0, scale: 0.5 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: 0.6 }}
-            className="text-center mb-4"
+            className="text-center mb-4 w-100 flex-column justify-content-center align-items-center gap-3"
           >
-            <Link to="/login">
-              <Button variant="outline-primary" size="lg" className="me-3">
+            <Link to="/login" className="block">
+              <Button variant="outline-primary" size="lg">
                 Log In
               </Button>
             </Link>
-            <Link to="/register">
+            <Link to="/register" className="block">
               <Button variant="primary" size="lg">
                 Sign Up
               </Button>
@@ -50,7 +50,7 @@ const LandingPage = () => {
         </Col>
       </Row>
       <Row className="mt-5">
-        <Col md={3}>
+        <Col md={4}>
           <motion.div
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
@@ -62,7 +62,7 @@ const LandingPage = () => {
             <p>Write and run your code using our powerful code editor.</p>
           </motion.div>
         </Col>
-        <Col md={3}>
+        <Col md={4}>
           <motion.div
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
@@ -76,7 +76,7 @@ const LandingPage = () => {
             </p>
           </motion.div>
         </Col>
-        <Col md={3}>
+        <Col md={4}>
           <motion.div
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}

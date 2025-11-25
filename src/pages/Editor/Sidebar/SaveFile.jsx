@@ -66,19 +66,13 @@ const SaveFile = (props) => {
     }
   };
   const [content, setContent] = useState(
-    <div>
-      <FaCopy className="me-3" />
-      <span>Save</span>
-    </div>
+    <span>Save</span>
   );
   useEffect(() => {
     if (props.newProject) {
       setContent(
         <PopUp>
-          <div>
-            <FaCopy className="me-3" />
-            <span>Save</span>
-          </div>
+          <span>Save</span>
           <div>
             <ThemeProvider theme={theme}>
               <Container component="main" maxWidth="xs">
@@ -116,10 +110,7 @@ const SaveFile = (props) => {
       );
     } else {
       setContent(
-        <div onClick={handleEdit}>
-          <FaCopy className="me-3" />
-          <span>Save</span>
-        </div>
+        <span onClick={handleEdit}>Save</span>
       );
     }
   }, [props.newProject, props.code]);

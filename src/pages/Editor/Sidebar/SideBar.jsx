@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { Nav } from "react-bootstrap";
-import { Dropdown } from "react-bootstrap";
 import { Button } from "react-bootstrap";
 import { Form } from "react-bootstrap";
+import { OverlayTrigger, Tooltip } from "react-bootstrap";
+import { Dropdown } from "react-bootstrap";
 import "./SideBar.scss";
 import {
   FaArrowLeft,
@@ -12,7 +12,11 @@ import {
   FaTrashAlt,
   FaEdit,
   FaDownload,
-  FaWhmcs,
+  FaPalette,
+  FaSave,
+  FaFileUpload,
+  FaCog,
+  FaChevronRight,
 } from "react-icons/fa";
 
 import SaveFile from "./SaveFile";
@@ -23,21 +27,23 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 
-
 const SideBar = (props) => {
   const [visibleDropdown, setVisibleDropdown] = useState("hiddenDropdown");
   const [visibleSidebar, setVisibleSidebar] = useState("");
   const [themesPick, setThemesPick] = useState("");
+  
   const showSidebar = () => {
     setVisibleDropdown("hiddenDropdown");
     setVisibleSidebar("");
     props.setExpanded("expandedCustom-pannel");
   };
+  
   const hideSidebar = () => {
     setVisibleDropdown("");
     setVisibleSidebar("hiddenSidebar");
     props.setExpanded("hiddenPannel");
   };
+  
   const [filename, setFilename] = useState("project=/filename");
   const handleSaveClick = (e) => {
     e.stopPropagation();
@@ -52,7 +58,6 @@ const SideBar = (props) => {
   const [wasChanged, setChanged] = useState(false);
   
   useEffect(() => {
-    //setting
     setSidebarCode(props.code);
     setSidebarLanguage(props.language);
     setSidebarCmd(props.cmd);
@@ -111,8 +116,15 @@ const SideBar = (props) => {
       toast.error(err?.response?.data?.message || err.error);
     }
   };
+  
   const [renameStr, setRenameStr] = useState("");
+  const [isRenaming, setIsRenaming] = useState(false);
+  
   const renameProjectHandler = async () => {
+    if (!renameStr.trim()) {
+      toast.error("Please enter a project name");
+      return;
+    }
     try {
       const projectUpdated = await axios.post(
         "https://codeeditorbackend-production.up.railway.app/api/projects/id",
@@ -125,6 +137,8 @@ const SideBar = (props) => {
       if (projectUpdated?.data) {
         navigate(`/editor/${props.projectId}`);
         toast.success("renamed");
+        setIsRenaming(false);
+        setRenameStr("");
         window.location.reload();
       }
     } catch (err) {
@@ -132,262 +146,299 @@ const SideBar = (props) => {
     }
   };
 
-  return (
-    <div className={`side ${props.theme} ${props.editorSize}`}>
-      <div>
-        <ThemesHandler
-          setExpanded={props.setExpanded}
-          setEditorTheme={props.setEditorTheme}
-          theme={props.theme}
-          setThemesPick={setThemesPick}
-        />
-      </div>
-      {props.editorSize == "sm" ? (
-        <Dropdown className={`list-group list-group-flush`}>
-          <Dropdown.Toggle
-            variant={`${props.theme == "lighttheme" ? "primary" : "dark"}`}
-            id="dropdown-basic"
+  // Modern sidebar content component
+  const SidebarContent = () => (
+    <div className={`modern-sidebar-content ${visibleSidebar}`}>
+      {/* Project Info Section */}
+      {props.projectId && props.children && (
+        <div className="sidebar-section project-info-section">
+          {props.children}
+        </div>
+      )}
+
+      {/* File Operations Section */}
+      <div className="sidebar-section">
+        <div className="section-header">
+          <span className="section-title">File Operations</span>
+        </div>
+        <div className="section-actions">
+          <OverlayTrigger
+            placement="right"
+            overlay={
+              <Tooltip id="save-tooltip">
+                Save your project to the cloud
+              </Tooltip>
+            }
           >
-            <p className="sidebar-dropdown-name">File menu</p>
-          </Dropdown.Toggle>
-          <Dropdown.Menu>
-            {props.projectId ? props.children : ""}
-            <Dropdown.Divider />
-            <Dropdown.Item href="#11" onClick={handleSaveClick}>
-              {fileSaveElement}
-            </Dropdown.Item>
-            <Dropdown.Item
-              href="#3"
+            <button
+              className="modern-sidebar-btn"
+              onClick={handleSaveClick}
+            >
+              <FaSave className="btn-icon" />
+              <span className="btn-text">{fileSaveElement}</span>
+            </button>
+          </OverlayTrigger>
+
+          <OverlayTrigger
+            placement="right"
+            overlay={
+              <Tooltip id="save-local-tooltip">
+                Download your code as a file to your computer
+              </Tooltip>
+            }
+          >
+            <button
+              className="modern-sidebar-btn"
               onClick={() => props.handleDownloadClick()}
             >
-              <FaDownload className="me-3" />
-              <span>Save locally</span>
-            </Dropdown.Item>
-            <Dropdown.Divider />
-            <Dropdown.Item href="#7">
-              <FaSdCard className="me-3" />
-              <span>
-                Open from drive{" "}
-                <Form.Control
-                  type="file"
-                  className="open-drive-editor"
-                  onChange={(event) => {
-                    props.handleFileUpload(
-                      event,
-                      props.setCode,
-                      props.setLangauge,
-                      props.languageExtensions
-                    );
-                  }}
-                />
-              </span>
-            </Dropdown.Item>
-            <Dropdown.Item href="#8">
-              <Link
-                to={`/user#projects`}
-                className="text-decoration-none black-link"
-              >
-                <FaFolderOpen className="me-3" />
-                <span>Open from project</span>
-              </Link>{" "}
-            </Dropdown.Item>
-            {props.projectId ? (<Dropdown.Item href="#10">
+              <FaDownload className="btn-icon" />
+              <span className="btn-text">Download</span>
+            </button>
+          </OverlayTrigger>
+
+          <OverlayTrigger
+            placement="right"
+            overlay={
+              <Tooltip id="open-drive-tooltip">
+                Upload a code file from your computer
+              </Tooltip>
+            }
+          >
+            <label className="modern-sidebar-btn file-upload-btn">
+              <FaFileUpload className="btn-icon" />
+              <span className="btn-text">Upload File</span>
+              <Form.Control
+                type="file"
+                className="file-input-hidden"
+                onChange={(event) => {
+                  props.handleFileUpload(
+                    event,
+                    props.setCode,
+                    props.setLangauge,
+                    props.languageExtensions
+                  );
+                }}
+              />
+            </label>
+          </OverlayTrigger>
+
+          <OverlayTrigger
+            placement="right"
+            overlay={
+              <Tooltip id="open-project-tooltip">
+                Open an existing project from your saved projects
+              </Tooltip>
+            }
+          >
+            <Link
+              to={`/user#projects`}
+              className="modern-sidebar-btn link-btn"
+            >
+              <FaFolderOpen className="btn-icon" />
+              <span className="btn-text">Open Project</span>
+              <FaChevronRight className="btn-chevron" />
+            </Link>
+          </OverlayTrigger>
+        </div>
+      </div>
+
+      {/* Collaboration Section */}
+      {props.projectId && (
+        <div className="sidebar-section">
+          <div className="section-header">
+            <span className="section-title">Collaboration</span>
+          </div>
+          <div className="section-actions">
+            <OverlayTrigger
+              placement="right"
+              overlay={
+                <Tooltip id="collab-tooltip">
+                  Collaborate with others in real-time
+                </Tooltip>
+              }
+            >
               <Link
                 to={props.collabId}
                 state={{ associatedProject_id: props.projectId }}
+                className="modern-sidebar-btn link-btn collab-btn"
               >
-                <FaUsers className="me-3" />
-                <span>Collaboration mode</span>
+                <FaUsers className="btn-icon" />
+                <span className="btn-text">Collaboration Mode</span>
+                <FaChevronRight className="btn-chevron" />
               </Link>
-            </Dropdown.Item>) : ""}
-            {!props.newProject && !wasChanged ? (
-              <>
-                <Dropdown.Divider />
-                <Dropdown.Item
-                  href="#null"
-                  onKeyDown={(e) => e.stopPropagation()}
-                  onClick={(e) => e.stopPropagation()}
-                  onFocus={(e) => e.stopPropagation()}
-                  onMouseOver={(e) => e.stopPropagation()}
-                >
-                  <Button
-                    variant="outline-primary"
-                    size="sm"
+            </OverlayTrigger>
+          </div>
+        </div>
+      )}
+
+      {/* Project Management Section */}
+      {!props.newProject && !wasChanged && (
+        <div className="sidebar-section">
+          <div className="section-header">
+            <span className="section-title">Project Management</span>
+          </div>
+          <div className="section-actions">
+            {!isRenaming ? (
+              <button
+                className="modern-sidebar-btn"
+                onClick={() => setIsRenaming(true)}
+              >
+                <FaEdit className="btn-icon" />
+                <span className="btn-text">Rename Project</span>
+              </button>
+            ) : (
+              <div className="rename-input-group">
+                <Form.Control
+                  type="text"
+                  placeholder="Enter new name"
+                  value={renameStr}
+                  onChange={(e) => setRenameStr(e.target.value)}
+                  className="rename-input"
+                  autoFocus
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      renameProjectHandler();
+                    } else if (e.key === "Escape") {
+                      setIsRenaming(false);
+                      setRenameStr("");
+                    }
+                  }}
+                />
+                <div className="rename-actions">
+                  <button
+                    className="rename-btn confirm"
                     onClick={renameProjectHandler}
                   >
-                    <FaEdit className="me-3" />
-                    <span>Rename</span>
-                  </Button>
-                  <Form.Control
-                    type="text"
-                    onChange={(e) => setRenameStr(e.target.value)}
-                  />
-                </Dropdown.Item>
-                <Dropdown.Item href="#14" onClick={deleteProjectHandler}>
-                  <FaTrashAlt className="me-3" />
-                  <span>Delete</span>
-                </Dropdown.Item>
-              </>
-            ) : (
-              ""
+                    Save
+                  </button>
+                  <button
+                    className="rename-btn cancel"
+                    onClick={() => {
+                      setIsRenaming(false);
+                      setRenameStr("");
+                    }}
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </div>
             )}
-            <Dropdown.Item>
-              <Dropdown
-                className={`list-group list-group-flush `}
-                onClick={(e) => e.stopPropagation()}
+
+            <OverlayTrigger
+              placement="right"
+              overlay={
+                <Tooltip id="delete-tooltip">
+                  Permanently delete this project
+                </Tooltip>
+              }
+            >
+              <button
+                className="modern-sidebar-btn danger-btn"
+                onClick={deleteProjectHandler}
               >
-                <Dropdown.Toggle
-                  className={`${
-                    props.theme == "lighttheme"
-                      ? "configure-view-editor-toggle-light-sm"
-                      : "configure-view-editor-toggle-sm"
-                  }`}
-                >
-                  <FaWhmcs className="me-3" />
-                  <span>Configure view</span>
+                <FaTrashAlt className="btn-icon" />
+                <span className="btn-text">Delete Project</span>
+              </button>
+            </OverlayTrigger>
+          </div>
+        </div>
+      )}
+
+      {/* Settings Section */}
+      <div className="sidebar-section settings-section">
+        <div className="section-header">
+          <span className="section-title">Appearance</span>
+        </div>
+        <div className="section-actions">
+          <ThemesHandler
+            setExpanded={props.setExpanded}
+            setEditorTheme={props.setEditorTheme}
+            theme={props.theme}
+            setThemesPick={setThemesPick}
+          />
+          <OverlayTrigger
+            placement="right"
+            overlay={
+              <Tooltip id="configure-view-tooltip">
+                Customize editor theme and appearance
+              </Tooltip>
+            }
+          >
+            <div className="theme-selector-wrapper">
+              <Dropdown className="theme-dropdown" drop="end">
+                <Dropdown.Toggle className="theme-selector-trigger" as="div">
+                  <FaPalette className="btn-icon" />
+                  <span className="btn-text">Editor Theme</span>
+                  <FaChevronRight className="btn-chevron" />
                 </Dropdown.Toggle>
                 {themesPick}
               </Dropdown>
-            </Dropdown.Item>
-          </Dropdown.Menu>
-        </Dropdown>
-      ) : (
-        <>
-          <Dropdown
-            className={`list-group list-group-flush ${visibleDropdown}`}
-            onClick={showSidebar}
-          >
-            <Dropdown.Toggle
-              variant={`${props.theme == "lighttheme" ? "primary" : "dark"}`}
-              id="dropdown-basic"
-              className="dropdown-turned"
-            >
-              <p className="sidebar-dropdown-name">File menu</p>
-            </Dropdown.Toggle>
-          </Dropdown>{" "}
-          <Button
-            className={`hide-btn ${visibleSidebar}`}
-            onClick={hideSidebar}
-          >
-            <FaArrowLeft className="me-3" />
-            <span>Hide the Sidebar</span>
-          </Button>
-          <Nav className={`list-group list-group-flush ${visibleSidebar}`}>
-            {props.projectId ? props.children : ""}
-            <Nav.Link
-              href="#11"
-              className="list-group-item list-group-item-action py-2 ripple"
-              onClick={handleSaveClick}
-            >
-              {fileSaveElement}
-            </Nav.Link>
-            <Nav.Link
-              href="#3"
-              className="list-group-item list-group-item-action py-2 ripple"
-              onClick={() => props.handleDownloadClick()}
-            >
-              <FaDownload className="me-3" />
-              <span>Save locally</span>
-            </Nav.Link>
-            <Nav.Link
-              href="#7"
-              className="list-group-item list-group-item-action py-2 ripple"
-            >
-              <FaSdCard className="me-3" />
-              <span>
-                Open from drive
-                <Form.Control
-                  type="file"
-                  className={`${props.theme}-opndrv open-drive-editor-side`}
-                  onChange={(event) => {
-                    props.handleFileUpload(
-                      event,
-                      props.setCode,
-                      props.setLangauge,
-                      props.languageExtensions
-                    );
-                  }}
-                />
-              </span>
-            </Nav.Link>
-            <Nav.Link
-              href="#8"
-              className="list-group-item list-group-item-action py-2 ripple"
-            >
-              <Link
-                to={`/user#projects`}
-                className="text-decoration-none black-link"
-              >
-                <FaFolderOpen className="me-3" />
-                <span>Open from project</span>
-              </Link>{" "}
-            </Nav.Link>
-            {props.projectId ? (
-              <Nav.Link
-                href="#10"
-                className="list-group-item list-group-item-action py-2 ripple"
-              >
-                <Link
-                  to={props.collabId}
-                  state={{ associatedProject_id: props.projectId }}
-                >
-                  <FaUsers className="me-3" />
-                  <span>Collaboration mode</span>
-                </Link>
-              </Nav.Link>
-            ) : (
-              ""
-            )}
+            </div>
+          </OverlayTrigger>
+        </div>
+      </div>
+    </div>
+  );
 
-            {!props.newProject && !wasChanged ? (
-              <>
-                <Nav.Link
-                  className="list-group-item list-group-item-action py-2 ripple"
-                  href="#null"
-                  onKeyDown={(e) => e.stopPropagation()}
-                  onClick={(e) => e.stopPropagation()}
-                  onFocus={(e) => e.stopPropagation()}
-                  onMouseOver={(e) => e.stopPropagation()}
-                >
-                  <Button
-                    variant="outline-primary"
-                    size="sm"
-                    onClick={renameProjectHandler}
-                  >
-                    <FaEdit className="me-3" />
-                    <span>Rename</span>
-                  </Button>
-                  <Form.Control
-                    type="text"
-                    onChange={(e) => setRenameStr(e.target.value)}
-                  />
-                </Nav.Link>
-                <Nav.Link
-                  href="#14"
-                  className="list-group-item list-group-item-action py-2 ripple"
-                  onClick={deleteProjectHandler}
-                >
-                  <FaTrashAlt className="me-3" />
-                  <span>Delete</span>
-                </Nav.Link>
-              </>
-            ) : (
-              ""
-            )}
-            <Dropdown className={`list-group list-group-flush `} drop="end">
-              <Dropdown.Toggle
-                className={`${
-                  props.theme == "lighttheme"
-                    ? "configure-view-editor-toggle-light"
-                    : "configure-view-editor-toggle"
-                }`}
-              >
-                <FaWhmcs className="me-3" />
-                <span>Configure view</span>
-              </Dropdown.Toggle>
-              {themesPick}
-            </Dropdown>
-          </Nav>
+  return (
+    <div className={`modern-sidebar ${props.theme} ${props.editorSize}`}>
+      {/* Mobile/Compact View - Dropdown */}
+      {props.editorSize === "sm" ? (
+        <div className="sidebar-compact">
+          <div className="compact-trigger-wrapper">
+            <button
+              className="compact-trigger"
+              onClick={() => setVisibleDropdown(visibleDropdown === "hiddenDropdown" ? "" : "hiddenDropdown")}
+            >
+              <FaCog className="trigger-icon" />
+              <span>Menu</span>
+            </button>
+          </div>
+          {visibleDropdown !== "hiddenDropdown" && (
+            <div className="compact-dropdown">
+              <SidebarContent />
+            </div>
+          )}
+        </div>
+      ) : (
+        /* Desktop View - Full Sidebar */
+        <>
+          {/* Collapse Button */}
+          <OverlayTrigger
+            placement="right"
+            overlay={
+              <Tooltip id="hide-sidebar-tooltip">
+                Hide the sidebar to maximize editor space
+              </Tooltip>
+            }
+          >
+            <button
+              className={`sidebar-toggle-btn ${visibleSidebar}`}
+              onClick={hideSidebar}
+            >
+              <FaArrowLeft className="toggle-icon" />
+            </button>
+          </OverlayTrigger>
+
+          {/* Expand Button (when hidden) */}
+          <OverlayTrigger
+            placement="right"
+            overlay={
+              <Tooltip id="show-sidebar-tooltip">
+                Click to open the file menu sidebar
+              </Tooltip>
+            }
+          >
+            <button
+              className={`sidebar-expand-btn ${visibleDropdown}`}
+              onClick={showSidebar}
+            >
+              <FaCog className="expand-icon" />
+            </button>
+          </OverlayTrigger>
+
+          {/* Sidebar Content */}
+          <SidebarContent />
         </>
       )}
     </div>
