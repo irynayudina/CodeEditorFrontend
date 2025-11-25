@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { useInfiniteScroll as useInfiniteScrollHook } from 'react-infinite-scroll-hook';
+import useInfiniteScrollHook from 'react-infinite-scroll-hook';
 
 /**
  * Custom hook for infinite scroll with pagination
