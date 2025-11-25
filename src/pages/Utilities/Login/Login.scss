@@ -1,16 +1,160 @@
-.login-form{
-    max-width: 50vw;
-    margin: 1rem auto;
-    background-color: whitesmoke;
-    border-radius: 0.5rem;
-    padding: 1rem;
-    .form-content-styled{
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        gap: 1rem;
+.login-form {
+  max-width: 50vw;
+  margin: 1rem auto;
+  background-color: whitesmoke;
+  border-radius: 0.5rem;
+  padding: 1rem;
+
+  .form-content-styled {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 1rem;
+  }
+
+  @media (max-width: 992px) {
+    max-width: calc(100vw - 2rem);
+  }
+}
+
+// Modern Auth Page Styling
+.auth-container {
+  min-height: calc(100vh - 80px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-xl);
+  background: var(--bg-primary);
+  animation: fadeIn 0.5s ease-in-out;
+
+  .MuiContainer-root {
+    background: var(--bg-card);
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-xl);
+    border: 1px solid var(--border-color);
+    padding: var(--spacing-2xl);
+    max-width: 450px !important;
+
+    .MuiBox-root {
+      .MuiAvatar-root {
+        background: var(--gradient-primary) !important;
+        width: 56px;
+        height: 56px;
+        margin: 0 auto var(--spacing-md);
+      }
+
+      .MuiTypography-h5 {
+        color: var(--text-primary);
+        font-weight: 700;
+        margin-bottom: var(--spacing-lg);
+      }
+
+      .MuiTextField-root {
+        margin-bottom: var(--spacing-md);
+
+        .MuiOutlinedInput-root {
+          background: var(--bg-secondary);
+          border-radius: var(--radius-md);
+          transition: all var(--transition-base);
+
+          &:hover {
+            .MuiOutlinedInput-notchedOutline {
+              border-color: var(--color-primary);
+            }
+          }
+
+          &.Mui-focused {
+            background: var(--bg-primary);
+
+            .MuiOutlinedInput-notchedOutline {
+              border-color: var(--color-primary);
+              border-width: 2px;
+            }
+          }
+
+          .MuiOutlinedInput-notchedOutline {
+            border-color: var(--border-color);
+            transition: all var(--transition-base);
+          }
+
+          input {
+            color: var(--text-primary);
+            padding: var(--spacing-sm) var(--spacing-md);
+
+            &::placeholder {
+              color: var(--text-tertiary);
+            }
+          }
+        }
+
+        .MuiInputLabel-root {
+          color: var(--text-secondary);
+
+          &.Mui-focused {
+            color: var(--color-primary);
+          }
+        }
+      }
+
+      .MuiButton-root {
+        background: var(--gradient-primary) !important;
+        color: var(--text-inverse) !important;
+        padding: var(--spacing-md) var(--spacing-xl);
+        font-weight: 600;
+        border-radius: var(--radius-md);
+        text-transform: none;
+        box-shadow: var(--shadow-md);
+        transition: all var(--transition-base);
+        margin-top: var(--spacing-lg) !important;
+
+        &:hover {
+          transform: translateY(-2px);
+          box-shadow: var(--shadow-lg);
+          filter: brightness(1.1);
+        }
+
+        &:active {
+          transform: translateY(0);
+        }
+      }
+
+      .MuiLink-root {
+        color: var(--color-primary);
+        text-decoration: none;
+        font-weight: 500;
+        transition: all var(--transition-fast);
+
+        &:hover {
+          color: var(--color-primary-dark);
+          text-decoration: underline;
+        }
+      }
     }
-    @media (max-width: 992px) {
-        max-width: calc(100vw - 2rem);
+
+    .MuiTypography-body2 {
+      color: var(--text-tertiary);
+      margin-top: var(--spacing-xl);
+
+      .MuiLink-root {
+        color: var(--color-primary);
+        text-decoration: none;
+        font-weight: 500;
+
+        &:hover {
+          text-decoration: underline;
+        }
+      }
     }
+  }
+}
+
+@media (max-width: 600px) {
+  .auth-container {
+    padding: var(--spacing-md);
+
+    .MuiContainer-root {
+      padding: var(--spacing-lg);
+      border-radius: var(--radius-lg);
+    }
+  }
 }

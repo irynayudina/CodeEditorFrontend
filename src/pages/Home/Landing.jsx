@@ -37,10 +37,14 @@ const LandingPage = () => {
             className="text-center mb-4"
           >
             <Link to="/login">
-              <Button>Log In</Button>
-            </Link>{" "}
+              <Button variant="outline-primary" size="lg" className="me-3">
+                Log In
+              </Button>
+            </Link>
             <Link to="/register">
-              <Button>Sing Up</Button>
+              <Button variant="primary" size="lg">
+                Sign Up
+              </Button>
             </Link>
           </motion.div>
         </Col>
