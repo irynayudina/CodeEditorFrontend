@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import Loader from "../Loader";
 import { ListGroup } from "react-bootstrap";
-import useInfiniteScroll from "react-infinite-scroll-hook";
+import { useInfiniteScroll } from "react-infinite-scroll-hook";
 import "./List.scss";
 import DiscussionDisplay from "../../pages/Discussions/DiscussionDisplay";
 import { BsFillChatLeftFill, BsHandThumbsUpFill } from "react-icons/bs";

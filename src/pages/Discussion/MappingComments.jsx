@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import Loader from "../../elements/Loader";
 import { ListGroup } from "react-bootstrap";
-import useInfiniteScroll from "react-infinite-scroll-hook";
+import { useInfiniteScroll } from "react-infinite-scroll-hook";
 import DiscussionSection from "./DiscussionSection";
 
 function useLoadItems(filerObj) {

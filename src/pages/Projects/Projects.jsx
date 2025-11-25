@@ -9,7 +9,7 @@ import axios from "axios";
 
 import Loader from "../../elements/Loader";
 import { ListGroup } from "react-bootstrap";
-import useInfiniteScroll from "react-infinite-scroll-hook";
+import { useInfiniteScroll } from "react-infinite-scroll-hook";
 
 function useLoadItems(filerObj) {
   const [loading, setLoading] = useState(false);

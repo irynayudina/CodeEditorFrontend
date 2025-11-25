@@ -8,7 +8,7 @@ import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import Loader from '../../../elements/Loader';
 import { ListGroup } from "react-bootstrap";
-import useInfiniteScroll from "react-infinite-scroll-hook";
+import { useInfiniteScroll } from "react-infinite-scroll-hook";
 import LoadCollabs from './LoadCollabs';
 
 function useLoadItems(userId, wasChanged) {
