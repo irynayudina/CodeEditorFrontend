@@ -5,9 +5,7 @@ import { OverlayTrigger, Tooltip } from "react-bootstrap";
 import { Dropdown } from "react-bootstrap";
 import "./SideBar.scss";
 import {
-  FaArrowLeft,
   FaUsers,
-  FaSdCard,
   FaFolderOpen,
   FaTrashAlt,
   FaEdit,
@@ -15,7 +13,6 @@ import {
   FaPalette,
   FaSave,
   FaFileUpload,
-  FaCog,
   FaChevronRight,
 } from "react-icons/fa";
 
@@ -28,25 +25,20 @@ import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 
 const SideBar = (props) => {
-  const [visibleDropdown, setVisibleDropdown] = useState("hiddenDropdown");
-  const [visibleSidebar, setVisibleSidebar] = useState("");
   const [themesPick, setThemesPick] = useState("");
   
-  const showSidebar = () => {
-    setVisibleDropdown("hiddenDropdown");
-    setVisibleSidebar("");
-    props.setExpanded("expandedCustom-pannel");
-  };
+  // Check if user is logged in
+  const isLoggedIn = !!props.userInfo;
   
-  const hideSidebar = () => {
-    setVisibleDropdown("");
-    setVisibleSidebar("hiddenSidebar");
-    props.setExpanded("hiddenPannel");
-  };
+  // Check if user is the owner of the project
+  const isOwner = props.projectInfo?.author?._id === props.userInfo?._id;
   
   const [filename, setFilename] = useState("project=/filename");
   const handleSaveClick = (e) => {
-    e.stopPropagation();
+    // Allow the click to propagate to the SaveFile component
+    // The SaveFile component handles the actual save logic
+    // For new projects, it opens a popup via PopUp component
+    // For existing projects, it saves directly via handleEdit
   };
 
   const [fileSaveElement, setFileSaveElement] = useState("small");
@@ -84,6 +76,7 @@ const SideBar = (props) => {
         setFilename={setFilename}
         setNewProject={props.setNewProject}
         projectId={props.projectId}
+        userInfo={props.userInfo}
       />
     );
   }, [
@@ -94,6 +87,7 @@ const SideBar = (props) => {
     sidebarParam,
     filename,
     props.newProject,
+    props.userInfo,
   ]);
 
   const navigate = useNavigate();
@@ -148,7 +142,7 @@ const SideBar = (props) => {
 
   // Modern sidebar content component
   const SidebarContent = () => (
-    <div className={`modern-sidebar-content ${visibleSidebar}`}>
+    <div className="modern-sidebar-content">
       {/* Project Info Section */}
       {props.projectId && props.children && (
         <div className="sidebar-section project-info-section">
@@ -162,83 +156,112 @@ const SideBar = (props) => {
           <span className="section-title">File Operations</span>
         </div>
         <div className="section-actions">
-          <OverlayTrigger
-            placement="right"
-            overlay={
-              <Tooltip id="save-tooltip">
-                Save your project to the cloud
-              </Tooltip>
-            }
-          >
-            <button
-              className="modern-sidebar-btn"
-              onClick={handleSaveClick}
+          <div style={{ width: '100%', position: 'relative' }}>
+            {!isLoggedIn && <div className="restriction-label">Logged in users only</div>}
+            <OverlayTrigger
+              placement="right"
+              overlay={
+                <Tooltip id="save-tooltip">
+                  {isLoggedIn ? "Save your project to the cloud" : "Log in to save your project"}
+                </Tooltip>
+              }
             >
-              <FaSave className="btn-icon" />
-              <span className="btn-text">{fileSaveElement}</span>
-            </button>
-          </OverlayTrigger>
-
-          <OverlayTrigger
-            placement="right"
-            overlay={
-              <Tooltip id="save-local-tooltip">
-                Download your code as a file to your computer
-              </Tooltip>
-            }
-          >
-            <button
-              className="modern-sidebar-btn"
-              onClick={() => props.handleDownloadClick()}
-            >
-              <FaDownload className="btn-icon" />
-              <span className="btn-text">Download</span>
-            </button>
-          </OverlayTrigger>
-
-          <OverlayTrigger
-            placement="right"
-            overlay={
-              <Tooltip id="open-drive-tooltip">
-                Upload a code file from your computer
-              </Tooltip>
-            }
-          >
-            <label className="modern-sidebar-btn file-upload-btn">
-              <FaFileUpload className="btn-icon" />
-              <span className="btn-text">Upload File</span>
-              <Form.Control
-                type="file"
-                className="file-input-hidden"
-                onChange={(event) => {
-                  props.handleFileUpload(
-                    event,
-                    props.setCode,
-                    props.setLangauge,
-                    props.languageExtensions
-                  );
+              <div 
+                className={`modern-sidebar-btn ${!isLoggedIn ? 'disabled' : ''}`}
+                style={{ cursor: isLoggedIn ? 'pointer' : 'not-allowed' }}
+                onClick={(e) => {
+                  if (!isLoggedIn) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                  }
                 }}
-              />
-            </label>
-          </OverlayTrigger>
+              >
+                <FaSave className="btn-icon" />
+                <span className="btn-text">{fileSaveElement}</span>
+              </div>
+            </OverlayTrigger>
+          </div>
 
-          <OverlayTrigger
-            placement="right"
-            overlay={
-              <Tooltip id="open-project-tooltip">
-                Open an existing project from your saved projects
-              </Tooltip>
-            }
-          >
-            <Link
-              to={`/user#projects`}
-              className="modern-sidebar-btn link-btn"
+          <div style={{ width: '100%', position: 'relative' }}>
+            <OverlayTrigger
+              placement="right"
+              overlay={
+                <Tooltip id="save-local-tooltip">
+                  Download your code as a file to your computer
+                </Tooltip>
+              }
             >
-              <FaFolderOpen className="btn-icon" />
-              <span className="btn-text">Open Project</span>
-              <FaChevronRight className="btn-chevron" />
-            </Link>
-          </OverlayTrigger>
+              <button
+                className="modern-sidebar-btn"
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  props.handleDownloadClick();
+                }}
+                type="button"
+              >
+                <FaDownload className="btn-icon" />
+                <span className="btn-text">Download</span>
+              </button>
+            </OverlayTrigger>
+          </div>
+
+          <div style={{ width: '100%', position: 'relative' }}>
+            <OverlayTrigger
+              placement="right"
+              overlay={
+                <Tooltip id="open-drive-tooltip">
+                  Upload a code file from your computer
+                </Tooltip>
+              }
+            >
+              <label className="modern-sidebar-btn file-upload-btn">
+                <FaFileUpload className="btn-icon" />
+                <span className="btn-text">Upload File</span>
+                <Form.Control
+                  type="file"
+                  className="file-input-hidden"
+                  onChange={(event) => {
+                    props.handleFileUpload(
+                      event,
+                      props.setCode,
+                      props.setLangauge,
+                      props.languageExtensions
+                    );
+                  }}
+                />
+              </label>
+            </OverlayTrigger>
+          </div>
+
+          <div style={{ width: '100%', position: 'relative' }}>
+            {!isLoggedIn && <div className="restriction-label">Logged in users only</div>}
+            <OverlayTrigger
+              placement="right"
+              overlay={
+                <Tooltip id="open-project-tooltip">
+                  {isLoggedIn ? "Open an existing project from your saved projects" : "Log in to open your saved projects"}
+                </Tooltip>
+              }
+            >
+              {isLoggedIn ? (
+                <Link
+                  to={`/user#projects`}
+                  className="modern-sidebar-btn link-btn"
+                >
+                  <FaFolderOpen className="btn-icon" />
+                  <span className="btn-text">Open Project</span>
+                  <FaChevronRight className="btn-chevron" />
+                </Link>
+              ) : (
+                <div className="modern-sidebar-btn link-btn disabled">
+                  <FaFolderOpen className="btn-icon" />
+                  <span className="btn-text">Open Project</span>
+                  <FaChevronRight className="btn-chevron" />
+                </div>
+              )}
+            </OverlayTrigger>
+          </div>
         </div>
       </div>
 
@@ -249,39 +272,59 @@ const SideBar = (props) => {
             <span className="section-title">Collaboration</span>
           </div>
           <div className="section-actions">
-            <OverlayTrigger
-              placement="right"
-              overlay={
-                <Tooltip id="collab-tooltip">
-                  Collaborate with others in real-time
-                </Tooltip>
-              }
-            >
-              <Link
-                to={props.collabId}
-                state={{ associatedProject_id: props.projectId }}
-                className="modern-sidebar-btn link-btn collab-btn"
+            <div style={{ width: '100%', position: 'relative' }}>
+              {!isLoggedIn && <div className="restriction-label">Logged in users only</div>}
+              <OverlayTrigger
+                placement="right"
+                overlay={
+                  <Tooltip id="collab-tooltip">
+                    {isLoggedIn ? "Collaborate with others in real-time" : "Log in to use collaboration features"}
+                  </Tooltip>
+                }
               >
-                <FaUsers className="btn-icon" />
-                <span className="btn-text">Collaboration Mode</span>
-                <FaChevronRight className="btn-chevron" />
-              </Link>
-            </OverlayTrigger>
+                {isLoggedIn ? (
+                  <Link
+                    to={props.collabId}
+                    state={{ associatedProject_id: props.projectId }}
+                    className="modern-sidebar-btn link-btn collab-btn"
+                  >
+                    <FaUsers className="btn-icon" />
+                    <span className="btn-text">Collaboration Mode</span>
+                    <FaChevronRight className="btn-chevron" />
+                  </Link>
+                ) : (
+                  <div className="modern-sidebar-btn link-btn collab-btn disabled">
+                    <FaUsers className="btn-icon" />
+                    <span className="btn-text">Collaboration Mode</span>
+                    <FaChevronRight className="btn-chevron" />
+                  </div>
+                )}
+              </OverlayTrigger>
+            </div>
           </div>
         </div>
       )}
 
       {/* Project Management Section */}
-      {!props.newProject && !wasChanged && (
+      {props.projectId && (
         <div className="sidebar-section">
           <div className="section-header">
             <span className="section-title">Project Management</span>
           </div>
+          {!isOwner && <div className="restriction-label">Code owners only</div>}
           <div className="section-actions">
             {!isRenaming ? (
               <button
-                className="modern-sidebar-btn"
-                onClick={() => setIsRenaming(true)}
+                className={`modern-sidebar-btn ${!isOwner ? 'disabled' : ''}`}
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  if (isOwner) {
+                    setIsRenaming(true);
+                  }
+                }}
+                type="button"
+                disabled={!isOwner}
               >
                 <FaEdit className="btn-icon" />
                 <span className="btn-text">Rename Project</span>
@@ -307,16 +350,24 @@ const SideBar = (props) => {
                 <div className="rename-actions">
                   <button
                     className="rename-btn confirm"
-                    onClick={renameProjectHandler}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      renameProjectHandler();
+                    }}
+                    type="button"
                   >
                     Save
                   </button>
                   <button
                     className="rename-btn cancel"
-                    onClick={() => {
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
                       setIsRenaming(false);
                       setRenameStr("");
                     }}
+                    type="button"
                   >
                     Cancel
                   </button>
@@ -328,13 +379,21 @@ const SideBar = (props) => {
               placement="right"
               overlay={
                 <Tooltip id="delete-tooltip">
-                  Permanently delete this project
+                  {isOwner ? "Permanently delete this project" : "Only the project owner can delete this project"}
                 </Tooltip>
               }
             >
               <button
-                className="modern-sidebar-btn danger-btn"
-                onClick={deleteProjectHandler}
+                className={`modern-sidebar-btn danger-btn ${!isOwner ? 'disabled' : ''}`}
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  if (isOwner) {
+                    deleteProjectHandler();
+                  }
+                }}
+                type="button"
+                disabled={!isOwner}
               >
                 <FaTrashAlt className="btn-icon" />
                 <span className="btn-text">Delete Project</span>
@@ -382,65 +441,7 @@ const SideBar = (props) => {
 
   return (
     <div className={`modern-sidebar ${props.theme} ${props.editorSize}`}>
-      {/* Mobile/Compact View - Dropdown */}
-      {props.editorSize === "sm" ? (
-        <div className="sidebar-compact">
-          <div className="compact-trigger-wrapper">
-            <button
-              className="compact-trigger"
-              onClick={() => setVisibleDropdown(visibleDropdown === "hiddenDropdown" ? "" : "hiddenDropdown")}
-            >
-              <FaCog className="trigger-icon" />
-              <span>Menu</span>
-            </button>
-          </div>
-          {visibleDropdown !== "hiddenDropdown" && (
-            <div className="compact-dropdown">
-              <SidebarContent />
-            </div>
-          )}
-        </div>
-      ) : (
-        /* Desktop View - Full Sidebar */
-        <>
-          {/* Collapse Button */}
-          <OverlayTrigger
-            placement="right"
-            overlay={
-              <Tooltip id="hide-sidebar-tooltip">
-                Hide the sidebar to maximize editor space
-              </Tooltip>
-            }
-          >
-            <button
-              className={`sidebar-toggle-btn ${visibleSidebar}`}
-              onClick={hideSidebar}
-            >
-              <FaArrowLeft className="toggle-icon" />
-            </button>
-          </OverlayTrigger>
-
-          {/* Expand Button (when hidden) */}
-          <OverlayTrigger
-            placement="right"
-            overlay={
-              <Tooltip id="show-sidebar-tooltip">
-                Click to open the file menu sidebar
-              </Tooltip>
-            }
-          >
-            <button
-              className={`sidebar-expand-btn ${visibleDropdown}`}
-              onClick={showSidebar}
-            >
-              <FaCog className="expand-icon" />
-            </button>
-          </OverlayTrigger>
-
-          {/* Sidebar Content */}
-          <SidebarContent />
-        </>
-      )}
+      <SidebarContent />
     </div>
   );
 };

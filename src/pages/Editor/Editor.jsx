@@ -65,7 +65,7 @@ const Editor = (props) => {
   const [editorTheme, setEditorTheme] = useState(okaidia);
   const [viewUpdateState, setViewUpdateState] = useState();
   const [cmValuePrevious, setCmValuePrevious] = useState();
-  const [expanded, setExpanded] = useState("expandedCustom-pannel");
+  const [expanded] = useState("expandedCustom-pannel");
   const [errorLines, setErrorLines] = useState([]);
 
   const [collabId, setCollabId] = useState("");
@@ -400,7 +400,6 @@ const Editor = (props) => {
         <SideBar
           theme={props.theme}
           editorSize={props.editorSize}
-          setExpanded={setExpanded}
           expanded={expanded}
           setEditorTheme={setEditorTheme}
           handleDownloadClick={downloadFileLocally}
@@ -417,6 +416,8 @@ const Editor = (props) => {
           newProject={newProject}
           setNewProject={setNewProject}
           collabId={collabId}
+          userInfo={userInfo}
+          projectInfo={projectInfo}
         >
           <div className="project-info-secion">
             <div>

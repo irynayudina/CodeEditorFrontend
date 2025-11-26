@@ -20,8 +20,14 @@ const SaveFile = (props) => {
   const navigate = useNavigate();
 
   const [isLoading, setIsLoading] = useState(false);
+  const isLoggedIn = !!props.userInfo;
 
   const handleSubmit = async (event) => {
+    if (!isLoggedIn) {
+      event.preventDefault();
+      toast.error("Please log in to save your project");
+      return;
+    }
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     const name = data.get("project-name");
@@ -47,6 +53,10 @@ const SaveFile = (props) => {
     setIsLoading(false);
   };
   const handleEdit = async () => {
+    if (!isLoggedIn) {
+      toast.error("Please log in to save your project");
+      return;
+    }
     try {
       setIsLoading(true);
       const project = await axios.post(
@@ -72,7 +82,7 @@ const SaveFile = (props) => {
     if (props.newProject) {
       setContent(
         <PopUp>
-          <span>Save</span>
+          <span style={{ cursor: isLoggedIn ? 'pointer' : 'not-allowed', opacity: isLoggedIn ? 1 : 0.5 }}>Save</span>
           <div>
             <ThemeProvider theme={theme}>
               <Container component="main" maxWidth="xs">
@@ -99,6 +109,7 @@ const SaveFile = (props) => {
                     fullWidth
                     variant="contained"
                     sx={{ mt: 3, mb: 2 }}
+                    disabled={!isLoggedIn}
                   >
                     Save new project
                   </Button>
@@ -110,10 +121,20 @@ const SaveFile = (props) => {
       );
     } else {
       setContent(
-        <span onClick={handleEdit}>Save</span>
+        <span 
+          onClick={(e) => { 
+            e.stopPropagation(); 
+            if (isLoggedIn) {
+              handleEdit(); 
+            }
+          }} 
+          style={{ cursor: isLoggedIn ? 'pointer' : 'not-allowed', opacity: isLoggedIn ? 1 : 0.5 }}
+        >
+          Save
+        </span>
       );
     }
-  }, [props.newProject, props.code]);
+  }, [props.newProject, props.code, isLoggedIn]);
 
   return <>{content}</>;
 };
