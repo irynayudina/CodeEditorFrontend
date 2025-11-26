@@ -45,7 +45,7 @@ import { xcodeLight, xcodeDark } from "@uiw/codemirror-theme-xcode";
 
 import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
-import { calculateTimeDifference } from '../../elements/UpdateTimeCalculate'
+import { calculateTimeDifference } from './Editor2/hooks/UpdateTimeCalculate'
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 
@@ -325,15 +325,30 @@ const Editor = (props) => {
         }, 500);
       }
     };
-    document.addEventListener("click", highlightErrors);
-    document.addEventListener("touchstart", highlightErrors);
+    
+    // Only listen to clicks within the editor area, not the entire document
+    const editorElement = document.getElementById("CodeEditor");
+    const handleEditorClick = (e) => {
+      // Don't interfere with devtools or clicks outside editor
+      if (e.target.closest('#CodeEditor')) {
+        highlightErrors();
+      }
+    };
+    
+    if (editorElement) {
+      editorElement.addEventListener("click", handleEditorClick);
+      editorElement.addEventListener("touchstart", handleEditorClick);
+    }
     document.addEventListener("visibilitychange", handleVisibilityChange);
+    
     return () => {
-      document.removeEventListener("click", highlightErrors);
-      document.removeEventListener("touchstart", highlightErrors);
+      if (editorElement) {
+        editorElement.removeEventListener("click", handleEditorClick);
+        editorElement.removeEventListener("touchstart", handleEditorClick);
+      }
       document.removeEventListener("visibilitychange", handleVisibilityChange);
     };
-  });
+  }, []);
   const [resultSm, setResultSm] = useState('')
   const resizeRef = useRef(null);
 

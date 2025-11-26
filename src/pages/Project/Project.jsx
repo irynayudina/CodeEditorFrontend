@@ -7,7 +7,7 @@ import {
   BsClock,
 } from "react-icons/bs";
 
-import { calculateTimeDifference } from "../../elements/UpdateTimeCalculate";
+import { calculateTimeDifference } from "../Editor/Editor2/hooks/UpdateTimeCalculate";
 
 const Project = ({ project, index }) => {
   const [updAt, setUpdAt] = useState("")

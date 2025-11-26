@@ -7,7 +7,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 import Navbar from './elements/NavBar/NavBar';
 import Home from './pages/Home/Home';
-import Editor from './pages/Editor/Editor';
+import Editor2 from './pages/Editor/Editor2';
 import Discussions from './pages/Discussions/Discussions';
 import Discussion from './pages/Discussion/Discussion';
 import Projects from './pages/Projects/Projects';
@@ -21,13 +21,11 @@ import RedirectElem from './RedirectElem';
 import CollabEditor from './pages/Collaboratory/CollabEditor';
 import PrivateRoute from './private/PrivateRoute';
 
-import { useLocalStorage, useWindowResize } from './hooks';
-import { THEMES, EDITOR_BREAKPOINTS } from './config/constants';
+import { useLocalStorage } from './hooks';
+import { THEMES } from './config/constants';
 
 function App() {
   const [theme, setTheme] = useLocalStorage('mainThemeStored', THEMES.LIGHT);
-  const { width } = useWindowResize();
-  const editorSize = width >= EDITOR_BREAKPOINTS.SMALL ? "lg" : "sm";
   
   return (
     <div className={`App ${theme}`}>
@@ -49,18 +47,16 @@ function App() {
           <Route
             path="/editor/:id"
             element={
-              <Editor
+              <Editor2
                 theme={theme}
-                editorSize={editorSize}
               />
             }
           />
           <Route
             path="/editor"
             element={
-              <Editor
+              <Editor2
                 theme={theme}
-                editorSize={editorSize}
               />
             }
           />

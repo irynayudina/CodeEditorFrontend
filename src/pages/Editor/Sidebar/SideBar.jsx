@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo, useCallback } from "react";
 import { Button } from "react-bootstrap";
 import { Form } from "react-bootstrap";
 import { OverlayTrigger, Tooltip } from "react-bootstrap";
@@ -34,64 +34,39 @@ const SideBar = (props) => {
   const isOwner = props.projectInfo?.author?._id === props.userInfo?._id;
   
   const [filename, setFilename] = useState("project=/filename");
-  const handleSaveClick = (e) => {
-    // Allow the click to propagate to the SaveFile component
-    // The SaveFile component handles the actual save logic
-    // For new projects, it opens a popup via PopUp component
-    // For existing projects, it saves directly via handleEdit
-  };
-
-  const [fileSaveElement, setFileSaveElement] = useState("small");
-  const [sidebarCode, setSidebarCode] = useState("");
-  const [sidebarLanguage, setSidebarLanguage] = useState("");
-  const [sidebarCmd, setSidebarCmd] = useState("");
-  const [sidebarParam, setSidebarParam] = useState("");
-  const [sidebarLangVersion, setSidebarLangVersion] = useState("");
   const [wasChanged, setChanged] = useState(false);
   
-  useEffect(() => {
-    setSidebarCode(props.code);
-    setSidebarLanguage(props.language);
-    setSidebarCmd(props.cmd);
-    setSidebarParam(props.param);
-    setSidebarLangVersion(props.langVersion);
-  }, [
-    props,
+  // Memoize SaveFile component to prevent unnecessary re-renders
+  const fileSaveElement = useMemo(() => (
+    <SaveFile
+      newProject={props.newProject}
+      code={props.code}
+      language={props.language}
+      langVersion={props.langVersion}
+      cmd={props.cmd}
+      params={props.params}
+      setFilename={setFilename}
+      setNewProject={props.setNewProject}
+      projectId={props.projectId}
+      userInfo={props.userInfo}
+    />
+  ), [
+    props.newProject,
     props.code,
     props.language,
     props.langVersion,
     props.cmd,
     props.params,
-  ]);
-
-  useEffect(() => {
-    setFileSaveElement(
-      <SaveFile
-        newProject={props.newProject}
-        code={sidebarCode}
-        language={sidebarLanguage}
-        langVersion={sidebarLangVersion}
-        cmd={sidebarCmd}
-        params={sidebarParam}
-        setFilename={setFilename}
-        setNewProject={props.setNewProject}
-        projectId={props.projectId}
-        userInfo={props.userInfo}
-      />
-    );
-  }, [
-    sidebarCode,
-    sidebarLanguage,
-    sidebarCmd,
-    sidebarLangVersion,
-    sidebarParam,
-    filename,
-    props.newProject,
+    props.projectId,
     props.userInfo,
+    props.setNewProject,
   ]);
 
   const navigate = useNavigate();
-  const deleteProjectHandler = async () => {
+  const [renameStr, setRenameStr] = useState("");
+  const [isRenaming, setIsRenaming] = useState(false);
+  
+  const deleteProjectHandler = useCallback(async () => {
     try {
       const projectUpdated = await axios.post(
         "https://codeeditorbackend-production.up.railway.app/api/projects/delete",
@@ -109,12 +84,9 @@ const SideBar = (props) => {
     } catch (err) {
       toast.error(err?.response?.data?.message || err.error);
     }
-  };
+  }, [props.projectId, navigate]);
   
-  const [renameStr, setRenameStr] = useState("");
-  const [isRenaming, setIsRenaming] = useState(false);
-  
-  const renameProjectHandler = async () => {
+  const renameProjectHandler = useCallback(async () => {
     if (!renameStr.trim()) {
       toast.error("Please enter a project name");
       return;
@@ -138,10 +110,10 @@ const SideBar = (props) => {
     } catch (err) {
       toast.error(err?.response?.data?.message || err.error);
     }
-  };
+  }, [renameStr, props.projectId, navigate]);
 
-  // Modern sidebar content component
-  const SidebarContent = () => (
+  // Modern sidebar content component - memoized to prevent re-renders
+  const SidebarContent = useMemo(() => (
     <div className="modern-sidebar-content">
       {/* Project Info Section */}
       {props.projectId && props.children && (
@@ -182,29 +154,17 @@ const SideBar = (props) => {
             </OverlayTrigger>
           </div>
 
-          <div style={{ width: '100%', position: 'relative' }}>
-            <OverlayTrigger
-              placement="right"
-              overlay={
-                <Tooltip id="save-local-tooltip">
-                  Download your code as a file to your computer
-                </Tooltip>
-              }
-            >
-              <button
-                className="modern-sidebar-btn"
-                onClick={(e) => {
-                  e.preventDefault();
-                  e.stopPropagation();
-                  props.handleDownloadClick();
-                }}
-                type="button"
-              >
-                <FaDownload className="btn-icon" />
-                <span className="btn-text">Download</span>
-              </button>
-            </OverlayTrigger>
-          </div>
+          <button
+            className="modern-sidebar-btn"
+            onClick={() => {
+              props.handleDownloadClick();
+            }}
+            type="button"
+            title="Download your code as a file to your computer"
+          >
+            <FaDownload className="btn-icon" />
+            <span className="btn-text">Download</span>
+          </button>
 
           <div style={{ width: '100%', position: 'relative' }}>
             <OverlayTrigger
@@ -437,11 +397,31 @@ const SideBar = (props) => {
         </div>
       </div>
     </div>
-  );
+  ), [
+    props.projectId,
+    props.children,
+    props.collabId,
+    isLoggedIn,
+    isOwner,
+    isRenaming,
+    renameStr,
+    fileSaveElement,
+    themesPick,
+    props.theme,
+    props.handleDownloadClick,
+    props.handleFileUpload,
+    props.setCode,
+    props.setLangauge,
+    props.languageExtensions,
+    props.setEditorTheme,
+    props.setExpanded,
+    deleteProjectHandler,
+    renameProjectHandler,
+  ]);
 
   return (
-    <div className={`modern-sidebar ${props.theme} ${props.editorSize}`}>
-      <SidebarContent />
+    <div className={`modern-sidebar ${props.theme}`}>
+      {SidebarContent}
     </div>
   );
 };
